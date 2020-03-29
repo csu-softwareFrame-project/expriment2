@@ -11,4 +11,5 @@ public interface ProductMapper {
 
     Product getProduct(String productId);//获取产品
 
+    List<Product> searchProductList(String keywords);
 }
