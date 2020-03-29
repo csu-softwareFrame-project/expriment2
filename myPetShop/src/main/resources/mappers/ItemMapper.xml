@@ -57,4 +57,5 @@
       QTY = QTY - #{increment}
     WHERE ITEMID = #{itemId}
   </update>
+
 </mapper>
