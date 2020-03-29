@@ -34,9 +34,6 @@ public class CatalogService {
         return productMapper.getProduct(productId);
     }
 
-    public List<Item> getItemListByProductId(String productId){
-        return itemMapper.getItemListByProduct(productId);
-    }
 
     public List<Category> getCategoryList() {
         return categoryMapper.getCategoryList();
@@ -62,4 +59,5 @@ public class CatalogService {
     {
         itemMapper.updateInventoryQuantity(increment,itemId);
     }
+
 }

@@ -69,8 +69,7 @@ class DemoApplicationTests {
     @Test
     void testSearchProductList()
     {
-        List<Product> productList = catalogService.searchProductList("a");
-        System.out.println(productList.size());
+        List<Product> productList = catalogService.searchProductList("a");        System.out.println(productList.size());
     }
 
     @Test
