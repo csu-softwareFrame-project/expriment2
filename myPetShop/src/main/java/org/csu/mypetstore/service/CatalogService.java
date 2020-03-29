@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CatalogService {
@@ -21,24 +22,28 @@ public class CatalogService {
     @Autowired
     private ItemMapper itemMapper;
 
-    public Category getCategory(String categoryId){
-        return categoryMapper.getCategory(categoryId);
+    public List<Category> getCategoryList() {
+        return categoryMapper.getCategoryList();
     }
 
-    public List<Product> getProductListByCategory(String categoryId){
-        return productMapper.getProductListByCategory(categoryId);
+    public List<Product> searchProductList(String keyword) {
+        return productMapper.searchProductList("%" + keyword.toLowerCase() + "%");
     }
 
-    public Product getProduct(String productId){
-        return productMapper.getProduct(productId);
-    }
-
-    public List<Item> getItemListByProductId(String productId){
+    public List<Item> getItemListByProduct(String productId) {
         return itemMapper.getItemListByProduct(productId);
     }
 
-    public Item getItem(String itemId){
+    public int getInventoryQuantity(String itemId){
+        return itemMapper.getInventoryQuantity(itemId);
+    }
+
+    public Item getItem(String itemId) {
         return itemMapper.getItem(itemId);
     }
 
+    public void updateInventoryQuantity(int increment,String itemId)
+    {
+        itemMapper.updateInventoryQuantity(increment,itemId);
+    }
 }
