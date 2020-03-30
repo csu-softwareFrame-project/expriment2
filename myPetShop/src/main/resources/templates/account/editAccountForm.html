@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<meta charset="UTF-8">
+<title>My Pet Store</title>
+</head>
+<body>
+<div th:replace="common/top">
+
+</div>
+
+<div id="templatemo_main" align="center">
+    <form  action="editAccount" method="post">
+
+        <h3>User Information</h3>
+
+        <label >User ID:</label>
+        <label>${sessionScope.account.username}</label>
+        <div class="cleaner h10"></div>
+        <script type="text/javascript" src="js/alogin.js"></script>
+        <label for="password">New password:</label><div class="cleaner h10"></div><input type="text" name="password" id="password" onblur="isPasswordNull();"/>
+        <label id="usernameMsg2"></label>
+        <div class="cleaner h10"></div>
+
+        <label for="repeatedPassword">Repeat password:</label><div class="cleaner h10"></div><input type="text" name="repeatedPassword" id="repeatedPassword" onblur="isPasswordTheSame();"/>
+        <label id="usernameMsg3"></label>
+        <div class="cleaner h10"></div>
+
+        <%@ include file="IncludeAccountFields.jsp"%>
+        <div class="admin5"><input type="submit" name="editAccountForm" value="Save Account Information" class="btn btn-block btn btn-success" id="submit"/></div>
+
+    </form>
+    <br>
+    <div><a href="myOrders"><font size="3">My Orders</font></a></div>
+</div>
+
+<div th:replace="account/includeAccountFields">
+
+</div>
+</body>
+</html>

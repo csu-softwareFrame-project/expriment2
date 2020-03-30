@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.csu.mypetstore.persistence.ItemMapper">
+
+    <resultMap id="itemMap" type="Item">
+        <result column="SUPPLIER" property="supplierId"></result>
+        <result column="ATTR1" property="attribute1"></result>
+        <result column="ATTR2" property="attribute2"></result>
+        <result column="ATTR3" property="attribute3"></result>
+        <result column="ATTR4" property="attribute4"></result>
+        <result column="ATTR5" property="attribute5"></result>
+    </resultMap>
+
+    <select id="getItemListByProduct" parameterType="string" resultMap="itemMap">
+        SELECT ITEMID, PRODUCTID, LISTPRICE, UNITCOST,
+        SUPPLIER, STATUS, ATTR1, ATTR2, ATTR3, ATTR4,
+        ATTR5
+        FROM ITEM
+        WHERE PRODUCTID=#{productId}
+    </select>
+
+    <select id="getItem" parameterType="string" resultMap="itemMap">
+        SELECT ITEMID, PRODUCTID, LISTPRICE, UNITCOST,
+        SUPPLIER, STATUS, ATTR1, ATTR2, ATTR3, ATTR4,
+        ATTR5
+        FROM ITEM
+        WHERE ITEMID=#{itemId}
+    </select>
+</mapper>
