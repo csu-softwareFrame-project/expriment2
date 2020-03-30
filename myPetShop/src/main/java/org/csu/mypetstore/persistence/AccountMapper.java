@@ -4,7 +4,7 @@ import org.csu.mypetstore.domain.Account;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AccountDAO {
+public interface AccountMapper {
 
     Account findByUsername(Account account);
 }
