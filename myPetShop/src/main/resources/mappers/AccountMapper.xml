@@ -5,7 +5,6 @@
     <select id="getPasswordByUsername" parameterType="string" resultType="string">
         SELECT password FROM signon WHERE username = #{username}
     </select>
-
     <select id="getAccountByUsername" parameterType="string" resultType="Account">
     SELECT
           SIGNON.USERNAME,
