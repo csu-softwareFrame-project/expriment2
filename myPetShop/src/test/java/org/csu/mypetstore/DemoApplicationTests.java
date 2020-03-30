@@ -218,4 +218,5 @@ class DemoApplicationTests {
         int nextId = orderService.getNextId("ordernum");
         System.out.println(nextId);
     }
+
 }
