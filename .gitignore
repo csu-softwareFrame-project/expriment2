@@ -10,3 +10,4 @@ target/
 # 忽略word生成的临时文件
 ~*
 # 忽略lib下生成文件
+myPetShop/src/main/resources/application.properties
