@@ -1,16 +1,16 @@
 package org.csu.mypetstore;
 
-import org.csu.mypetstore.domain.Account;
-import org.csu.mypetstore.domain.Category;
-import org.csu.mypetstore.domain.Item;
-import org.csu.mypetstore.domain.Product;
+import org.csu.mypetstore.domain.*;
 import org.csu.mypetstore.service.AccountService;
 import org.csu.mypetstore.service.CatalogService;
+import org.csu.mypetstore.service.OrderService;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 
@@ -22,6 +22,8 @@ class DemoApplicationTests {
     private AccountService accountService;
     @Autowired
     private CatalogService catalogService;
+    @Autowired
+    private OrderService orderService;
 
     @Test
     void contextLoads() {
@@ -152,5 +154,59 @@ class DemoApplicationTests {
         account.setBannerName("CATS");
 
         accountService.updateAccount(account);
+    }
+
+    @Test
+    void testOrderInsert()
+    {
+        Order order = new Order();
+        order.setShipCountry("China");
+        order.setShipZip("FJ");
+        order.setShipState("FZ");
+        order.setShipCity("FZYZ");
+        order.setShipAddress1("FZYZ");
+        order.setShipAddress2("CSU");
+        order.setShipToFirstName("Z");
+        order.setShipToLastName("J");
+        order.setTotalPrice(new BigDecimal("998"));
+        order.setUsername("hahaha");
+        order.setOrderDate(new Date());
+        order.setBillCountry("China");
+        order.setBillZip("FJ");
+        order.setBillState("FZ");
+        order.setBillCity("FZYZ");
+        order.setBillAddress1("FZYZ");
+        order.setBillAddress2("CSU");
+        order.setBillToFirstName("Z");
+        order.setBillToLastName("J");
+        order.setExpiryDate("unknown");
+        order.setCreditCard("IKEA");
+        order.setCardType("CSA");
+        order.setStatus("0");
+        order.setLocale("lalalal");
+        order.setCourier("Bob");
+        order.setOrderId(996);
+        orderService.insertOrder(order);
+    }
+
+    @Test
+    void testOrderGet()
+    {
+        Order order = orderService.getOrder(1001);
+        System.out.println(order.getExpiryDate());
+    }
+
+    @Test
+    void testOrderGetByUsername()
+    {
+        List<Order> orderList = orderService.getOrdersByUsername("hahaha");
+        System.out.println(orderList.size() + "," + orderList.get(0).getShipState());
+    }
+
+    @Test
+    void testNestIdGet()
+    {
+        int nextId = orderService.getNextId("ordernum");
+        System.out.println(nextId);
     }
 }
