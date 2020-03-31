@@ -22,6 +22,22 @@ public class CatalogService {
     @Autowired
     private ItemMapper itemMapper;
 
+    public Category getCategory(String categoryId){
+        return categoryMapper.getCategory(categoryId);
+    }
+
+    public List<Product> getProductListByCategory(String categoryId){
+        return productMapper.getProductListByCategory(categoryId);
+    }
+
+    public Product getProduct(String productId){
+        return productMapper.getProduct(productId);
+    }
+
+    public List<Item> getItemListByProductId(String productId){
+        return itemMapper.getItemListByProduct(productId);
+    }
+
     public List<Category> getCategoryList() {
         return categoryMapper.getCategoryList();
     }
