@@ -41,24 +41,7 @@ class DemoApplicationTests {
         List<Product> productList = catalogService.getProductListByCategory("DOGS");
         System.out.println(productList.size());
     }//success
-
-    @Test
-    void testProduct(){
-        Product product = catalogService.getProduct("FI-SW-01");
-        System.out.println(product.getCategoryId());
-    }//success
-
-    @Test
-    void testItemList(){
-        List<Item> itemList = catalogService.getItemListByProductId("FI-SW-01");
-        System.out.println(itemList.size());
-    }//success
-
-    @Test
-    void testItem(){
-        Item item = catalogService.getItem("EST-1");
-        System.out.println(item.getAttribute1());
-    }
+    
 
     @Test
     void testCategoryList()
