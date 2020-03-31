@@ -13,7 +13,7 @@
     <h2 th:text="${product.name}"></h2>
 
     <div>
-        <a th:href="'/catalog/viewCategory?categoryId='+${product.categoryId}" th:text="'Return to'+${product.categoryId}">Return to</a>
+        <a th:href="@{'/catalog/viewCategory?categoryId='+${product.categoryId}}" th:text="'Return to '+${product.categoryId}">Return to</a>
     </div>
     <br>
 
@@ -42,7 +42,7 @@
             </td>
             <td th:text="${#numbers.formatDecimal(item.listPrice,0,2)}"></td>
             <td>
-                <a class="Button" href="addCartToItem?workingItemId=${item.itemId}">Add to Cart</a>
+                <a class="Button" th:href="@{'/catalog/addCartToItem?workingItemId='+${item.itemId}}" th:text="'Add to Cart'">Add to Cart</a>
             </td>
         </tr>
     </table>

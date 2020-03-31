@@ -11,41 +11,46 @@
 <div id="templatemo_main">
 
     <div>
-        <a href="viewProduct?productId=${sessionScope.product.productId}">Return to ${sessionScope.product.productId}</a>
+        <a th:href="@{'/catalog/viewProduct?productId='+${product.productId}}" th:text="'Return to'+${product.productId}">Return to</a>
     </div>
     <br>
 
     <table id="table-4">
         <tr>
-            <td>${sessionScope.product.description}</td>
+            <td th:text="${product.description}">product.description</td>
         </tr>
         <tr>
-            <td><b> ${sessionScope.item.itemId} </b></td>
+            <td><b th:text="${item.itemId}"> item.itemId </b></td>
         </tr>
         <tr>
-            <td><b><font size="4"> ${sessionScope.item.attribute1}
-                ${sessionScope.item.attribute2} ${sessionScope.item.attribute3}
-                ${sessionScope.item.attribute4} ${sessionScope.item.attribute5}
-                ${sessionScope.product.name} </font></b></td>
+            <td>
+                <b><font size="4" th:if="${item.attribute1}!=null" th:text="${item.attribute1}+' '"></font></b>
+                <b><font size="4" th:if="${item.attribute2}!=null" th:text="${item.attribute2}+' '"></font></b>
+                <b><font size="4" th:if="${item.attribute3}!=null" th:text="${item.attribute3}+' '"></font></b>
+                <b><font size="4" th:if="${item.attribute4}!=null" th:text="${item.attribute4}+' '"></font></b>
+                <b><font size="4" th:if="${item.attribute5}!=null" th:text="${item.attribute5}+' '"></font></b>
+                <b><font size="4" th:if="${item.attribute1}!=null" th:text="${item.attribute1}+' '"></font></b>
+                <b><font size="4" th:if="${product.name}!=null" th:text="${product.name}+' '"></font></b>
+            </td>
         </tr>
         <tr>
             <td>${sessionScope.product.name}</td>
         </tr>
         <tr>
-            <td th:if="${item.quantity <= 0}">
+            <td th:if="${item.quantity<=0}">
                 Back ordered.
             </td>
-            <td th:if="${item.quantity > 0}">
+            <td th:if="${item.quantity>0}">
                 <p th:text="${item.quantity}"></p>in stock.
             </td>
         </tr>
         <tr>
-            <td th:text="${#numbers.formatDecimal(item.listPrice, 0, 2)}"></td>
+            <td th:text="${#numbers.formatDecimal(item.listPrice,0,2)}"></td>
         </tr>
 
         <tr>
             <td>
-                <a class="Button" href="addCartToItem?workingItemId=${item.itemId}"><i class="fa fa-shopping-cart"></i>	Add to Cart</a>
+                <a class="Button" th:href="@{'/catalog/addCartToItem?workingItemId='+${item.itemId}}"><i class="fa fa-shopping-cart"></i>	Add to Cart</a>
             </td>
         </tr>
     </table>

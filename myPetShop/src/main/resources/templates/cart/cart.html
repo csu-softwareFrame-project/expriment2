@@ -12,7 +12,7 @@
 
 
     <h2>Shopping Cart</h2>
-    <form action="updateCartQuantities" method="post">
+    <form action="/cart/updateCartQuantities" method="post">
         <table id="table-4">
             <tr>
                 <th><b>Item ID</b></th>
@@ -24,62 +24,50 @@
                 <th><b>Total Cost</b></th>
                 <th>&nbsp;</th>
             </tr>
-
-            <c:if test="${sessionScope.cart.numberOfItems == 0}">
-                <tr>
-                    <td colspan="8"><b>Your cart is empty.</b></td>
-                </tr>
-            </c:if>
-
-            <c:forEach var="cartItem" items="${sessionScope.cart.cartItems}">
-                <tr>
-                    <td>
-                        <a href="viewItem?itemId=${cartItem.item.itemId}">${cartItem.item.itemId}</a>
-                    </td>
-                    <td>
-                        ${cartItem.item.product.productId}
-                    </td>
-                    <td>
-                        ${cartItem.item.attribute1} ${cartItem.item.attribute2}
-                        ${cartItem.item.attribute3} ${cartItem.item.attribute4}
-                        ${cartItem.item.attribute5} ${cartItem.item.product.name}
-                    </td>
-                    <td>
-                        ${cartItem.inStock}
-                    </td>
-                    <td>
-                        <input type="text" name="${cartItem.item.itemId}" value="${cartItem.quantity}" id="${cartItem.item.itemId}" onblur="updateQuantity('${cartItem.item.itemId}','${sessionScope.account.username}')"/>
-                        <script type="text/javascript" src="js/update-quantity.js"></script>
-                    </td>
-                    <td id="listPrice"><fmt:formatNumber value="${cartItem.item.listPrice}"
-                                                         pattern="$#,##0.00" /></td>
-                    <td id="totalcost"><fmt:formatNumber value="${cartItem.total}"
-                                                         pattern="$#,##0.00" /></td>
-                    <td>
-                        <a href="removeItemFromCart?cartItemId=${cartItem.item.itemId}" class="Button">Remove</a>
-                    </td>
-
-                </tr>
-            </c:forEach>
-            <tr>
-                <td colspan="7">
-                    Sub Total: <fmt:formatNumber
-                        value="${sessionScope.cart.subTotal}" pattern="$#,##0.00" />
-
+            <tr th:if="${cart.numberOfItems}==0">
+                <td colspan="8"><b>Your cart is empty.</b></td>
+            </tr>
+            <tr th:each="cartItem:${cart.cartItems}">
+                <td>
+                    <a href="viewItem?itemId=${cartItem.item.itemId}">${cartItem.item.itemId}</a>
                 </td>
+                <td th:text="${cartItem.item.product.productId}">
+                    cartItem.item.product.productId
+                </td>
+                <td>
+                    <h th:if="${cartItem.item.attribute1}!=null" th:text="${cartItem.item.attribute1}+' '"></h>
+                    <h th:if="${cartItem.item.attribute2}!=null" th:text="${cartItem.item.attribute2}+' '"></h>
+                    <h th:if="${cartItem.item.attribute3}!=null" th:text="${cartItem.item.attribute3}+' '"></h>
+                    <h th:if="${cartItem.item.attribute4}!=null" th:text="${cartItem.item.attribute4}+' '"></h>
+                    <h th:if="${cartItem.item.attribute5}!=null" th:text="${cartItem.item.attribute5}+' '"></h>
+                    <h th:if="${product.name}!=null" th:text="${product.name}+' '"></h>
+                </td>
+                <td th:text="${cartItem.inStock}">
+                    cartItem.inStock
+                </td>
+                <td>
+                    <input type="text" th:name="${cartItem.item.itemId}" th:value="${cartItem.quantity}" th:id="${cartItem.item.itemId}" th:onblur="'updateQuantity('+${cartItem.item.itemId}+','+${account.username}+')'"/>
+                    <script type="text/javascript" src="js/update-quantity.js"></script>
+                </td>
+                <td id="listPrice" th:text="${#numbers.formatDecimal(cartItem.item.listPrice,0,2)}"></td>
+                <td id="totalcost" th:text="${#numbers.formatDecimal(cartItem.total,0,2)}"></td>
+                <td>
+                    <a th:href="'/cart/removeItemFromCart?cartItemId='+${cartItem.item.itemId}" class="Button" th:text="'Remove'">Remove</a>
+                </td>
+
+            </tr>
+            <tr>
+                <td colspan="7" th:text="'Sub Total: '+${#numbers.formatDecimal(cart.subTotal,0,2)}"></td>
                 <td>&nbsp;</td>
             </tr>
         </table>
     </form>
 
-    <c:if test="${sessionScope.cart.numberOfItems > 0}">
-        <br>
-        <div>
-            <font size="3px"><a href="viewNewOrder" class="fa fa-shopping-cart">&nbsp&nbspProceed to Checkout</a></font>
-        </div>
-    </c:if>
-
-
+    <p th:if="${cart.numberOfItems}>0">
+    <div>
+        <font size="3px"><a href="viewNewOrder" class="fa fa-shopping-cart">&nbsp&nbspProceed to Checkout</a></font>
+    </div>
+    </p>
 
 
     <div id="Separator">&nbsp;</div>

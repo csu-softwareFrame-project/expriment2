@@ -10,7 +10,7 @@
 
 <div id="templatemo_main">
     <div>
-        <a href="main">Return to Main Menu</a>
+        <a href="/catalog/view">Return to Main Menu</a>
     </div>
     <br>
 
@@ -22,12 +22,12 @@
         </tr>
         <tr th:each="product:${productList}">
             <td>
-                <a href="/viewProduct?productId=${product.productId}" th:text="${product.description}">description</a>
+                <a th:href="@{'/catalog/viewProduct?productId='+${product.productId}}" th:text="${product.description}">description</a>
             </td>
             <td>
-                <b><a href="viewProduct?productId=${product.productId}"><font color="BLACK" th:text="${product.productId}"> productId </font></a></b>
+                <b><a th:href="@{'/catalog/viewProduct?productId='+${product.productId}}"><font color="BLACK" th:text="${product.productId}"> productId </font></a></b>
             </td>
-            <td>${product.name}</td>
+            <td th:text="${product.name}">product.name</td>
         </tr>
 
     </table>
