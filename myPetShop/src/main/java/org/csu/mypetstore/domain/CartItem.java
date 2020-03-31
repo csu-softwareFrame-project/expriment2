@@ -54,4 +54,5 @@ public class CartItem implements Serializable {
             total = null;
         }
     }
+
 }
