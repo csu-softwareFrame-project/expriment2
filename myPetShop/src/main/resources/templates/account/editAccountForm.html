@@ -9,12 +9,12 @@
 </div>
 
 <div id="templatemo_main" align="center">
-    <form  action="editAccount" method="post">
+    <form  action="/account/editAccount" method="post">
 
         <h3>User Information</h3>
 
         <label >User ID:</label>
-        <label>${sessionScope.account.username}</label>
+        <label th:text="${session.account.username}"></label>
         <div class="cleaner h10"></div>
         <script type="text/javascript" src="js/alogin.js"></script>
         <label for="password">New password:</label><div class="cleaner h10"></div><input type="text" name="password" id="password" onblur="isPasswordNull();"/>
@@ -25,12 +25,15 @@
         <label id="usernameMsg3"></label>
         <div class="cleaner h10"></div>
 
-        <%@ include file="IncludeAccountFields.jsp"%>
+        <div th:replace="common/top">
+
+        </div>
+
         <div class="admin5"><input type="submit" name="editAccountForm" value="Save Account Information" class="btn btn-block btn btn-success" id="submit"/></div>
 
     </form>
     <br>
-    <div><a href="myOrders"><font size="3">My Orders</font></a></div>
+    <div><a href="/account/myOrders"><font size="3" th:text="'My Orders'">My Orders</font></a></div>
 </div>
 
 <div th:replace="account/includeAccountFields">

@@ -201,47 +201,42 @@
         <div id="templatemo_menu" class="ddsmoothmenu">
             <ul>
                 <li><a href="main" class="selected">Home</a></li>
-                <c:if test="${sessionScope.account == null}">
-                    <li><a href="signon">Sign In</a></li>
-                </c:if>
-                <c:if test="${sessionScope.account != null}">
-                    <li> <a href="editAccountForm">Account</a>
-                        <ul>
-                            <li><span class="top"></span><span class="bottom"></span></li>
-                            <li><a href="editAccountForm">account</a></li>
-                            <li><a href="myOrders">orders</a></li>
-                            <li><a href="signOut">sign out</a></li>
-                        </ul>
-                    </li>
-                </c:if>
+                <li th:if="${session.account}==null"><a href="signon">Sign In</a></li>
+                <li th:if="${session.account}!=null"> <a href="editAccountForm">Account</a>
+                    <ul>
+                        <li><span class="top"></span><span class="bottom"></span></li>
+                        <li><a href="editAccountForm">account</a></li>
+                        <li><a href="myOrders">orders</a></li>
+                        <li><a href="signOut">sign out</a></li>
+                    </ul>
+                </li>
 
                 <li><a href="main">Pet</a>
                     <ul>
                         <li><span class="top"></span><span class="bottom"></span></li>
-                        <li><a href="viewCategory?categoryId=FISH">fish</a></li>
-                        <li><a href="viewCategory?categoryId=DOGS">dogs</a></li>
-                        <li><a href="viewCategory?categoryId=REPTILES">reptiles</a></li>
-                        <li><a href="viewCategory?categoryId=CATS">cats</a></li>
-                        <li><a href="viewCategory?categoryId=BIRDS">birds</a></li>
+                        <li><a href="/catalog/viewCategory?categoryId=FISH">fish</a></li>
+                        <li><a href="/catalog/viewCategory?categoryId=DOGS">dogs</a></li>
+                        <li><a href="/catalog/viewCategory?categoryId=REPTILES">reptiles</a></li>
+                        <li><a href="/catalog/viewCategory?categoryId=CATS">cats</a></li>
+                        <li><a href="/catalog/viewCategory?categoryId=BIRDS">birds</a></li>
                     </ul>
                 </li>
-                <li><a href="help.html">help</a></li>
+                <li><a href="/help.html">help</a></li>
                 <li><a href="viewCart"><img align="middle" name="img_cart" src="../images/cart.gif" /></a></li>
             </ul>
             <br style="clear: left" />
         </div> <!-- end of templatemo_menu -->
         <div>
             <form action="search" method="post">
-                <div class="row">
+                <div class="column-header">
                     <div class="col-xs-3">
                         <input type="search" name="keyword" size="30" id="tags" />
                     </div>
-                    <br/>
                     <div class="col-xs-3">
-                        <div class="admin5"><button type="submit" name="searchProducts"  value="Search" class="btn btn-block btn-sm btn-success"><font size="2">S&nbsp;E&nbsp;A&nbsp;R&nbsp;C&nbsp;H</font></i></button></div>
+                        <div class="admin5"><button type="submit" name="searchProducts"  value="Search" class="btn btn-block btn-sm btn-success"><font size="1">s&nbsp;e&nbsp;a&nbsp;r&nbsp;c&nbsp;h</font></button></div>
                     </div>
+                    <br/>
                 </div>
-
             </form>
         </div>
         <div class="cleaner"></div>
