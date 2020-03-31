@@ -80,3 +80,4 @@ public class Cart implements Serializable {
         }
         return subTotal;
     }
+}
