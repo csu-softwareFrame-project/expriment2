@@ -82,7 +82,7 @@ class DemoApplicationTests {
     void testItem()
     {
         Item item = catalogService.getItem("EST-10");
-        System.out.println(item.getUnitCost() + "," + item.getListPrice() + "," + item.getAttribute1());
+        System.out.println(item.getProduct().getProductId() + "," + item.getListPrice() + "," + item.getAttribute1());
     }
 
     @Test

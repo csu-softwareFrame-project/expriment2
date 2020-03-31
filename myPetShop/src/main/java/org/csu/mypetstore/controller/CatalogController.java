@@ -48,4 +48,15 @@ public class CatalogController {
         }
         return "";
     }
+
+    @GetMapping("/viewItem")
+    public String viewItem(String itemId, Model model){
+        if (itemId != null){
+            System.out.println("a");
+            Item item = catalogService.getItem(itemId);
+            model.addAttribute("item", item);
+            return "catalog/item.html";
+        }
+        return "";
+    }
 }
