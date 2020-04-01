@@ -4,7 +4,7 @@
 <title>My Pet Store</title>
 </head>
 <body>
-<!--<div th:replace="account/includeAccountFields">-->
+<div th:replace="common/top">
 
 </div>
 
@@ -22,13 +22,13 @@
 
                     <div class="form-group">
                         <input type="password" class="form-control" name="password" id="password"  placeholder="Password"/>
-                        <i><img class="eyes" id="eyes" src="images/eye2.png" onclick="change()" width="20" height="20"></i>
+                        <i><img class="eyes" id="eyes" src="../images/eye2.png" onclick="change()" width="20" height="20"></i>
                     </div>
 
                     <div class="form-group">
-                        <input type="text" name="verifyCode" autocomplete="Off" class="form-control" placeholder="VerifyCode"/><br />
+                        <input type="text" id="verifyCode" name="verifyCode" autocomplete="Off" class="form-control" placeholder="VerifyCode"/><br/>
                         <i class="fa fa-check-circle"></i>
-                        <img src="verifyCode" id="btn" onclick="verify()"><br/>
+                        <img src="/useraccess/verifyCode" id="btn" onclick="verify()"><br/>
                         <p style="color: red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
                     </div>
 

@@ -1,17 +1,9 @@
-// function ajaxlogin() {
-//     $.ajax({
-//         type: "POST",
-//         dateType: "json",
-//         url: "signIn",
-//         date: $('#form1').serialize(),
-//         success: function (result) {
-//             if(result.resultCode == 200){
-//                 alert("success");
-//             }
-//             ;
-//         },
-//         error: function () {
-//             alert("error")
-//         }
-//     })
+// function averify() {
+//     var input = document.getElementById("verifyCode")
+//     var result = document.getElementById("verifyResult")
+//     result.innerText = aaa;
+//     getWord();
+//     function getWord(){
+//         result.innerText = "aaaa";
+//     }
 // }
