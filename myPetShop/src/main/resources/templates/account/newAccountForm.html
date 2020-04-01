@@ -9,21 +9,51 @@
 </div>
 
 <div id="templatemo_main" align="center">
-    <form  method="post" action="/account/newAccount">
+    <form  method="post" action="/useraccess/signUp">
         <h3>User Information</h3>
 
-        <label for="username">User ID:</label><br>
+<!--        <table>-->
+<!--            <tr>-->
+<!--                <th>-->
+<!--                    <label for="username">User ID:</label>-->
+<!--                    <script type="text/javascript" src="js/alogin.js"></script>-->
+<!--                </th>-->
+<!--                <th>-->
+<!--                    <input type="text" name="username" size="30" id="username" onblur="usernameIsExist();"/>-->
+<!--                </th>-->
+<!--                <th>-->
+<!--                    <div id="usernameMsg" th:text="${msg}"></div>-->
+<!--                    <div class="cleaner h10"></div>-->
+<!--                    <script type="text/javascript" src="js/alogin.js"></script>-->
+<!--                </th>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td>-->
+<!--                    <label for="password">New password:</label>-->
+<!--                </td>-->
+<!--                <td>-->
+<!--                    <input type="text" name="password" id="password" size="30" onblur="isPasswordNull();"/>-->
+<!--                </td>-->
+<!--                <td>-->
+<!--                    <label id="usernameMsg2"></label>-->
+<!--                    <div class="cleaner h10"></div>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--        </table>-->
+
+        <label for="username">User ID:</label>
         <script type="text/javascript" src="js/alogin.js"></script>
-        <input type="text" name="username" id="username" th:value="${session.userInfo.username}" onblur="usernameIsExist();"/>
-        <div id="usernameMsg" th:text="${session.msg2}"></div>
+<!--        <input type="text" name="username" id="username" th:value="${session.userInfo.username}" onblur="usernameIsExist();"/>-->
+        <input type="text" name="username" size="30" id="username" onblur="usernameIsExist();"/>
+        <div id="usernameMsg" th:text="${msg}"></div>
         <div class="cleaner h10"></div>
         <script type="text/javascript" src="js/alogin.js"></script>
-        <label for="password">New password:</label><div class="cleaner h10"></div><input type="text" name="password" id="password" onblur="isPasswordNull();"/>
+        <label for="password">New password:</label><!--div class="cleaner h10"></div>--><input type="text" name="password" id="password" size="30" onblur="isPasswordNull();"/>
         <label id="usernameMsg2"></label>
         <div class="cleaner h10"></div>
 
-        <label for="repeatedPassword">Repeat password:</label><div class="cleaner h10"></div><input type="text" name="repeatedPassword" id="repeatedPassword" onblur="isPasswordTheSame();"/>
-        <label id="usernameMsg3">${session.msg1}</label>
+        <label for="repeatedPassword">Repeat password:</label><!--div class="cleaner h10"></div>--><input type="text" name="repeatedPassword" id="repeatedPassword" size="30" onblur="isPasswordTheSame();"/>
+        <label id="usernameMsg3">[[${session.msg1}]]</label>
         <div class="cleaner h10"></div>
 
 
@@ -32,35 +62,67 @@
         <h3>Account Information</h3>
 
 
-        <label for="firstName">First name:<br><input type="text" name="account.firstName" th:value="${session.userInfo.firstName}" class="required input_field" id="firstName"/></label>
+<!--        <label for="firstName">First name:<br><input type="text" name="account.firstName" th:value="${session.userInfo.firstName}" class="required input_field" id="firstName"/></label>-->
+<!--        <br>-->
+
+<!--        <label for="lastName">Last name:<br><input type="text" name="account.lastName" th:value="${session.userInfo.lastName}" class="required input_field" id="lastName"/></label>-->
+<!--        <br>-->
+
+<!--        <label for="email">Email:<br><input type="text" size="40" name="account.email" th:value="${session.userInfo.email}" class="required input_field" id="email"/></label>-->
+<!--        <br>-->
+
+<!--        <label for="phone">Phone:<br><input type="text" name="account.phone" th:value="${session.userInfo.phone}" class="required input_field" id="phone"/></label>-->
+<!--        <br>-->
+
+<!--        <label for="address1">Address 1:<br><input type="text" size="40" name="account.address1" th:value="${session.userInfo.address1}" class="required input_field" id="address1"/></label>-->
+<!--        <br>-->
+
+<!--        <label for="address2">Address 2:<br><input type="text" size="40" name="account.address2" th:value="${session.userInfo.address2}"class="required input_field" id="address2"/></label>-->
+<!--        <br>-->
+
+<!--        <label for="city">City:<br><input type="text" name="account.city" th:value="${session.userInfo.city}"class="required input_field" id="city"/></label>-->
+<!--        <br>-->
+
+<!--        <label for="state">State:<br><input type="text" size="4" name="account.state" th:value="${session.userInfo.state}"class="required input_field" id="state"/></label>-->
+<!--        <br>-->
+
+<!--        <label for="zip">Zip:<br><input type="text" size="10" name="account.zip" th:value="${session.userInfo.zip}"class="required input_field" id="zip"/></label>-->
+<!--        <br>-->
+
+<!--        <label for="country">Country:<br><input type="text" size="15" name="account.country" th:value="${session.userInfo.country}"class="required input_field" id="country"/></label>-->
+<!--        <br>-->
+
+        <label for="firstName">First name:<input type="text" size="30" name="account.firstName"  class="required input_field" id="firstName"/></label>
         <br>
 
-        <label for="lastName">Last name:<br><input type="text" name="account.lastName" th:value="${session.userInfo.lastName}" class="required input_field" id="lastName"/></label>
+        <label for="lastName">Last name:<input type="text" size="30" name="account.lastName"  class="required input_field" id="lastName"/></label>
         <br>
 
-        <label for="email">Email:<br><input type="text" size="40" name="account.email" th:value="${session.userInfo.email}" class="required input_field" id="email"/></label>
+        <label for="email">Email:<input type="text" size="30" name="account.email"  class="required input_field" id="email"/></label>
         <br>
 
-        <label for="phone">Phone:<br><input type="text" name="account.phone" th:value="${session.userInfo.phone}" class="required input_field" id="phone"/></label>
+        <label for="phone">Phone:<input type="text" size="30" name="account.phone"  class="required input_field" id="phone"/></label>
         <br>
 
-        <label for="address1">Address 1:<br><input type="text" size="40" name="account.address1" th:value="${session.userInfo.address1}" class="required input_field" id="address1"/></label>
+        <label for="address1">Address 1:<input type="text" size="30" name="account.address1"  class="required input_field" id="address1"/></label>
         <br>
 
-        <label for="address2">Address 2:<br><input type="text" size="40" name="account.address2" th:value="${session.userInfo.address2}"class="required input_field" id="address2"/></label>
+        <label for="address2">Address 2:<input type="text" size="30" name="account.address2" class="required input_field" id="address2"/></label>
         <br>
 
-        <label for="city">City:<br><input type="text" name="account.city" th:value="${session.userInfo.city}"class="required input_field" id="city"/></label>
+        <label for="city">City:<input type="text" size="30" name="account.city" class="required input_field" id="city"/></label>
         <br>
 
-        <label for="state">State:<br><input type="text" size="4" name="account.state" th:value="${session.userInfo.state}"class="required input_field" id="state"/></label>
+        <label for="state">State:<input type="text" size="30" name="account.state" class="required input_field" id="state"/></label>
         <br>
 
-        <label for="zip">Zip:<br><input type="text" size="10" name="account.zip" th:value="${session.userInfo.zip}"class="required input_field" id="zip"/></label>
+        <label for="zip">Zip:<input type="text" size="30"name="account.zip" class="required input_field" id="zip"/></label>
         <br>
 
-        <label for="country">Country:<br><input type="text" size="15" name="account.country" th:value="${session.userInfo.country}"class="required input_field" id="country"/></label>
+        <label for="country">Country:<input type="text" size="30" name="account.country" class="required input_field" id="country"/></label>
         <br>
+
+
 
         <h3>Profile Information</h3>
         <script type="text/javascript" src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
@@ -81,6 +143,10 @@
         </label>
         <div class="cleaner h10"></div>
 
+<!--        <label>Enable MyList &nbsp;<input type="checkbox" id="listOption" name="listOption" th:value="listOption" /></label>-->
+<!--        <div class="cleaner h10"></div>-->
+
+<!--        <label>Enable MyBanner &nbsp;<input type="checkbox" id="bannerOption" name="bannerOption" th:value="bannerOption" /></label>-->
         <label>Enable MyList &nbsp;<input type="checkbox" id="listOption" name="listOption" th:value="listOption" /></label>
         <div class="cleaner h10"></div>
 
@@ -122,8 +188,8 @@
 
 
         <div class="cleaner h10"></div>
-        <div class="admin5"><input type="submit" name="newAccount" th:value="Register now!" class="btn btn-block btn-sm btn-success"></div>
-
+<!--        <div class="admin5"><input type="submit" name="newAccount" th:value="Register now!" class="btn btn-block btn-sm btn-success"></div>-->
+        <div class="admin5"><input type="submit" name="newAccount" value="Register now!" class="btn btn-block btn-sm btn-success"></div>
 
 
     </form>

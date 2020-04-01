@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+
+//登录页相关
 @Controller
 @RequestMapping("/useraccess")
 @SessionAttributes(value = {"loginUser"})
@@ -17,12 +19,14 @@ public class UserAccessController {
     @Autowired
     AccountService accountService;
 
+    //登录页面映射
     @RequestMapping("")
     public String viewLogIn(){
         return "account/signonForm";
     }
 
-    @PostMapping("login")
+    //登录验证
+    @PostMapping("/login")
     public String logIn(String username, String password, Map<String,Object> map, Model model){
         int result = accountService.isPasswordCorrect(username,password);
         switch (result){
@@ -47,5 +51,14 @@ public class UserAccessController {
                 return "account/signonForm";
             }
         }
+    }
+
+    //注册页面映射
+    @GetMapping("/viewSignup")
+    public String viewSignUp(){ return "account/newAccountForm"; }
+
+    @PostMapping("/signUp")
+    public String signUp(){
+        return "catalog/main";
     }
 }
