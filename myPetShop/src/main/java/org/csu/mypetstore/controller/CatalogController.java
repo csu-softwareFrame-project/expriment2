@@ -12,17 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
+
+//目录相关
 @Controller
 @RequestMapping("/catalog")
 public class CatalogController {
 
     @Autowired
     private CatalogService catalogService;
-
-    @GetMapping("/view")
-    public String view(){
-        return "catalog/main.html";
-    }
 
     @GetMapping("/viewCategory")
     public String viewCategory(String categoryId, Model model){
@@ -31,7 +28,7 @@ public class CatalogController {
             List<Product> productList = catalogService.getProductListByCategory(categoryId);
             model.addAttribute("category", category);
             model.addAttribute("productList", productList);
-            return "catalog/category.html";
+            return "catalog/category";
         }
         return "";
     }
@@ -44,7 +41,7 @@ public class CatalogController {
             List<Item> itemList = catalogService.getItemListByProductId(productId);
             model.addAttribute("product", product);
             model.addAttribute("itemList", itemList);
-            return "catalog/product.html";
+            return "catalog/product";
         }
         return "";
     }
@@ -55,7 +52,7 @@ public class CatalogController {
             System.out.println("a");
             Item item = catalogService.getItem(itemId);
             model.addAttribute("item", item);
-            return "catalog/item.html";
+            return "catalog/item";
         }
         return "";
     }

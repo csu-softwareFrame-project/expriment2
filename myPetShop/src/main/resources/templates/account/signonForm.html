@@ -16,19 +16,19 @@
                     <span class="heading">Login</span>
 
                     <div class="form-group">
-                        <input type="text" name="username" autocomplete="Off" placeholder="Username" class="form-control" value="用户名默认值">
+                        <input type="text" name="username" autocomplete="Off" placeholder="Username" class="form-control">
                         <i class="fa fa-user"></i>
                     </div>
 
                     <div class="form-group">
-                        <input type="password" class="form-control" name="password" id="password"  placeholder="Password" value="用户名密码"/>
+                        <input type="password" class="form-control" name="password" id="password"  placeholder="Password"/>
                         <i><img class="eyes" id="eyes" src="images/eye2.png" onclick="change()" width="20" height="20"></i>
                     </div>
 
                     <div class="form-group">
                         <input type="text" name="verifyCode" autocomplete="Off" class="form-control" placeholder="VerifyCode"/><br />
                         <i class="fa fa-check-circle"></i>
-                        <img src="verifyCode" id="btn" onclick="verify()"><br />
+                        <img src="verifyCode" id="btn" onclick="verify()"><br/>
                         <p style="color: red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
                     </div>
 
@@ -43,7 +43,7 @@
                     </div>
                     <div class="form-group">
                         Need a user name and password?
-                        <a href="newAccountForm">Register Now!</a>
+                        <a href="/useraccess/viewSignup">Register Now!</a>
                     </div>
                 </form>
             </div>
