@@ -3,11 +3,17 @@ package org.csu.mypetstore.controller;
 import org.csu.mypetstore.Constants;
 import org.csu.mypetstore.domain.Account;
 import org.csu.mypetstore.service.AccountService;
+import org.csu.mypetstore.service.VerifyCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Map;
 
 
@@ -23,6 +29,23 @@ public class UserAccessController {
     @RequestMapping("")
     public String viewLogIn(){
         return "account/signonForm";
+    }
+
+    @GetMapping("/verifyCode")
+    public String getVerifyCode(Model model, HttpServletResponse response) throws ServletException, IOException
+
+    {
+        VerifyCodeService vc = new VerifyCodeService();
+        //获取图片对象
+        BufferedImage bi = vc.getImage();
+        //获得图片的文本内容
+        String text = vc.getText();
+        // 将系统生成的文本内容保存到session中
+        model.addAttribute("text", text);
+        //向浏览器输出图片
+        vc.output(bi, response.getOutputStream());
+        System.out.println(vc.getText());
+        return "";
     }
 
     //登录验证
