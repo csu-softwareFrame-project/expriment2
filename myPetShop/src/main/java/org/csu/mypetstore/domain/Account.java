@@ -170,4 +170,9 @@ public class Account implements Serializable {
         this.bannerName = bannerName;
     }
 
+    @Override
+    public String toString(){
+        return username+" "+password+" "+email;
+    }
+
 }

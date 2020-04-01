@@ -201,7 +201,7 @@
         <div id="templatemo_menu" class="ddsmoothmenu">
             <ul>
                 <li><a href="main" class="selected">Home</a></li>
-                <li th:if="${session.account}==null"><a href="signon">Sign In</a></li>
+                <li th:if="${session.account}==null"><a href="/useraccess">Sign In</a></li>
                 <li th:if="${session.account}!=null"> <a href="editAccountForm">Account</a>
                     <ul>
                         <li><span class="top"></span><span class="bottom"></span></li>

@@ -4,7 +4,7 @@
 <title>My Pet Store</title>
 </head>
 <body>
-<div th:replace="account/includeAccountFields">
+<!--<div th:replace="account/includeAccountFields">-->
 
 </div>
 
@@ -12,22 +12,26 @@
     <div class="container">
         <div class="row">
             <div class="col-md-offset-3 col-md-6">
-                <form class="form-horizontal" action="/account/signIn" method="post" >
+                <form class="form-horizontal" action="/useraccess/login" method="post" >
                     <span class="heading">Login</span>
+
                     <div class="form-group">
-                        <input type="text" name="username" autocomplete="Off" placeholder="Username" class="form-control" value="${sessionScope.username}">
+                        <input type="text" name="username" autocomplete="Off" placeholder="Username" class="form-control" value="用户名默认值">
                         <i class="fa fa-user"></i>
                     </div>
+
                     <div class="form-group">
-                        <input type="password" class="form-control" name="password" id="password"  placeholder="Password" value="${sessionScope.password}"/>
+                        <input type="password" class="form-control" name="password" id="password"  placeholder="Password" value="用户名密码"/>
                         <i><img class="eyes" id="eyes" src="images/eye2.png" onclick="change()" width="20" height="20"></i>
                     </div>
+
                     <div class="form-group">
                         <input type="text" name="verifyCode" autocomplete="Off" class="form-control" placeholder="VerifyCode"/><br />
                         <i class="fa fa-check-circle"></i>
                         <img src="verifyCode" id="btn" onclick="verify()"><br />
-                        <font color="red">${sessionScope.imgMsg}</font>
+                        <p style="color: red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
                     </div>
+
                     <div class="form-group">
                         <div class="main-checkbox">
                             <input type="checkbox" value="None" id="checkbox1" name="check"/>
