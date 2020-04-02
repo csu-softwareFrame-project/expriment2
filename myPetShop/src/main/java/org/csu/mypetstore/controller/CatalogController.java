@@ -19,8 +19,6 @@ import java.util.Map;
  * @Date:2020.4.1
  */
 
-
-//目录相关
 @Controller
 @RequestMapping("/catalog")
 public class CatalogController {
@@ -34,7 +32,8 @@ public class CatalogController {
         //如果有选定宠物类型，展示该类型的菜单；否则展示宠物类型菜单
         if (catalogService.viewCategoryService(categoryId,model)){
             return "catalog/category";
-        }else{            return "catalog/category";
+        }else{
+            return "catalog/category";
         }
     }
 

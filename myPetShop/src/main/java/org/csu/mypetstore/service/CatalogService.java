@@ -35,7 +35,6 @@ public class CatalogService {
         return productMapper.getProduct(productId);
     }  //根据商品id获取商品
 
-
     public List<Category> getCategoryList() {
         return categoryMapper.getCategoryList();
     }  //获取所有类型
@@ -47,6 +46,7 @@ public class CatalogService {
     public List<Item> getItemListByProduct(String productId) {
         return itemMapper.getItemListByProduct(productId);
     }  //根据商品id获取该商品下的所有产品
+
     public int getInventoryQuantity(String itemId){
         return itemMapper.getInventoryQuantity(itemId);
     }  //获取产品库存

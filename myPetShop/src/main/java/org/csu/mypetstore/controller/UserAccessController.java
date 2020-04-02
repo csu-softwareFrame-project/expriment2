@@ -34,36 +34,20 @@ public class UserAccessController {
         return "account/signonForm";
     }
 
-
-    //登录验证
+    //登录验证跳转
     @PostMapping("/login")
     public String logIn(String username, String password, String checkCode, Map<String,Object> map, Model model, HttpSession session){
-        int result = accountService.isPasswordCorrect(username,password);
         System.out.println(checkCode);//从用户处获取验证码
         System.out.println(session.getAttribute("checkCode"));//从服务器获取正确验证码
-        switch (result){
-            case 0:{
-                if(Constants.DEBUG_MODE&&Constants.DEBUG_CONTROLLER)System.out.println("用户名不存在");
-                map.put("msg","用户名不存在");
-                return "account/signonForm";
-            }
-            case 1:{
-                if(Constants.DEBUG_MODE&&Constants.DEBUG_CONTROLLER)System.out.println("用户名或密码错误");
-                map.put("msg","用户名或密码错误");
-                return "account/signonForm";
-            }
-            case 2:{
-                if(Constants.DEBUG_MODE&&Constants.DEBUG_CONTROLLER)System.out.println("登录成功");
-                Account account = accountService.getAccount(username);
-                model.addAttribute("loginUser",account);//登录成功把用户信息放进session
-                return "catalog/main";
-            } default:{
-                if(Constants.DEBUG_MODE&&Constants.DEBUG_CONTROLLER)System.out.println("未知错误");
-                map.put("msg","未知错误");
-                return "account/signonForm";
-            }
+        if(accountService.userAccessService(username, password, map, model)){
+            System.out.println("登录成功");
+            return "catalog/main";
+        }else {
+            System.out.println("登录失败");
+            return "account/signonForm";
         }
     }
+
 
     //进入注册页面
     @GetMapping("/view_sign_up")
