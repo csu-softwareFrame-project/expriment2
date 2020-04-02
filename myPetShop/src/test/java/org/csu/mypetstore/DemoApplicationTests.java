@@ -55,13 +55,6 @@ class DemoApplicationTests {
     }//success
     
 
-    @Test
-    void testCategoryList()
-    {
-        List<Category> categoryList = catalogService.getCategoryList();
-        System.out.println(categoryList.size());
-    }
-
 
     @Test
     void testCategoryList()
@@ -258,39 +251,4 @@ class DemoApplicationTests {
         cartService.insertCartItem("233",cartItem);
     }
 
-    @Test
-    void testCartItemQuantityUpdate()
-    {
-        cartService.updateCartItemQuantity("233","EST-1",6);
-    }
-
-    @Test
-    void testCartItemRemove()
-    {
-        cartService.removeCartItem("233","EST-10");
-    }
-
-    @Test
-    void testCartItemClear()
-    {
-        cartService.clear("a");
-    }
-
-    @Test
-    void testCartItemQuantityUpdate()
-    {
-        cartService.updateCartItemQuantity("233","EST-1",6);
-    }
-
-    @Test
-    void testCartItemRemove()
-    {
-        cartService.removeCartItem("233","EST-10");
-    }
-
-    @Test
-    void testCartItemClear()
-    {
-        cartService.clear("a");
-    }
 }
