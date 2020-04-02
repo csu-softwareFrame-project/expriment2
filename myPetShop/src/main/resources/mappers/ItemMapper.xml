@@ -17,9 +17,11 @@
       ATTR2 AS attribute2,
       ATTR3 AS attribute3,
       ATTR4 AS attribute4,
-      ATTR5 AS attribute5
-    FROM ITEM I, PRODUCT P
+      ATTR5 AS attribute5,
+      QTY AS quantity
+    FROM ITEM I, PRODUCT P,INVENTORY Y
     WHERE P.PRODUCTID = I.PRODUCTID
+    AND Y.ITEMID = I.ITEMID
     AND I.PRODUCTID = #{value}
   </select>
 

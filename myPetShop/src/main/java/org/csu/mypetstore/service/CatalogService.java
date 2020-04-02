@@ -44,7 +44,12 @@ public class CatalogService {
     }
 
     public List<Item> getItemListByProduct(String productId) {
-        return itemMapper.getItemListByProduct(productId);
+        List<Item> itemList = itemMapper.getItemListByProduct(productId);
+        for(int i=0;i<itemList.size();i++)
+        {
+            itemList.get(i).setProductId(itemList.get(i).getProduct().getProductId());
+        }
+        return itemList;
     }  //根据商品id获取该商品下的所有产品
 
     public int getInventoryQuantity(String itemId){
@@ -62,10 +67,4 @@ public class CatalogService {
     {
         itemMapper.updateInventoryQuantity(increment,itemId);
     }
-
-    public List<Item> getItemListByProductId(String productId){
-        return itemMapper.getItemListByProduct(productId);
-    }
-
-
 }

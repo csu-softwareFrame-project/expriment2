@@ -34,93 +34,91 @@ class DemoApplicationTests {
     }
 
     @Test
-    void testCategory(){
+    void testCategory(){  //测试通过
         Category c = catalogService.getCategory("CATS");
         System.out.println(c.getName()+" :"+c.getDescription()+";\n id: "+c.getCategoryId()+", ");
     }//success
 
     @Test
-    void testProductList(){
+    void testProductList(){  //测试通过
         List<Product> productList = catalogService.getProductListByCategory("DOGS");
         System.out.println(productList.size());
     }//success
 
 
     @Test
-    void testCategoryList()
+    void testCategoryList()  //测试通过
     {
         List<Category> categoryList = catalogService.getCategoryList();
         System.out.println(categoryList.size());
     }
 
     @Test
-    void testProduct()
+    void testProduct()  //测试通过
     {
         Product product = catalogService.getProduct("FI-SW-01");
-        System.out.println(product.getDescription() + "," + product.getCategoryId());
+        System.out.println(product.getProductId());
     }
 
     @Test
-    void testSearchProductList()
+    void testSearchProductList()  //测试通过
     {
         List<Product> productList = catalogService.searchProductList("a");
         System.out.println(productList.size());
     }
 
     @Test
-    void testItemList()
+    void testItemList()  //测试通过
     {
         List<Item> itemList = catalogService.getItemListByProduct("RP-SN-01");
         System.out.println(itemList.size());
     }
 
     @Test
-    void testItemQuantity()
+    void testItemQuantity()  //测试通过
     {
         int quantity = catalogService.getInventoryQuantity("EST-10");
         System.out.println(quantity);
     }
 
     @Test
-    void testItem()
+    void testItem()  //测试通过
     {
         Item item = catalogService.getItem("EST-10");
-        System.out.println(item.getProductId());    }
+    }
 
     @Test
     void testUpdateQuantity()
     {
         catalogService.updateInventoryQuantity(20,"EST-10");
-    }
+    }  //测试通过
 
     @Test
-    void testAccountByUsername()
+    void testAccountByUsername()  //测试通过
     {
-        Account account = accountService.getAccount("99");
-        System.out.println(account.getUsername() + "," + account.getLanguagePreference() + "," + account.getBannerName());
-        System.out.println(account.isListOption());
+        Account account = accountService.getAccount("233");
     }
 
     @Test
-    void testAccountByUsernameAndPassword()
+    void testAccountByUsernameAndPassword()  //测试通过
     {
         Account account = accountService.getAccount("233","123");
-        System.out.println(account.getLanguagePreference());
+
     }
 
     @Test
-    void testAccountInsert()
+    void testAccountInsert()  //测试通过
     {
         Account account = new Account();
-        account.setUsername("99");
+        account.setUsername("667");
         account.setPassword("abaaba");
         account.setLanguagePreference("English");
         account.setEmail("777");
         account.setFirstName("Z");
         account.setLastName("J");
         account.setStatus("55");
-        account.setBannerOption(true);
-        account.setListOption(false);
+        account.setBannerOption("1");
+        account.setListOption("0");
         account.setFavouriteCategoryId("BIRDS");
         account.setCountry("China");
         account.setZip("FJ");
@@ -134,27 +132,27 @@ class DemoApplicationTests {
     }
 
     @Test
-    void testAccountUpdate()
+    void testAccountUpdate()  //测试通过
     {
         Account account = new Account();
         account.setUsername("hahaha");
-        account.setPassword("999");
-        account.setLanguagePreference("Chinese");
-        account.setEmail("888");
-        account.setFirstName("Z");
-        account.setLastName("J");
-        account.setStatus("55");
-        account.setBannerOption(false);
-        account.setListOption(false);
-        account.setFavouriteCategoryId("BIRDS");
-        account.setCountry("China");
-        account.setZip("FJ");
-        account.setState("FZ");
-        account.setCity("FZ");
-        account.setAddress2("FZYZ");
-        account.setAddress1("CSU");
-        account.setPhone("8848");
-        account.setBannerName("CATS");
+        account.setPassword("888");
+        account.setLanguagePreference("English");
+        account.setEmail("999");
+        account.setFirstName("J");
+        account.setLastName("Z");
+        account.setStatus("5");
+        account.setBannerOption("1");
+        account.setListOption("1");
+        account.setFavouriteCategoryId("DOGS");
+        account.setCountry("Japan");
+        account.setZip("FJF");
+        account.setState("FZF");
+        account.setCity("FZF");
+        account.setAddress2("FZYZF");
+        account.setAddress1("CSUF");
+        account.setPhone("88488");
+        account.setBannerName("BIRDS");
 
         accountService.updateAccount(account);
     }

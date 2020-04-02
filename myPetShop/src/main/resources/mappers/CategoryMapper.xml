@@ -14,7 +14,7 @@
 
     <select id="getCategoryList" resultType="Category">
         SELECT
-        CATID AS cagegoryId,
+        CATID AS categoryId,
         NAME,
         DESCN AS description
         FROM CATEGORY

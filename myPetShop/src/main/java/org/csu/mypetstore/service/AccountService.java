@@ -31,7 +31,7 @@ public class AccountService {
     }
 
     //todo insertProfile有问题
-    public void insertAccount(Account account) {
+    public void insertAccount(Account account) {  //使用时注意填写信息要完整，不然可能出现前面一个表插入以后后面的表插入失败，这样子再次插入时会提示用户已存在
         accountMapper.insertAccount(account);
         accountMapper.insertProfile(account);
         accountMapper.insertSignon(account);

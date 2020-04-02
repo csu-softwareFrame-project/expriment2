@@ -27,29 +27,29 @@ public class CatalogController {
     private CatalogService catalogService;
 
     //主目录跳转
-    @GetMapping("/viewCategory")
-    public String viewCategory(String categoryId, Model model){
-        //如果有选定宠物类型，展示该类型的菜单；否则展示宠物类型菜单
-        if (catalogService.viewCategoryService(categoryId,model)){
-            return "catalog/category";
-        }else{
-            return "catalog/category";
-        }
-    }
+    //@GetMapping("/viewCategory")
+//    public String viewCategory(String categoryId, Model model){
+//        //如果有选定宠物类型，展示该类型的菜单；否则展示宠物类型菜单
+//        if (catalogService.viewCategoryService(categoryId,model)){
+//            return "catalog/category";
+//        }else{
+//            return "catalog/category";
+//        }
+//    }
 
     //product目录跳转
-    @GetMapping("/viewProduct")
-    public String viewProduct(String productId, Model model){
-        if (productId != null){
-            System.out.println("a");
-            Product product = catalogService.getProduct(productId);
-            List<Item> itemList = catalogService.getItemListByProductId(productId);
-            model.addAttribute("product", product);
-            model.addAttribute("itemList", itemList);
-            return "catalog/product";
-        }
-        return "";
-    }
+//    @GetMapping("/viewProduct")
+//    public String viewProduct(String productId, Model model){
+//        if (productId != null){
+//            System.out.println("a");
+//            Product product = catalogService.getProduct(productId);
+//            List<Item> itemList = catalogService.getItemListByProductId(productId);
+//            model.addAttribute("product", product);
+//            model.addAttribute("itemList", itemList);
+//            return "catalog/product";
+//        }
+//        return "";
+//    }
 
     //Item目录跳转
     @GetMapping("/viewItem")
