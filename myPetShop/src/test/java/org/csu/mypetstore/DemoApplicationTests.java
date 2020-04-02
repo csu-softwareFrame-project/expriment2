@@ -119,6 +119,9 @@ class DemoApplicationTests {
         account.setFirstName("Z");
         account.setLastName("J");
         account.setStatus("55");
+        account.setBannerOption(true);
+        account.setListOption(false);
+        account.setFavouriteCategoryId("BIRDS");
         account.setCountry("China");
         account.setZip("FJ");
         account.setState("FZ");
