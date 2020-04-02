@@ -22,10 +22,8 @@ public class Account implements Serializable {
     private String phone;
     private String favouriteCategoryId;
     private String languagePreference;
-    private boolean booleanListOption;
-    private boolean booleanBannerOption;
-    private String listOption;
-    private String bannerOption;
+    private boolean listOption;
+    private boolean bannerOption;
     private String bannerName;
 
     public String getUsername() {
@@ -148,20 +146,20 @@ public class Account implements Serializable {
         this.languagePreference = languagePreference;
     }
 
-    public boolean isBooleanListOption() {
-        return booleanListOption;
+    public boolean isListOption() {
+        return listOption;
     }
 
-    public void setBooleanListOption(boolean listOption) {
-        this.booleanBannerOption = listOption;
+    public void setListOption(boolean listOption) {
+        this.listOption = listOption;
     }
 
-    public boolean isBooleanBannerOption() {
-        return booleanBannerOption;
+    public boolean isBannerOption() {
+        return bannerOption;
     }
 
-    public void setBooleanBannerOption(boolean bannerOption) {
-        this.booleanBannerOption = bannerOption;
+    public void setBannerOption(boolean bannerOption) {
+        this.bannerOption = bannerOption;
     }
 
     public String getBannerName() {
@@ -172,23 +170,7 @@ public class Account implements Serializable {
         this.bannerName = bannerName;
     }
 
-    public String getListOption() {
-        return listOption;
-    }
-
-    public void setListOption(String listOption) {
-        this.listOption = listOption;
-    }
-
-    public String getBannerOption() {
-        return bannerOption;
-    }
-
-    public void setBannerOption(String bannerOption) {
-        this.bannerOption = bannerOption;
-    }
-
-    //    @Override
+//    @Override
 //    public String toString(){
 //        return username+" "+password+" "+email;
 //    }

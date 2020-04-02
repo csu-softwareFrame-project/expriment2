@@ -8,7 +8,6 @@ import org.csu.mypetstore.persistence.ItemMapper;
 import org.csu.mypetstore.persistence.ProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import java.util.List;
 import java.util.Map;
@@ -47,15 +46,13 @@ public class CatalogService {
     public List<Item> getItemListByProduct(String productId) {
         return itemMapper.getItemListByProduct(productId);
     }  //根据商品id获取该商品下的所有产品
+
     public int getInventoryQuantity(String itemId){
         return itemMapper.getInventoryQuantity(itemId);
     }  //获取产品库存
 
     public Item getItem(String itemId) {
-        Item item = itemMapper.getItem(itemId);
-        item.setProductId(item.getProduct().getProductId());
-
-        return item;
+        return itemMapper.getItem(itemId);
     }  //根据产品id获取产品
 
     public void updateInventoryQuantity(int increment,String itemId)  //更新产品库存，increment是本次减少的库存数
@@ -66,6 +63,4 @@ public class CatalogService {
     public List<Item> getItemListByProductId(String productId){
         return itemMapper.getItemListByProduct(productId);
     }
-
-
 }

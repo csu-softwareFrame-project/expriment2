@@ -10,10 +10,11 @@ import java.util.Map;
 @Repository
 public interface ItemMapper {
     void updateInventoryQuantity(@Param("increment") int increment, @Param("itemId") String itemId);
-
     int getInventoryQuantity(String itemId);
 
     List<Item> getItemListByProduct(String productId);
 
     Item getItem(String itemId);
 }
+
+
