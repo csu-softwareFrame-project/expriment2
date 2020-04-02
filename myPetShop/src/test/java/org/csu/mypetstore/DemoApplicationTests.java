@@ -2,6 +2,7 @@ package org.csu.mypetstore;
 
 import org.csu.mypetstore.domain.*;
 import org.csu.mypetstore.service.AccountService;
+import org.csu.mypetstore.service.CartService;
 import org.csu.mypetstore.service.CatalogService;
 import org.csu.mypetstore.service.MailService;
 import org.csu.mypetstore.service.OrderService;
@@ -27,6 +28,8 @@ class DemoApplicationTests {
     private MailService mailService;
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private CartService cartService;
 
     @Test
     void contextLoads() {
@@ -102,8 +105,8 @@ class DemoApplicationTests {
     @Test
     void testAccountByUsername()
     {
-        Account account = accountService.getAccount("233");
-        System.out.println(account.getUsername() + "," + account.getLanguagePreference());
+        Account account = accountService.getAccount("99");
+        System.out.println(account.getUsername() + "," + account.getLanguagePreference() + "," + account.getBannerName());
         System.out.println(account.isListOption());
     }
 
@@ -118,16 +121,16 @@ class DemoApplicationTests {
     void testAccountInsert()
     {
         Account account = new Account();
-        account.setUsername("wofule");
+        account.setUsername("99");
         account.setPassword("abaaba");
-        account.setLanguagePreference("Chinese");
+        account.setLanguagePreference("English");
         account.setEmail("777");
         account.setFirstName("Z");
         account.setLastName("J");
         account.setStatus("55");
-        account.setBannerOption(true);
-        account.setListOption(false);
-        account.setFavouriteCategoryId("BIRDS");
+        //account.setBannerOption(true);
+        //account.setListOption(false);
+        //account.setFavouriteCategoryId("BIRDS");
         account.setCountry("China");
         account.setZip("FJ");
         account.setState("FZ");
@@ -202,7 +205,7 @@ class DemoApplicationTests {
     void testOrderGet()
     {
         Order order = orderService.getOrder(1001);
-        System.out.println(order.getExpiryDate());
+        System.out.println(order.getExpiryDate() + "," + order.getLineItems().get(0).getItemId());
     }
 
     @Test
@@ -219,4 +222,46 @@ class DemoApplicationTests {
         System.out.println(nextId);
     }
 
+    @Test
+    void testCartItemListGet()
+    {
+        List<CartItem> cartItemList = cartService.getCartItemListByUsername("233");
+        System.out.println(cartItemList.size());
+    }
+
+    @Test
+    void testCartItemQuantityGet()
+    {
+        int quantity = cartService.getQuantity("233","EST-1");
+        System.out.println(quantity);
+    }
+
+    @Test
+    void testCartItemInsert()
+    {
+        CartItem cartItem = new CartItem();
+        Item item = catalogService.getItem("EST-10");
+        cartItem.setItem(item);
+        cartItem.setInStock(true);
+        cartItem.setQuantity(5);
+        cartService.insertCartItem("233",cartItem);
+    }
+
+    @Test
+    void testCartItemQuantityUpdate()
+    {
+        cartService.updateCartItemQuantity("233","EST-1",6);
+    }
+
+    @Test
+    void testCartItemRemove()
+    {
+        cartService.removeCartItem("233","EST-10");
+    }
+
+    @Test
+    void testCartItemClear()
+    {
+        cartService.clear("a");
+    }
 }
