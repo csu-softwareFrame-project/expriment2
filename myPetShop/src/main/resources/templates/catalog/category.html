@@ -11,20 +11,30 @@
 
 <div id="templatemo_main">
 
-    <h2 th:text="${category.name}"></h2>
+    <h2 th:text="${category.name}" th:if="${category != null}">Category</h2>
     <div>
-        <a href="/catalog/view">Return to Main Menu</a>
+        <a href="/main/viewmain">Return to Main Menu</a>
     </div>
     <br>
     <div  align="center" >
         <table id="table-4">
-            <tr>
+
+            <tr th:if="${productList != null}">
                 <th>Product ID</th>
                 <th>Name</th>
             </tr>
-            <tr th:each="product:${productList}">
+            <tr th:each="product:${productList}" th:if="${productList != null}">
                 <td><a th:href="@{'/catalog/viewProduct?productId='+${product.productId}}" th:text="${product.productId}">prductId</a></td>
                 <td th:text="${product.name}">Product Name</td>
+            </tr>
+
+            <tr th:if="${categoryList != null}">
+                <th>Name</th>
+                <th>Description</th>
+            </tr>
+            <tr th:each="category:${categoryList}" th:if="${categoryList != null}">
+                <td><a th:href="@{'/catalog/viewCategory?categoryId='+${category.name}}" th:text="${category.name}"></a></td>
+                <td ><img th:src="${category.description}"></td>
             </tr>
             <!--<c:forEach var="product" items="${sessionScope.productList}">-->
                 <!--<tr>-->

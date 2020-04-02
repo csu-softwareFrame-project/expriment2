@@ -62,17 +62,25 @@ class DemoApplicationTests {
         System.out.println(categoryList.size());
     }
 
+
+    @Test
+    void testCategoryList()
+    {
+        List<Category> categoryList = catalogService.getCategoryList();
+        System.out.println(categoryList.size());
+    }
+
     @Test
     void testProduct()
     {
         Product product = catalogService.getProduct("FI-SW-01");
         System.out.println(product.getDescription() + "," + product.getCategoryId());
     }
-
     @Test
     void testSearchProductList()
     {
-        List<Product> productList = catalogService.searchProductList("a");        System.out.println(productList.size());
+        List<Product> productList = catalogService.searchProductList("a");
+        System.out.println(productList.size());
     }
 
     @Test
@@ -93,8 +101,7 @@ class DemoApplicationTests {
     void testItem()
     {
         Item item = catalogService.getItem("EST-10");
-        System.out.println(item.getProduct().getProductId() + "," + item.getListPrice() + "," + item.getAttribute1());
-    }
+        System.out.println(item.getProductId());    }
 
     @Test
     void testUpdateQuantity()
@@ -128,9 +135,9 @@ class DemoApplicationTests {
         account.setFirstName("Z");
         account.setLastName("J");
         account.setStatus("55");
-        //account.setBannerOption(true);
-        //account.setListOption(false);
-        //account.setFavouriteCategoryId("BIRDS");
+        account.setBannerOption(true);
+        account.setListOption(false);
+        account.setFavouriteCategoryId("BIRDS");
         account.setCountry("China");
         account.setZip("FJ");
         account.setState("FZ");
@@ -226,7 +233,11 @@ class DemoApplicationTests {
     void testCartItemListGet()
     {
         List<CartItem> cartItemList = cartService.getCartItemListByUsername("233");
-        System.out.println(cartItemList.size());
+        System.out.println(cartItemList.get(1).getItem().getProductId());
+//        System.out.println(cartItemList.get(0).getItemId());
+//        System.out.println(cartItemList.get(1).getItemId());
+//        System.out.println(cartItemList.get(2).getItemId());
+        //System.out.println(cartItemList.size());
     }
 
     @Test
@@ -245,6 +256,24 @@ class DemoApplicationTests {
         cartItem.setInStock(true);
         cartItem.setQuantity(5);
         cartService.insertCartItem("233",cartItem);
+    }
+
+    @Test
+    void testCartItemQuantityUpdate()
+    {
+        cartService.updateCartItemQuantity("233","EST-1",6);
+    }
+
+    @Test
+    void testCartItemRemove()
+    {
+        cartService.removeCartItem("233","EST-10");
+    }
+
+    @Test
+    void testCartItemClear()
+    {
+        cartService.clear("a");
     }
 
     @Test
