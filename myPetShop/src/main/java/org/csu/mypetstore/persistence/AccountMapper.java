@@ -6,7 +6,6 @@ import org.csu.mypetstore.domain.Account;
 import org.springframework.stereotype.Repository;
 
 @Repository
-//@Mapper
 public interface AccountMapper {
 
     Account getAccountByUsername(String username);
