@@ -213,7 +213,8 @@ class DemoApplicationTests {
     @Test
     void testCartItemListGet()
     {
-        List<CartItem> cartItemList = cartService.getCartItemListByUsername("233");
+        List<CartItem> cartItemList = cartService.getCartItemListByUsername("a");
+        System.out.println(cartItemList.get(0).getItem().getProductId());
         System.out.println(cartItemList.size());
     }
 

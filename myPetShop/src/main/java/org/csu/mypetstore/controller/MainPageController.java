@@ -24,18 +24,18 @@ public class MainPageController {
         return "catalog/main";
     }
 
+    //登出跳转
+    @GetMapping("/sign_out")
+    public String signOut(HttpSession session){
+        session.removeAttribute("loginUser");
+        return "catalog/main";
+    }
+
 
     //搜索功能
     @PostMapping("/search")
     public String search(String keyword){
         return "#";//根据关键字搜索结果并返回
-    }
-
-    //登出跳转
-    @GetMapping("/signOut")
-    public String signOut(HttpSession session){
-        session.removeAttribute("loginUser");
-        return "catalog/main";
     }
 
     //进入账户信息
@@ -45,7 +45,7 @@ public class MainPageController {
     }
 
     //利用springboot精准匹配的原则处理404
-    @RequestMapping("/*")
+    @RequestMapping("*")
     public String handle404(){
         return "common/error";
     }

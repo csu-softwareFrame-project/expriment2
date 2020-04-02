@@ -202,16 +202,16 @@
             <ul>
                 <li><a href="/main/viewmain" class="selected">Home</a></li>
                 <li th:if="${session.loginUser}==null"><a href="/useraccess/view_login">Sign In</a></li>
-                <li th:if="${session.loginUser}!=null"> <a href="">Account</a>
+                <li th:if="${session.loginUser}!=null"> <a href="/main/view_account">Account</a>
                     <ul>
                         <li><span class="top"></span><span class="bottom"></span></li>
-                        <li><a href="editAccountForm">account</a></li>
+                        <li><a href="/main/view_account">account</a></li>
                         <li><a href="myOrders">orders</a></li>
-                        <li><a href="signOut">sign out</a></li>
+                        <li><a href="/main/sign_out">sign out</a></li>
                     </ul>
                 </li>
 
-                <li><a href="main">Pet</a>
+                <li><a href="/catalog/viewCategory">Pet</a>
                     <ul>
                         <li><span class="top"></span><span class="bottom"></span></li>
                         <li><a href="/catalog/viewCategory?categoryId=FISH">fish</a></li>

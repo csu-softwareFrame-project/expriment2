@@ -14,7 +14,7 @@
         <h3>User Information</h3>
 
         <label >User ID:</label>
-        <label th:text="${session.account.username}"></label>
+        <label th:text="${session.loginUser.username}"></label>
         <div class="cleaner h10"></div>
         <script type="text/javascript" src="js/alogin.js"></script>
         <label for="password">New password:</label><div class="cleaner h10"></div><input type="text" name="password" id="password" onblur="isPasswordNull();"/>
