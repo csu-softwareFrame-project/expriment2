@@ -24,14 +24,14 @@
                 <th><b>Total Cost</b></th>
                 <th>&nbsp;</th>
             </tr>
-            <tr th:if="${cart.numberOfItems}==0">
+            <tr th:if="${#lists.isEmpty(cart)}">
                 <td colspan="8"><b>Your cart is empty.</b></td>
             </tr>
-            <tr th:each="cartItem:${cart.cartItems}">
+            <tr th:each="cartItem:${cart}">
                 <td>
                     <a href="viewItem?itemId=${cartItem.item.itemId}">${cartItem.item.itemId}</a>
                 </td>
-                <td th:text="${cartItem.item.product.productId}">
+                <td th:text="${cartItem.item.productId}">
                     cartItem.item.product.productId
                 </td>
                 <td>
@@ -63,7 +63,7 @@
         </table>
     </form>
 
-    <p th:if="${cart.numberOfItems}>0">
+    <p th:if="${cart.numberOfItems}>!=0">
     <div>
         <font size="3px"><a href="viewNewOrder" class="fa fa-shopping-cart">&nbsp&nbspProceed to Checkout</a></font>
     </div>

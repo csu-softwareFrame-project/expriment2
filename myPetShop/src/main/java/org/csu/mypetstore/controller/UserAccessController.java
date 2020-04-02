@@ -17,7 +17,10 @@ import java.io.IOException;
 import java.util.Map;
 
 
-//登录页相关
+/**
+ * @desciption:登录注册相关跳转
+ * @Date:2020.4.1
+ */
 @Controller
 @RequestMapping("/useraccess")
 @SessionAttributes(value = {"loginUser"})
@@ -25,15 +28,15 @@ public class UserAccessController {
     @Autowired
     AccountService accountService;
 
-    //登录页面映射
-    @RequestMapping("")
+    //进入登录页面
+    @RequestMapping("/view_login")
     public String viewLogIn(){
         return "account/signonForm";
     }
 
+    //todo 验证码解耦合
     @GetMapping("/verifyCode")
-    public String getVerifyCode(Model model, HttpServletResponse response) throws ServletException, IOException
-
+    public String getVerifyCode(Model model, HttpServletResponse response)
     {
         VerifyCodeService vc = new VerifyCodeService();
         //获取图片对象
@@ -43,45 +46,45 @@ public class UserAccessController {
         // 将系统生成的文本内容保存到session中
         model.addAttribute("text", text);
         //向浏览器输出图片
-        vc.output(bi, response.getOutputStream());
-        System.out.println(vc.getText());
+        try{
+            vc.output(bi, response.getOutputStream());
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        System.out.println("验证码"+vc.getText());
         return "";
     }
 
-    //登录验证
+    //登录验证跳转
     @PostMapping("/login")
     public String logIn(String username, String password, Map<String,Object> map, Model model){
-        int result = accountService.isPasswordCorrect(username,password);
-        switch (result){
-            case 0:{
-                if(Constants.DEBUG_MODE&&Constants.DEBUG_CONTROLLER)System.out.println("用户名不存在");
-                map.put("msg","用户名不存在");
-                return "account/signonForm";
-            }
-            case 1:{
-                if(Constants.DEBUG_MODE&&Constants.DEBUG_CONTROLLER)System.out.println("用户名或密码错误");
-                map.put("msg","用户名或密码错误");
-                return "account/signonForm";
-            }
-            case 2:{
-                if(Constants.DEBUG_MODE&&Constants.DEBUG_CONTROLLER)System.out.println("登录成功");
-                Account account = accountService.getAccount(username);
-                model.addAttribute("loginUser",account);//登录成功把用户信息放进session
-                return "catalog/main";
-            } default:{
-                if(Constants.DEBUG_MODE&&Constants.DEBUG_CONTROLLER)System.out.println("未知错误");
-                map.put("msg","未知错误");
-                return "account/signonForm";
-            }
+        if(accountService.userAccessService(username, password, map, model)){
+            System.out.println("登录成功");
+            return "catalog/main";
+        }else {
+            System.out.println("登录失败");
+            return "account/signonForm";
         }
     }
 
-    //注册页面映射
-    @GetMapping("/viewSignup")
+    //进入注册页面
+    @GetMapping("/view_sign_up")
     public String viewSignUp(){ return "account/newAccountForm"; }
 
-    @PostMapping("/signUp")
-    public String signUp(){
-        return "catalog/main";
+    //注册功能跳转
+    @PostMapping("/sign_up")
+    public String signUp(Account account,String repeatedPassword, Map<String,Object> map){
+        if(accountService.signUpservice(account,repeatedPassword,map)) {
+            return "account/signOnForm";
+        } else{
+            return "account/newAccountForm";
+        }
+    }
+
+    //利用springboot精准匹配的原则处理404
+    @RequestMapping("/*")
+    public String handle404(){
+        return "common/error";
     }
 }

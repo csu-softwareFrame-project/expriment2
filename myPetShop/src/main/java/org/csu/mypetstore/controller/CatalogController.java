@@ -11,9 +11,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.Map;
 
 
-//目录相关
+/**
+ * @desciption:目录相关跳转
+ * @Date:2020.4.1
+ */
+
 @Controller
 @RequestMapping("/catalog")
 public class CatalogController {
@@ -21,18 +26,18 @@ public class CatalogController {
     @Autowired
     private CatalogService catalogService;
 
+    //主目录跳转
     @GetMapping("/viewCategory")
     public String viewCategory(String categoryId, Model model){
-        if (categoryId != null){
-            Category category = catalogService.getCategory(categoryId);
-            List<Product> productList = catalogService.getProductListByCategory(categoryId);
-            model.addAttribute("category", category);
-            model.addAttribute("productList", productList);
+        //如果有选定宠物类型，展示该类型的菜单；否则展示宠物类型菜单
+        if (catalogService.viewCategoryService(categoryId,model)){
+            return "catalog/category";
+        }else{
             return "catalog/category";
         }
-        return "";
     }
 
+    //product目录跳转
     @GetMapping("/viewProduct")
     public String viewProduct(String productId, Model model){
         if (productId != null){
@@ -46,6 +51,7 @@ public class CatalogController {
         return "";
     }
 
+    //Item目录跳转
     @GetMapping("/viewItem")
     public String viewItem(String itemId, Model model){
         if (itemId != null){
@@ -55,5 +61,11 @@ public class CatalogController {
             return "catalog/item";
         }
         return "";
+    }
+
+    //利用springboot精准匹配的原则处理404
+    @RequestMapping("/*")
+    public String handle404(){
+        return "common/error";
     }
 }

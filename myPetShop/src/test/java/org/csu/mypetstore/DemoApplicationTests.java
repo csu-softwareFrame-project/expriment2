@@ -98,7 +98,7 @@ class DemoApplicationTests {
     {
         Account account = accountService.getAccount("99");
         System.out.println(account.getUsername() + "," + account.getLanguagePreference() + "," + account.getBannerName());
-        System.out.println(account.isListOption());
+        System.out.println(account.isBooleanListOption());
     }
 
     @Test
@@ -141,8 +141,8 @@ class DemoApplicationTests {
         account.setFirstName("Z");
         account.setLastName("J");
         account.setStatus("55");
-        account.setBannerOption(false);
-        account.setListOption(false);
+        account.setBooleanBannerOption(false);
+        account.setBooleanListOption(false);
         account.setFavouriteCategoryId("BIRDS");
         account.setCountry("China");
         account.setZip("FJ");
