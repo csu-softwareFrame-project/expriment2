@@ -45,7 +45,7 @@ public class MainPageController {
     }
 
     //利用springboot精准匹配的原则处理404
-    @RequestMapping("*")
+    @RequestMapping("**")
     public String handle404(){
         return "common/error";
     }

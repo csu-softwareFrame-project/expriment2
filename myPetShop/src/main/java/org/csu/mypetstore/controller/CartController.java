@@ -36,8 +36,16 @@ public class CartController {
         return "cart/cart";
     }
 
+    //从购物车中移出
+    @GetMapping("/remove_item_from_cart")
+    public String removeItemFromCart(String cartItemId,HttpSession session,Model model){
+        cartService.removeCartItem(cartItemId,session);
+        cartService.viewCart(session,model);
+        return "cart/cart";
+    }
+
     //利用springboot精准匹配的原则处理404
-    @RequestMapping("*")
+    @RequestMapping(value = "**")
     public String handle404(){
         return "common/error";
     }

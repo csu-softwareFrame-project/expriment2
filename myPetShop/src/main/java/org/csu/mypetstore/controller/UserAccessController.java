@@ -63,7 +63,7 @@ public class UserAccessController {
         }
     }
 
-    //不知道为什么无效
+    //不知道session为什么无效
 //    //登出跳转
 //    @GetMapping("/sign_out")
 //    public String signOut(HttpSession session){
@@ -73,8 +73,8 @@ public class UserAccessController {
 
 
     //利用springboot精准匹配的原则处理404
-    @RequestMapping("*")
-    public String handle404() {
+    @RequestMapping("**")
+    public String handle404(){
         return "common/error";
     }
 

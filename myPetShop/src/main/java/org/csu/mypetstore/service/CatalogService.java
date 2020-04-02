@@ -67,5 +67,19 @@ public class CatalogService {
         return itemMapper.getItemListByProduct(productId);
     }
 
+    public boolean viewCategoryService(String categoryId, Model model){
+        //如果有选定宠物类型，展示该类型的菜单；否则展示宠物类型菜单
+        if (categoryId != null){
+            Category category = getCategory(categoryId);
+            List<Product> productList = getProductListByCategory(categoryId);
+            model.addAttribute("category", category);
+            model.addAttribute("productList", productList);
+            return true;
+        }else{
+            List<Category> categoryList = getCategoryList();
+            model.addAttribute("categoryList",categoryList);
+            return false;
+        }
+    }
 
 }
