@@ -1,5 +1,6 @@
 package org.csu.mypetstore.config;
 
+import org.csu.mypetstore.Interceptor.errorHandlerInterceptor;
 import org.csu.mypetstore.Interceptor.userAccessHandlerInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,7 +32,8 @@ public class webConfig extends WebMvcConfigurerAdapter {
                 //SpringBoot已经做好了静态资源映射
                 //拦截访问购物车、查看账户信息请求，没登录则不能访问
                 registry.addInterceptor(new userAccessHandlerInterceptor()).addPathPatterns("/cart/view_cart","/main/view_account").excludePathPatterns("");
-//                registry.addInterceptor(new errorHandlerInterceptor()).addPathPatterns("/main/viewmaina");
+                registry.addInterceptor(new errorHandlerInterceptor()).addPathPatterns("/cart/view_cart");
+                //                registry.addInterceptor(new errorHandlerInterceptor()).addPathPatterns("/main/viewmaina");
                 //super.addInterceptors(registry);
             }
 

@@ -98,7 +98,7 @@ class DemoApplicationTests {
     {
         Account account = accountService.getAccount("99");
         System.out.println(account.getUsername() + "," + account.getLanguagePreference() + "," + account.getBannerName());
-        System.out.println(account.isListOption());
+        System.out.println(account.isBooleanListOption());
     }
 
     @Test
@@ -119,8 +119,8 @@ class DemoApplicationTests {
         account.setFirstName("Z");
         account.setLastName("J");
         account.setStatus("55");
-        account.setBannerOption(true);
-        account.setListOption(false);
+        account.setBooleanBannerOption(true);
+        account.setBooleanListOption(false);
         account.setFavouriteCategoryId("BIRDS");
         account.setCountry("China");
         account.setZip("FJ");
@@ -144,8 +144,8 @@ class DemoApplicationTests {
         account.setFirstName("Z");
         account.setLastName("J");
         account.setStatus("55");
-        account.setBannerOption(false);
-        account.setListOption(false);
+        account.setBooleanBannerOption(false);
+        account.setBooleanListOption(false);
         account.setFavouriteCategoryId("BIRDS");
         account.setCountry("China");
         account.setZip("FJ");
@@ -216,8 +216,8 @@ class DemoApplicationTests {
     @Test
     void testCartItemListGet()
     {
-        List<CartItem> cartItemList = cartService.getCartItemListByUsername("233");
-        System.out.println(cartItemList.get(1).getItem().getProductId());
+        List<CartItem> cartItemList = cartService.getCartItemListByUsername("a");
+        System.out.println(cartItemList.get(0).getItem().getProductId());
 //        System.out.println(cartItemList.get(0).getItemId());
 //        System.out.println(cartItemList.get(1).getItemId());
 //        System.out.println(cartItemList.get(2).getItemId());

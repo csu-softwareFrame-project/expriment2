@@ -24,35 +24,39 @@
                 <th><b>Total Cost</b></th>
                 <th>&nbsp;</th>
             </tr>
+
+            <tr th:each="cart_item:${cart}">
+                [[${cart_item.item.itemId}]]
+
+            </tr>
             <tr th:if="${#lists.isEmpty(cart)}">
                 <td colspan="8"><b>Your cart is empty.</b></td>
             </tr>
-            <tr th:each="cartItem:${cart}" th:if="${!#lists.isEmpty(cart)}">
+            <tr th:each="cart_item:${cart}" th:if="${!#lists.isEmpty(cart)}">
                 <td>
-                    <a href="viewItem?itemId=${cartItem.item.itemId}">${cartItem.item.itemId}</a>
+                    <a th:href="@{'viewItem?itemId='+${cart_item.item.itemId}}">[[${cart_item.item.itemId}]]</a>
                 </td>
-                <td th:text="${cartItem.item.productId}">
-                    cartItem.item.product.productId
+                <td th:text="${cart_item.item.productId}" th:if="${cart_item.item.productId}!=null">cart_item.item.product.productId
                 </td>
                 <td>
-                    <h th:if="${cartItem.item.attribute1}!=null" th:text="${cartItem.item.attribute1}+' '"></h>
-                    <h th:if="${cartItem.item.attribute2}!=null" th:text="${cartItem.item.attribute2}+' '"></h>
-                    <h th:if="${cartItem.item.attribute3}!=null" th:text="${cartItem.item.attribute3}+' '"></h>
-                    <h th:if="${cartItem.item.attribute4}!=null" th:text="${cartItem.item.attribute4}+' '"></h>
-                    <h th:if="${cartItem.item.attribute5}!=null" th:text="${cartItem.item.attribute5}+' '"></h>
-<!--                    <h th:if="${product.name}!=null" th:text="${product.name}+' '"></h>-->
+                    <h th:if="${cart_item.item.attribute1}!=null" th:text="${cart_item.item.attribute1}+' '"></h>
+                    <h th:if="${cart_item.item.attribute2}!=null" th:text="${cart_item.item.attribute2}+' '"></h>
+                    <h th:if="${cart_item.item.attribute3}!=null" th:text="${cart_item.item.attribute3}+' '"></h>
+                    <h th:if="${cart_item.item.attribute4}!=null" th:text="${cart_item.item.attribute4}+' '"></h>
+                    <h th:if="${cart_item.item.attribute5}!=null" th:text="${cart_item.item.attribute5}+' '"></h>
+            <!--                   <h th:if="${product.name}!=null" th:text="${product.name}+' '"></h>-->
                 </td>
-                <td th:text="${cartItem.inStock}">
+                <td th:text="${cart_item.inStock}">
                     cartItem.inStock
                 </td>
                 <td>
-                    <input type="text" th:name="${cartItem.item.itemId}" th:value="${cartItem.quantity}" th:id="${cartItem.item.itemId}" th:onblur="'updateQuantity('+${cartItem.item.itemId}+','+${account.username}+')'"/>
+                    <input type="text" th:name="${cart_item.item.itemId}" th:value="${cart_item.quantity}" th:id="${cart_item.item.itemId}" th:onblur="'updateQuantity([[${cart_item.item.itemId}]],[[${loginUser.username}]])'"/>
                     <script type="text/javascript" src="js/update-quantity.js"></script>
                 </td>
-<!--                <td id="listPrice" th:text="${#numbers.formatDecimal(cartItem.item.listPrice,0,2)}"></td>-->
-<!--                <td id="totalcost" th:text="${#numbers.formatDecimal(cartItem.total,0,2)}"></td>-->
+                            <td id="listPrice" th:text="${#numbers.formatDecimal(cart_item.item.listPrice,0,2)}"></td>
+                            <td id="totalcost" th:text="${#numbers.formatDecimal(cart_item.total,0,2)}"></td>
                 <td>
-<!--                    <a th:href="'/cart/removeItemFromCart?cartItemId='+${cartItem.item.itemId}" class="Button" th:text="'Remove'">Remove</a>-->
+                                <a th:href="'/cart/remove_item_from_cart?cartItemId='+${cart_item.item.itemId}" class="Button" th:text="'Remove'">Remove</a>
                 </td>
 
             </tr>
@@ -63,7 +67,7 @@
         </table>
     </form>
 
-    <p th:if="${cart.numberOfItems}>!=0">
+<!--    <p th:if="${cart.numberOfItems}>!=0">-->
     <div>
         <font size="3px"><a href="viewNewOrder" class="fa fa-shopping-cart">&nbsp&nbspProceed to Checkout</a></font>
     </div>
