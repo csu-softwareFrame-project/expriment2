@@ -6,10 +6,10 @@ import java.math.BigDecimal;
 public class CartItem implements Serializable {
     private static final long serialVersionUID = 6620528781626504362L;
 
-    private Item item;
-    private int quantity;
-    private boolean inStock;
-    private BigDecimal total;
+    private Item item;  //商品
+    private int quantity;  //数量
+    private boolean inStock;  //库存是否充足
+    private BigDecimal total;  //总价
 
     public boolean isInStock() {
         return inStock;
@@ -34,6 +34,11 @@ public class CartItem implements Serializable {
 
     public int getQuantity() {
         return quantity;
+    }
+
+    public String getItemId()
+    {
+        return item.getItemId();
     }
 
     public void setQuantity(int quantity) {
