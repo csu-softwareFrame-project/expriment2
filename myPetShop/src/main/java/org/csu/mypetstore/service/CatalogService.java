@@ -60,4 +60,7 @@ public class CatalogService {
         itemMapper.updateInventoryQuantity(increment,itemId);
     }
 
+    public List<Item> getItemListByProductId(String productId){
+        return itemMapper.getItemListByProduct(productId);
+    }
 }
