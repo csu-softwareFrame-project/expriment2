@@ -63,28 +63,5 @@ public class CatalogService {
         return itemMapper.getItemListByProduct(productId);
     }
 
-    public List<Category> getCategoryList() {
-        return categoryMapper.getCategoryList();
-    }
 
-    public List<Product> searchProductList(String keyword) {
-        return productMapper.searchProductList("%" + keyword.toLowerCase() + "%");
-    }
-
-    public List<Item> getItemListByProduct(String productId) {
-        return itemMapper.getItemListByProduct(productId);
-    }
-
-    public int getInventoryQuantity(String itemId){
-        return itemMapper.getInventoryQuantity(itemId);
-    }
-
-    public Item getItem(String itemId) {
-        return itemMapper.getItem(itemId);
-    }
-
-    public void updateInventoryQuantity(int increment,String itemId)
-    {
-        itemMapper.updateInventoryQuantity(increment,itemId);
-    }
 }
