@@ -5,6 +5,7 @@ import org.csu.mypetstore.domain.Item;
 import org.csu.mypetstore.domain.Product;
 import org.csu.mypetstore.service.AccountService;
 import org.csu.mypetstore.service.CatalogService;
+import org.csu.mypetstore.service.MailService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,10 +20,17 @@ class DemoApplicationTests {
     private AccountService accountService;
     @Autowired
     private CatalogService catalogService;
-
+    @Autowired
+    private MailService mailService;
     @Test
     void contextLoads() {
         System.out.println("a");
+    }
+
+    @Test
+    public void testSend(){
+//        System.out.println(mailService.sendSimpleMail(););
+        mailService.sendSimpleMail("a123213090@126.com","test", "just a test");
     }
 
     @Test
