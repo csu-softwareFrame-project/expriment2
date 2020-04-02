@@ -36,9 +36,12 @@ public class UserAccessController {
 
     //登录验证跳转
     @PostMapping("/login")
-    public String logIn(String username, String password, String checkCode, Map<String,Object> map, Model model, HttpSession session){
+    public String logIn(String username, String password, String email, String checkCode, Map<String,Object> map, Model model, HttpSession session){
         System.out.println(checkCode);//从用户处获取验证码
         System.out.println(session.getAttribute("checkCode"));//从服务器获取正确验证码
+        System.out.println(username);
+        System.out.println(password);
+        System.out.println(email);
         if(accountService.userAccessService(username, password, map, model)){
             System.out.println("登录成功");
             return "catalog/main";

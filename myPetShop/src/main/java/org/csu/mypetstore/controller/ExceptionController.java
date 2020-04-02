@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/error")
 public class ExceptionController {
 
     //利用springboot精准匹配的原则处理404

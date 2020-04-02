@@ -55,6 +55,7 @@ public class AccountService {
         if(pswd == null){
             if(Constants.DEBUG_MODE&&Constants.DEBUG_CONTROLLER)System.out.println("用户名不存在");
             map.put("msg","用户名不存在");
+            pswd = "";
         }
         if(pswd.equals(password)) {
             if(Constants.DEBUG_MODE&&Constants.DEBUG_CONTROLLER)System.out.println("登录成功");
