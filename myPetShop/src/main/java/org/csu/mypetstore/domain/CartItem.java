@@ -7,6 +7,7 @@ public class CartItem implements Serializable {
     private static final long serialVersionUID = 6620528781626504362L;
 
     private Item item;  //商品
+    private String itemId;  //商品id
     private int quantity;  //数量
     private boolean inStock;  //库存是否充足
     private BigDecimal total;  //总价
@@ -38,7 +39,7 @@ public class CartItem implements Serializable {
 
     public String getItemId()
     {
-        return item.getItemId();
+        return this.itemId;
     }
     public void setQuantity(int quantity) {
         this.quantity = quantity;

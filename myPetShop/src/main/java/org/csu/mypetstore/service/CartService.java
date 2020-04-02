@@ -3,6 +3,7 @@ package org.csu.mypetstore.service;
 import org.csu.mypetstore.domain.Account;
 import org.csu.mypetstore.domain.Cart;
 import org.csu.mypetstore.domain.CartItem;
+import org.csu.mypetstore.domain.Item;
 import org.csu.mypetstore.persistence.CartItemMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,11 +17,22 @@ public class CartService {
 
     @Autowired
     private CartItemMapper cartItemMapper;
+    @Autowired
+    private CatalogService catalogService;
 
     //根据用户id获取该用户购物车内的所有物品
     public List<CartItem> getCartItemListByUsername(String username)
     {
-        return cartItemMapper.getCartItemListByUsername(username);
+        List<CartItem> cartItemList =  cartItemMapper.getCartItemListByUsername(username);
+        String itemId;
+        Item item = new Item();
+        for(int i=0;i<cartItemList.size();i++)
+        {
+            itemId = cartItemList.get(i).getItemId();
+            item = catalogService.getItem(itemId);
+            cartItemList.get(i).setItem(item);
+        }
+        return cartItemList;
     }
 
     //获得用户购物车中某商品的数量（用户购买的数量，不是商品库存）

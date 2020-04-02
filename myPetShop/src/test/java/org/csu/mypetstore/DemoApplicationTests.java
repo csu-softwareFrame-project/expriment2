@@ -85,7 +85,7 @@ class DemoApplicationTests {
     void testItem()
     {
         Item item = catalogService.getItem("EST-10");
-        System.out.println(item.getUnitCost() + "," + item.getListPrice() + "," + item.getAttribute1());    }
+        System.out.println(item.getProductId());    }
 
     @Test
     void testUpdateQuantity()
@@ -98,7 +98,7 @@ class DemoApplicationTests {
     {
         Account account = accountService.getAccount("99");
         System.out.println(account.getUsername() + "," + account.getLanguagePreference() + "," + account.getBannerName());
-        System.out.println(account.isBooleanListOption());
+        System.out.println(account.isListOption());
     }
 
     @Test
@@ -141,8 +141,8 @@ class DemoApplicationTests {
         account.setFirstName("Z");
         account.setLastName("J");
         account.setStatus("55");
-        account.setBooleanBannerOption(false);
-        account.setBooleanListOption(false);
+        account.setBannerOption(false);
+        account.setListOption(false);
         account.setFavouriteCategoryId("BIRDS");
         account.setCountry("China");
         account.setZip("FJ");
@@ -213,9 +213,12 @@ class DemoApplicationTests {
     @Test
     void testCartItemListGet()
     {
-        List<CartItem> cartItemList = cartService.getCartItemListByUsername("a");
-        System.out.println(cartItemList.get(0).getItem().getProductId());
-        System.out.println(cartItemList.size());
+        List<CartItem> cartItemList = cartService.getCartItemListByUsername("233");
+        System.out.println(cartItemList.get(1).getItem().getProductId());
+//        System.out.println(cartItemList.get(0).getItemId());
+//        System.out.println(cartItemList.get(1).getItemId());
+//        System.out.println(cartItemList.get(2).getItemId());
+        //System.out.println(cartItemList.size());
     }
 
     @Test
