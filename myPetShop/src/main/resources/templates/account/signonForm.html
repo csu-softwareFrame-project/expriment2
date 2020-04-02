@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
 <meta charset="UTF-8">
 <title>My Pet Store</title>
 </head>
@@ -13,55 +12,26 @@
     <div class="container">
         <div class="row">
             <div class="col-md-offset-3 col-md-6">
-                <form class="form-horizontal" action="/useraccess/login" method="post" id="form1">
+                <form class="form-horizontal" action="/useraccess/login" method="post" >
                     <span class="heading">Login</span>
 
                     <div class="form-group">
-                        <input type="text" id="username" name="username" autocomplete="Off" placeholder="Username" class="form-control">
+                        <input type="text" name="username" autocomplete="Off" placeholder="Username" class="form-control">
                         <i class="fa fa-user"></i>
                     </div>
 
                     <div class="form-group">
-                        <input type="password" id="password" class="form-control" name="password"  placeholder="Password"/>
+                        <input type="password" class="form-control" name="password" id="password"  placeholder="Password"/>
                         <i><img class="eyes" id="eyes" src="../images/eye2.png" onclick="change()" width="20" height="20"></i>
                     </div>
 
                     <div class="form-group">
-                        <input id="email" type="email" name="username" class="form-control" lay-verify="required" placeholder="Email"/>
+                        <input type="text" id="verifyCode" name="verifyCode" autocomplete="Off" class="form-control" placeholder="VerifyCode"/><br/>
+                        <i class="fa fa-check-circle"></i>
+                        <img src="/useraccess/verifyCode" id="btn" onclick="verify()"><br/>
+                        <p style="color: red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
                     </div>
 
-                    <div class="form-group">
-                        <input id="checkCode" type="text" name="checkCode" autocomplete="Off" class="form-control" placeholder="VerifyCode" lay-verify="required"/>
-                        <h id="result"></h>
-                    </div>
-                    <div class="form-group">
-                        <button id="sendCheckCode" type="button" class="btn btn-default">get verify</button>
-                    </div>
-                    <!--验证码脚本-->
-                    <script>
-                        $("#sendCheckCode").click(function () {
-                            var email = $("#email").val();
-                            if (email == null || email == ""){
-                                alert("请输入邮箱！！！");
-                                return;
-                            }
-                            alert("邮件发送中......");
-                            $.ajax({
-                                url:"/mail/getCheckCode?email="+email,
-                                type:"get",
-                                success:function (text) {
-                                    if (text != null && text != ""){
-                                        alert("已发送");
-                                        checkCode = text;
-                                        countDown();
-                                    } else{
-                                        alert("获取失败，请重新获取")
-                                    }
-                                }
-                            });
-                        });
-                    </script>
-                        <p style="color: red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
                     <div class="form-group">
                         <div class="main-checkbox">
                             <input type="checkbox" value="None" id="checkbox1" name="check"/>
@@ -71,17 +41,6 @@
 
                         <button type="submit" id="submit" class="btn btn-default">Login</button>
                     </div>
-                    <script>
-                        $("#checkCode").change(function (){
-                            var verifyCode = $("#checkCode").val();
-                            if (verifyCode != checkCode){
-                                $("#result").html("<a>false</a>")
-                            }
-                            else {
-                                $("#result").html("<a>correct</a>")
-                            }
-                        });
-                    </script>
                     <div class="form-group">
                         Need a user name and password?
                         <a href="/useraccess/viewSignup">Register Now!</a>
@@ -95,6 +54,5 @@
 <div th:replace="common/buttom">
 
 </div>
-
 </body>
 </html>
