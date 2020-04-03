@@ -94,7 +94,7 @@ public class CartService {
             Item item = itemMapper.getItem(itemId);
             CartItem cartItem = new CartItem();
             cartItem.setItem(item);
-            cartItem.setQuantity(stock);
+            cartItem.setQuantity(1);
             cartItem.setInStock(true);
             insertCartItem(account.getUsername(),cartItem);
             return true;

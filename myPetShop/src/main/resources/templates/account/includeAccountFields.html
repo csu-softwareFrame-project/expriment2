@@ -9,34 +9,34 @@
         <h3>Account Information</h3>
 
 
-        <label for="firstName">First name:<br><input type="text" name="account.firstName" th:value="${session.account.firstName}" class="required input_field" id="firstName"/></label>
+        <label for="firstName">First name:<br><input type="text" name="account.firstName" th:value="${session.loginUser.firstName}" class="required input_field" id="firstName"/></label>
         <br>
 
-        <label for="lastName">Last name:<br><input type="text" name="account.lastName" th:value="${session.account.lastName}" class="required input_field" id="lastName"/></label>
+        <label for="lastName">Last name:<br><input type="text" name="account.lastName" th:value="${session.loginUser.lastName}" class="required input_field" id="lastName"/></label>
         <br>
 
-        <label for="email">Email:<br><input type="text" size="40" name="account.email" th:value="${session.account.email}" class="required input_field" id="email"/></label>
+        <label for="email">Email:<br><input type="text" size="40" name="account.email" th:value="${session.loginUser.email}" class="required input_field" id="email"/></label>
         <br>
 
-        <label for="phone">Phone:<br><input type="text" name="account.phone" th:value="${session.account.phone}" class="required input_field" id="phone"/></label>
+        <label for="phone">Phone:<br><input type="text" name="account.phone" th:value="${session.loginUser.phone}" class="required input_field" id="phone"/></label>
         <br>
 
-        <label for="address1">Address 1:<br><input type="text" size="40" name="account.address1" th:value="${session.account.address1}" class="required input_field" id="address1"/></label>
+        <label for="address1">Address 1:<br><input type="text" size="40" name="account.address1" th:value="${session.loginUser.address1}" class="required input_field" id="address1"/></label>
         <br>
 
-        <label for="address2">Address 2:<br><input type="text" size="40" name="account.address2" th:value="${session.account.address2}"class="required input_field" id="address2"/></label>
+        <label for="address2">Address 2:<br><input type="text" size="40" name="account.address2" th:value="${session.loginUser.address2}"class="required input_field" id="address2"/></label>
         <br>
 
-        <label for="city">City:<br><input type="text" name="account.city" th:value="${session.account.city}"class="required input_field" id="city"/></label>
+        <label for="city">City:<br><input type="text" name="account.city" th:value="${session.loginUser.city}"class="required input_field" id="city"/></label>
         <br>
 
-        <label for="state">State:<br><input type="text" size="4" name="account.state" th:value="${session.account.state}"class="required input_field" id="state"/></label>
+        <label for="state">State:<br><input type="text" size="4" name="account.state" th:value="${session.loginUser.state}"class="required input_field" id="state"/></label>
         <br>
 
-        <label for="zip">Zip:<br><input type="text" size="10" name="account.zip" th:value="${session.account.zip}"class="required input_field" id="zip"/></label>
+        <label for="zip">Zip:<br><input type="text" size="10" name="account.zip" th:value="${session.loginUser.zip}"class="required input_field" id="zip"/></label>
         <br>
 
-        <label for="country">Country:<br><input type="text" size="15" name="account.country" th:value="${session.account.country}"class="required input_field" id="country"/></label>
+        <label for="country">Country:<br><input type="text" size="15" name="account.country" th:value="${session.loginUser.country}"class="required input_field" id="country"/></label>
         <br>
 
         <h3>Profile Information</h3>
@@ -45,15 +45,19 @@
 
 
         <label>Language Preference:<div class="cleaner h10"></div>
-            <select name="languagePreference" id="languagePreference" th:each="languages:${session.languages}">
-                <option th:text="${languages}">languages</option>
+<!--            <select name="languagePreference" id="languagePreference" th:each="languages:${session.languages}">-->
+<!--            <option th:text="${languages}">languages</option>-->
+            <select name="languagePreference" id="languagePreference">
+                <option>languages</option>
             </select>
         </label>
 
         <div class="cleaner h10"></div>
         <label>Favourite Category:<div class="cleaner h10"></div>
-            <select name="favouriteCategoryId" id="favouriteCategoryId" th:each="categories:${session.categories}">
-                <option th:each="${categories}">categories</option>
+<!--            <select name="favouriteCategoryId" id="favouriteCategoryId" th:each="categories:${session.categories}">-->
+<!--                <option th:each="${categories}">categories</option>-->
+            <select name="favouriteCategoryId" id="favouriteCategoryId">
+                <option >categories</option>
             </select>
         </label>
         <div class="cleaner h10"></div>

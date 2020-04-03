@@ -1,8 +1,12 @@
 package org.csu.mypetstore.domain;
 
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
+
 import java.io.Serializable;
 
+@Component
 public class Account implements Serializable {
 
     private static final long serialVersionUID = 8751282105532159742L;

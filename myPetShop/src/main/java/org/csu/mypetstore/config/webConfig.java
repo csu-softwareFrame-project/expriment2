@@ -32,7 +32,6 @@ public class webConfig extends WebMvcConfigurerAdapter {
                 //SpringBoot已经做好了静态资源映射
                 //拦截访问购物车、查看账户信息请求，没登录则不能访问
                 registry.addInterceptor(new userAccessHandlerInterceptor()).addPathPatterns("/cart/view_cart","/main/view_account").excludePathPatterns("");
-//                registry.addInterceptor(new errorHandlerInterceptor()).addPathPatterns("/**").excludePathPatterns("/common/error.html");
                 registry.addInterceptor(new errorHandlerInterceptor()).addPathPatterns("/*","/cart/*","/catalog/*","/main/*","/useraccess/*").excludePathPatterns("/cart/view_cart"
                         ,"/cart/add_item_","/cart/remove_item_from_cart","/catalog/viewCategory","/catalog/viewProduct","/catalog/viewItem"
                         ,"common/error.html","/main/view_main","/main/sign_out","/main/sign_out","/main/search","/main/view_account"

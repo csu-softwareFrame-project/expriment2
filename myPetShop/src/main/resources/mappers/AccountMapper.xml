@@ -92,7 +92,7 @@
 
     <insert id="insertProfile" parameterType="Account">
     INSERT INTO PROFILE (LANGPREF, FAVCATEGORY, USERID,MYLISTOPT,BANNEROPT)
-    VALUES (#{languagePreference}, #{favouriteCategoryId}, #{username},#{listOption},#{bannerOption})
+    VALUES (#{languagePreference}, #{favouriteCategoryId}, #{username},#{listOption},#{booleanBannerOption})
   </insert>
 
     <update id="updateSignon" parameterType="Account">
