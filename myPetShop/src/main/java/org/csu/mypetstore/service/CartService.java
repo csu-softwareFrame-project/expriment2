@@ -65,10 +65,17 @@ public class CartService {
         cartItemMapper.clear(username);
     }
 
+    //查看购物车
     public void viewCart(HttpSession session, Model model){
         Account account = (Account) session.getAttribute("loginUser");
         String username = account.getUsername();
         List<CartItem> list = getCartItemListByUsername(username);
+//        System.out.println(list.get(0).getItem().getProductId()+" "+list.get(0).getItem().getItemId());
         model.addAttribute("cart",list);
+    }
+
+    public void removeCartItem(String itemId,HttpSession session){
+        Account account = (Account)(session.getAttribute("loginUser"));
+        removeCartItem(account.getUsername(),itemId);
     }
 }

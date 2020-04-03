@@ -1,7 +1,5 @@
 package org.csu.mypetstore.persistence;
 
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
 import org.csu.mypetstore.domain.Account;
 import org.springframework.stereotype.Repository;
 
