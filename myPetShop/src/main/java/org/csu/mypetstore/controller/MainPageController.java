@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
 public class MainPageController {
 
     //进入主页
-    @GetMapping("/viewmain")
+    @GetMapping("/view_main")
     public String viewMain(){
         return "catalog/main";
     }
@@ -30,7 +30,6 @@ public class MainPageController {
         session.removeAttribute("loginUser");
         return "catalog/main";
     }
-
 
     //搜索功能
     @PostMapping("/search")
@@ -44,9 +43,4 @@ public class MainPageController {
         return "account/editAccountForm";
     }
 
-    //利用springboot精准匹配的原则处理404
-    @RequestMapping("**")
-    public String handle404(){
-        return "common/error";
-    }
 }

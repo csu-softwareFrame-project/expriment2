@@ -200,7 +200,7 @@
         <h1 class="press">MyPetStore</h1>
         <div id="templatemo_menu" class="ddsmoothmenu">
             <ul>
-                <li><a href="/main/viewmain" class="selected">Home</a></li>
+                <li><a href="/main/view_main" class="selected">Home</a></li>
                 <li th:if="${session.loginUser}==null"><a href="/useraccess/view_login">Sign In</a></li>
                 <li th:if="${session.loginUser}!=null"> <a href="/main/view_account">Account</a>
                     <ul>

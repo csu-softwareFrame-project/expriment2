@@ -5,6 +5,7 @@ import org.csu.mypetstore.domain.Cart;
 import org.csu.mypetstore.domain.CartItem;
 import org.csu.mypetstore.domain.Item;
 import org.csu.mypetstore.persistence.CartItemMapper;
+import org.csu.mypetstore.persistence.ItemMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -15,6 +16,8 @@ import java.util.List;
 @Service
 public class CartService {
 
+    @Autowired
+    private ItemMapper itemMapper;
     @Autowired
     private CartItemMapper cartItemMapper;
     @Autowired
@@ -74,8 +77,27 @@ public class CartService {
         model.addAttribute("cart",list);
     }
 
+    //将指定物品移出购物车
     public void removeCartItem(String itemId,HttpSession session){
         Account account = (Account)(session.getAttribute("loginUser"));
         removeCartItem(account.getUsername(),itemId);
+    }
+
+
+    public boolean addCartItem(String itemId,HttpSession session,Model model){
+        Account account = (Account)(session.getAttribute("loginUser"));
+        int stock = catalogService.getInventoryQuantity(itemId);
+        if(stock<=0){
+            model.addAttribute("msg","库存空了");
+            return false;
+        }else{
+            Item item = itemMapper.getItem(itemId);
+            CartItem cartItem = new CartItem();
+            cartItem.setItem(item);
+            cartItem.setQuantity(stock);
+            cartItem.setInStock(true);
+            insertCartItem(account.getUsername(),cartItem);
+            return true;
+        }
     }
 }
