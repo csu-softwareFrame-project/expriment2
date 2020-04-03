@@ -85,14 +85,14 @@
     UPDATE PROFILE SET
       LANGPREF = #{languagePreference},
       FAVCATEGORY = #{favouriteCategoryId},
-      MYLISTOPT = #{listOption},
-      BANNEROPT = #{bannerOption}
+      MYLISTOPT = #{booleanListOption},
+      BANNEROPT = #{booleanBannerOption}
     WHERE USERID = #{username}
   </update>
 
     <insert id="insertProfile" parameterType="Account">
     INSERT INTO PROFILE (LANGPREF, FAVCATEGORY, USERID,MYLISTOPT,BANNEROPT)
-    VALUES (#{languagePreference}, #{favouriteCategoryId}, #{username},#{listOption},#{booleanBannerOption})
+    VALUES (#{languagePreference}, #{favouriteCategoryId}, #{username},#{booleanListOption},#{booleanBannerOption})
   </insert>
 
     <update id="updateSignon" parameterType="Account">
