@@ -25,10 +25,10 @@
     AND I.PRODUCTID = #{value}
   </select>
 
-    <select id="getInventoryQuantity" parameterType="string" resultType="int">
-    SELECT QTY AS value
-    FROM INVENTORY
-    WHERE ITEMID = #{itemId}
+  <select id="getOrderQuantity" parameterType="string" resultType="int">
+    SELECT QUANTITY
+    FROM LINEITEM
+    WHERE
   </select>
 
     <select id="getItem" parameterType="string" resultType="Item">

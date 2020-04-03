@@ -31,7 +31,7 @@ public class OrderService {
         for (int i = 0; i < order.getLineItems().size(); i++) {  //对订单内所有的产品进行库存更新
             LineItem lineItem = (LineItem) order.getLineItems().get(i);
             String itemId = lineItem.getItemId();
-            int increment = lineItem.getQuantity();
+            int increment = lineItem.getQuantity();  //注意此处设置的数量是购买的数量而不是库存数量
             itemMapper.updateInventoryQuantity(increment,itemId);  //更新产品库存数量
         }
 
@@ -51,7 +51,7 @@ public class OrderService {
         for (int i = 0; i < order.getLineItems().size(); i++) {  //获取订单内产品详情（一般用不到）
             LineItem lineItem = (LineItem) order.getLineItems().get(i);
             Item item = itemMapper.getItem(lineItem.getItemId());
-            item.setQuantity(itemMapper.getInventoryQuantity(lineItem.getItemId()));
+            item.setQuantity(orderMapper.getOrderItemQuantity(orderId,item.getItemId()));
             lineItem.setItem(item);
         }
 
@@ -59,8 +59,27 @@ public class OrderService {
     }
 
     public List<Order> getOrdersByUsername(String username) {
-        return orderMapper.getOrdersByUsername(username);
+        List<Order> orderList = orderMapper.getOrdersByUsername(username);
+        Order order = new Order();
+        for(int i=0;i<orderList.size();i++)
+        {
+            orderList.get(i).setLineItems(lineItemMapper.getLineItemsByOrderId(orderList.get(i).getOrderId()));
+            for(int j=0;j<orderList.get(i).getLineItems().size();j++)
+            {
+                LineItem lineItem = (LineItem) orderList.get(i).getLineItems().get(j);
+                Item item = itemMapper.getItem(lineItem.getItemId());
+                item.setQuantity(orderMapper.getOrderItemQuantity(orderList.get(i).getOrderId(),item.getItemId()));
+                lineItem.setItem(item);
+            }
+        }
+
+        return orderList;
     }  //根据用户名获取订单
+
+    public int getOrderItemQuantity(int orderId,String itemId)
+    {
+        return orderMapper.getOrderItemQuantity(orderId,itemId);
+    }
 
     public int getNextId(String name) {  //获取订单号，name填ordernum
         Sequence sequence = new Sequence(name, -1);

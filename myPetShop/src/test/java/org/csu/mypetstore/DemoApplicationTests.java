@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -158,7 +159,7 @@ class DemoApplicationTests {
     }
 
     @Test
-    void testOrderInsert()
+    void testOrderInsert()  //测试通过
     {
         Order order = new Order();
         order.setShipCountry("China");
@@ -170,7 +171,7 @@ class DemoApplicationTests {
         order.setShipToFirstName("Z");
         order.setShipToLastName("J");
         order.setTotalPrice(new BigDecimal("998"));
-        order.setUsername("hahaha");
+        order.setUsername("5545");
         order.setOrderDate(new Date());
         order.setBillCountry("China");
         order.setBillZip("FJ");
@@ -187,53 +188,132 @@ class DemoApplicationTests {
         order.setLocale("lalalal");
         order.setCourier("Bob");
         order.setOrderId(996);
+
+        LineItem lineItem = new LineItem();
+        lineItem.setLineNumber(997);
+        lineItem.setOrderId(996);
+        Item item = catalogService.getItem("EST-15");
+        lineItem.setItem(item);
+        lineItem.setUnitPrice(item.getUnitCost());
+        lineItem.setQuantity(20);
+        lineItem.setItemId(item.getItemId());
+        List<LineItem> lineItemList = new ArrayList<>();
+        lineItemList.add(lineItem);
+        order.setLineItems(lineItemList);
+
         orderService.insertOrder(order);
     }
 
     @Test
-    void testOrderGet()
+    void testOrderGet()  //测试通过
     {
-        Order order = orderService.getOrder(1001);
-        System.out.println(order.getExpiryDate() + "," + order.getLineItems().get(0).getItemId());
+        Order order = orderService.getOrder(1006);
+        System.out.println(order.getLineItems().get(0).getItem().getQuantity());
+
+        System.out.println(order.getLineItems().size());
+        System.out.println(order.getLineItems().get(0).getUnitPrice());
+        System.out.println(order.getLineItems().get(0).getLineNumber());
+        System.out.println(order.getLineItems().get(0).getItemId());
+        System.out.println(order.getLineItems().get(0).getOrderId());
+        System.out.println(order.getLineItems().get(0).getQuantity());
+        System.out.println(order.getLineItems().get(0).getTotal());
+        System.out.println(order.getOrderId());
+        System.out.println(order.getExpiryDate());
+        System.out.println(order.getStatus());
+        System.out.println(order.getLocale());
+        System.out.println(order.getCardType());
+        System.out.println(order.getCreditCard());
+        System.out.println(order.getTotalPrice());
+        System.out.println(order.getCourier());
+        System.out.println(order.getOrderDate());
+        System.out.println(order.getUsername());
+
+        System.out.println(order.getBillAddress1());
+        System.out.println(order.getBillToLastName());
+        System.out.println(order.getBillAddress2());
+        System.out.println(order.getBillToFirstName());
+        System.out.println(order.getBillCountry());
+        System.out.println(order.getBillZip());
+        System.out.println(order.getBillState());
+        System.out.println(order.getBillCity());
+
+        System.out.println(order.getShipAddress1());
+        System.out.println(order.getShipToLastName());
+        System.out.println(order.getShipAddress2());
+        System.out.println(order.getShipToFirstName());
+        System.out.println(order.getShipCountry());
+        System.out.println(order.getShipZip());
+        System.out.println(order.getShipState());
+        System.out.println(order.getShipCity());
     }
 
     @Test
-    void testOrderGetByUsername()
+    void testOrderGetByUsername()  //测试通过
     {
-        List<Order> orderList = orderService.getOrdersByUsername("hahaha");
-        System.out.println(orderList.size() + "," + orderList.get(0).getShipState());
+        List<Order> orderList = orderService.getOrdersByUsername("5545");
+        System.out.println(orderList.get(0).getLineItems().get(0).getItem().getQuantity());
+        System.out.println(orderList.size());
+
+        System.out.println(orderList.get(0).getBillCountry());
+        System.out.println(orderList.get(0).getBillZip());
+        System.out.println(orderList.get(0).getBillState());
+        System.out.println(orderList.get(0).getBillCity());
+        System.out.println(orderList.get(0).getBillToFirstName());
+        System.out.println(orderList.get(0).getBillToLastName());
+        System.out.println(orderList.get(0).getBillAddress1());
+        System.out.println(orderList.get(0).getBillAddress2());
+
+        System.out.println(orderList.get(0).getShipCountry());
+        System.out.println(orderList.get(0).getShipZip());
+        System.out.println(orderList.get(0).getShipState());
+        System.out.println(orderList.get(0).getShipCity());
+        System.out.println(orderList.get(0).getShipToFirstName());
+        System.out.println(orderList.get(0).getShipToLastName());
+        System.out.println(orderList.get(0).getShipAddress1());
+        System.out.println(orderList.get(0).getShipAddress2());
+
+        System.out.println(orderList.get(0).getUsername());
+        System.out.println(orderList.get(0).getOrderDate());
+        System.out.println(orderList.get(0).getCourier());
+        System.out.println(orderList.get(0).getTotalPrice());
+        System.out.println(orderList.get(0).getCreditCard());
+        System.out.println(orderList.get(0).getCardType());
+        System.out.println(orderList.get(0).getLocale());
+        System.out.println(orderList.get(0).getExpiryDate());
+        System.out.println(orderList.get(0).getOrderId());
+        System.out.println(orderList.get(0).getStatus());
     }
 
     @Test
-    void testNestIdGet()
+    void testNestIdGet()  //测试通过
     {
         int nextId = orderService.getNextId("ordernum");
         System.out.println(nextId);
     }
 
     @Test
-    void testCartItemListGet()
+    void testCartItemListGet()  //测试通过
     {
         List<CartItem> cartItemList = cartService.getCartItemListByUsername("233");
-        System.out.println(cartItemList.get(1).getItem().getProductId());
-//        System.out.println(cartItemList.get(0).getItemId());
-//        System.out.println(cartItemList.get(1).getItemId());
-//        System.out.println(cartItemList.get(2).getItemId());
-        //System.out.println(cartItemList.size());
+        System.out.println(cartItemList.size());
+
+        System.out.println(cartItemList.get(0).getItemId());
+        System.out.println(cartItemList.get(0).getQuantity());
+        System.out.println(cartItemList.get(0).getTotal());
     }
 
     @Test
-    void testCartItemQuantityGet()
+    void testCartItemQuantityGet()  //测试通过
     {
         int quantity = cartService.getQuantity("233","EST-1");
         System.out.println(quantity);
     }
 
     @Test
-    void testCartItemInsert()
+    void testCartItemInsert()  //测试通过
     {
         CartItem cartItem = new CartItem();
-        Item item = catalogService.getItem("EST-10");
+        Item item = catalogService.getItem("EST-12");
         cartItem.setItem(item);
         cartItem.setInStock(true);
         cartItem.setQuantity(5);
@@ -244,18 +324,18 @@ class DemoApplicationTests {
     void testCartItemQuantityUpdate()
     {
         cartService.updateCartItemQuantity("233","EST-1",6);
-    }
+    }  //测试通过
 
     @Test
     void testCartItemRemove()
     {
-        cartService.removeCartItem("233","EST-10");
-    }
+        cartService.removeCartItem("233","EST-12");
+    }  //测试通过
 
     @Test
     void testCartItemClear()
     {
-        cartService.clear("a");
-    }
+        cartService.clear("233");
+    }  //测试通过
 
 }

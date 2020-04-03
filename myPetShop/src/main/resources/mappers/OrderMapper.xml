@@ -69,6 +69,12 @@
     ORDER BY ORDERDATE
   </select>
 
+  <select id="getOrderItemQuantity" resultType="int">
+    SELECT QUANTITY
+    FROM LINEITEM
+    WHERE ORDERID = #{orderId} AND ITEMID = #{itemId}
+  </select>
+
     <insert id="insertOrder" parameterType="Order">
     INSERT INTO ORDERS (ORDERID, USERID, ORDERDATE, SHIPADDR1, SHIPADDR2, SHIPCITY, SHIPSTATE,
       SHIPZIP, SHIPCOUNTRY, BILLADDR1, BILLADDR2, BILLCITY, BILLSTATE, BILLZIP, BILLCOUNTRY,

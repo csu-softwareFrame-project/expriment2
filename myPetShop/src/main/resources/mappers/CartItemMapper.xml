@@ -13,7 +13,7 @@
     <insert id="insertCartItem">
         INSERT INTO CARTITEM
         (USERNAME, ITEMID, QUANTITY, INSTOCK)
-        VALUES (#{username},#{cartItem.itemId},#{cartItem.quantity},#{cartItem.inStock})
+        VALUES (#{username},#{cartItem.item.itemId},#{cartItem.quantity},#{cartItem.inStock})
     </insert>
 
     <delete id="removeCartItem">
