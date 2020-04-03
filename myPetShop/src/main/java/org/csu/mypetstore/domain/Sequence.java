@@ -33,4 +33,12 @@ public class Sequence implements Serializable {
         this.nextId = nextId;
     }
 
+    public String toString()
+    {
+        String info = new String();
+        info = getName();
+        info = info + '\n' + getNextId();
+
+        return info;
+    }
 }

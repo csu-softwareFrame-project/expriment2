@@ -87,4 +87,18 @@ public class LineItem implements Serializable {
             total = null;
         }
     }
+
+    public String toString()
+    {
+        String info = new String();
+        info = Integer.toString(getOrderId());
+        info = info + '\n' + getLineNumber();
+        info = info + '\n' + getQuantity();
+        info = info + '\n' + getItemId();
+        info = info + '\n' + getUnitPrice();
+        info = info + '\n' + getItem().toString();
+        info = info + '\n' + getTotal();
+
+        return info;
+    }
 }

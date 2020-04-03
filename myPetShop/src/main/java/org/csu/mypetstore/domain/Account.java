@@ -188,9 +188,28 @@ public class Account implements Serializable {
         this.bannerOption = bannerOption;
     }
 
-    //    @Override
-//    public String toString(){
-//        return username+" "+password+" "+email;
-//    }
+    public String toString()
+    {
+        String info = new String();
+        info = getUsername();
+        info = info + '\n' + getPassword();
+        info = info + '\n' + getEmail();
+        info = info + '\n' + getFirstName();
+        info = info + '\n' + getLastName();
+        info = info + '\n' + getStatus();
+        info = info + '\n' + getAddress1();
+        info = info + '\n' + getAddress2();
+        info = info + '\n' + getCity();
+        info = info + '\n' + getState();
+        info = info + '\n' + getZip();
+        info = info + '\n' + getCountry();
+        info = info + '\n' + getPhone();
+        info = info + '\n' + getFavouriteCategoryId();
+        info = info + '\n' + getLanguagePreference();
+        info = info + '\n' + getListOption();
+        info = info + '\n' + getBannerOption();
+        info = info + '\n' + getBannerName();
 
+        return info;
+    }
 }

@@ -125,6 +125,21 @@ public class Item implements Serializable {
     }
 
     public String toString() {
-        return "(" + getItemId() + "-" + getProductId() + ")";
+        String info = new String();
+        info = getItemId();
+        info = info + '\n' + getProductId();
+        info = info + '\n' + getListPrice();
+        info = info + '\n' + getUnitCost();
+        info = info + '\n' + getSupplierId();
+        info = info + '\n' + getStatus();
+        info = info + '\n' + getAttribute1();
+        info = info + '\n' + getAttribute2();
+        info = info + '\n' + getAttribute3();
+        info = info + '\n' + getAttribute4();
+        info = info + '\n' + getAttribute5();
+        info = info + '\n' + getProduct().toString();
+        info = info + '\n' + getQuantity();
+
+        return info;
     }
 }

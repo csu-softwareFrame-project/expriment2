@@ -304,4 +304,37 @@ public class Order implements Serializable {
         lineItems.add(lineItem);
     }
 
+    public String toString()
+    {
+        String info = new String();
+        info = Integer.toString(getOrderId());
+        info = info + '\n' + getUsername();
+        info = info + '\n' + getOrderDate();
+        info = info + '\n' + getShipAddress1();
+        info = info + '\n' + getShipAddress2();
+        info = info + '\n' + getShipCity();
+        info = info + '\n' + getShipState();
+        info = info + '\n' + getShipZip();
+        info = info + '\n' + getShipCountry();
+        info = info + '\n' + getShipToFirstName();
+        info = info + '\n' + getShipToLastName();
+        info = info + '\n' + getBillAddress1();
+        info = info + '\n' + getBillAddress2();
+        info = info + '\n' + getBillCity();
+        info = info + '\n' + getBillState();
+        info = info + '\n' + getBillZip();
+        info = info + '\n' + getBillCountry();
+        info = info + '\n' + getBillToFirstName();
+        info = info + '\n' + getBillToLastName();
+        info = info + '\n' + getCourier();
+        info = info + '\n' + getTotalPrice();
+        info = info + '\n' + getCreditCard();
+        info = info + '\n' + getCardType();
+        info = info + '\n' + getExpiryDate();
+        info = info + '\n' + getLocale();
+        info = info + '\n' + getStatus();
+
+        return info;
+    }
+
 }

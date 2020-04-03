@@ -43,7 +43,13 @@ public class Product implements Serializable {
   }
 
   public String toString() {
-    return getName();
+    String info = new String();
+    info = getCategoryId();
+    info = info + '\n' + getName();
+    info = info + '\n' + getDescription();
+    info = info + '\n' + getProductId();
+
+    return info;
   }
 
 }

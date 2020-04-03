@@ -46,4 +46,14 @@ public class Log {
             log2 = "No action.";
         }
     }
+
+    public String toString()
+    {
+        String info = new String();
+        info = getTime();
+        info = info + 'n' + getLog();
+        info = info + 'n' + getLog2();
+
+        return info;
+    }
 }

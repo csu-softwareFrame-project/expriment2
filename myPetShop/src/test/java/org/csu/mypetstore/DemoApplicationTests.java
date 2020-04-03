@@ -37,7 +37,8 @@ class DemoApplicationTests {
     @Test
     void testCategory(){  //测试通过
         Category c = catalogService.getCategory("CATS");
-        System.out.println(c.getName()+" :"+c.getDescription()+";\n id: "+c.getCategoryId()+", ");
+        String info = c.toString();
+        System.out.println(info);
     }//success
 
     @Test
@@ -58,7 +59,8 @@ class DemoApplicationTests {
     void testProduct()  //测试通过
     {
         Product product = catalogService.getProduct("FI-SW-01");
-        System.out.println(product.getProductId());
+        String info = product.toString();
+        System.out.println(info);
     }
 
     @Test
@@ -86,6 +88,8 @@ class DemoApplicationTests {
     void testItem()  //测试通过
     {
         Item item = catalogService.getItem("EST-10");
+        String info = item.toString();
+        System.out.println(info);
     }
 
     @Test
@@ -104,7 +108,8 @@ class DemoApplicationTests {
     void testAccountByUsernameAndPassword()  //测试通过
     {
         Account account = accountService.getAccount("233","123");
-
+        String info = account.toString();
+        System.out.println(info);
     }
 
     @Test

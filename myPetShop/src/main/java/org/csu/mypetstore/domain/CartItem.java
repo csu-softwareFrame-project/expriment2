@@ -59,4 +59,16 @@ public class CartItem implements Serializable {
         }
     }
 
+    public String toString()
+    {
+        String info = new String();
+        info = getItem().toString();
+        info = info + '\n' + getItemId();
+        info = info + '\n' + getQuantity();
+        info = info + '\n' + getTotal();
+        info = info + '\n' + isInStock();
+
+        return info;
+    }
+
 }
