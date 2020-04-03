@@ -5,10 +5,12 @@ import org.csu.mypetstore.domain.Account;
 import org.csu.mypetstore.persistence.AccountMapper;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 @Service
@@ -32,6 +34,7 @@ public class AccountService {
 
     //todo insertProfile有问题
     public void insertAccount(Account account) {  //使用时注意填写信息要完整，不然可能出现前面一个表插入以后后面的表插入失败，这样子再次插入时会提示用户已存在
+        if(account.getBannerOption() == null) account.setFavouriteCategoryId("NOBANNER");//默认NOBANNER
         accountMapper.insertAccount(account);
         accountMapper.insertProfile(account);
         accountMapper.insertSignon(account);
@@ -50,7 +53,7 @@ public class AccountService {
         return accountMapper.getPasswordByUsername(username);
     }
 
-    public boolean userAccessService(String username, String password, Map<String,Object> map, Model model){
+    public boolean userAccessService(String username, String password, String checkCode, HttpSession session, Map<String,Object> map, Model model){
         String pswd = accountMapper.getPasswordByUsername(username);
         if(pswd == null){
             if(Constants.DEBUG_MODE&&Constants.DEBUG_CONTROLLER)System.out.println("用户名不存在");
@@ -58,6 +61,27 @@ public class AccountService {
             pswd = "";
         }
         if(pswd.equals(password)) {
+            String right = (String)session.getAttribute("checkCode");//从服务器获取正确验证码
+            if(checkCode != null && right != null){
+                if(right.isEmpty()){
+                    map.put("msg","请获取邮箱验证码");
+                    return false;
+                }
+                if(checkCode.isEmpty()){
+                    map.put("msg","请输入收到的邮箱验证码");
+                    return false;
+                }
+                if(!right.equals(checkCode) && Constants.EMAIL_VERIFY){
+                    map.put("msg","邮箱验证码错误");
+                    return false;
+                }
+            }else if(checkCode == null){
+                map.put("msg","请输入验证码");
+                return false;
+            }else if(right == null){
+                map.put("msg","验证码发送失败，请检查您的网络情况");
+                return false;
+            }
             if(Constants.DEBUG_MODE&&Constants.DEBUG_CONTROLLER)System.out.println("登录成功");
             Account account = getAccount(username);
             model.addAttribute("loginUser",account);//登录成功把用户信息放进session

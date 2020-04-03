@@ -24,11 +24,7 @@
                 <th><b>Total Cost</b></th>
                 <th>&nbsp;</th>
             </tr>
-
-            <tr th:each="cart_item:${cart}">
-                [[${cart_item.item.itemId}]]
-
-            </tr>
+            <tr th:each="cart_item:${cart}"></tr>
             <tr th:if="${#lists.isEmpty(cart)}">
                 <td colspan="8"><b>Your cart is empty.</b></td>
             </tr>
@@ -69,7 +65,7 @@
 
 <!--    <p th:if="${cart.numberOfItems}>!=0">-->
     <div>
-        <font size="3px"><a href="viewNewOrder" class="fa fa-shopping-cart">&nbsp&nbspProceed to Checkout</a></font>
+        <font size="3px"><a href="/order/view_new_order" class="fa fa-shopping-cart">&nbsp&nbspProceed to Checkout</a></font>
     </div>
     </p>
 

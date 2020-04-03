@@ -57,6 +57,7 @@ public class CatalogService {
     }  //获取产品库存
 
     public Item getItem(String itemId) {
+        System.out.println(itemId);
         Item item = itemMapper.getItem(itemId);
         item.setProductId(item.getProduct().getProductId());
 

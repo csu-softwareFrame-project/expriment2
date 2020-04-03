@@ -30,9 +30,12 @@ public class webConfig extends WebMvcConfigurerAdapter {
             public void addInterceptors(InterceptorRegistry registry){
                 //add...添加拦截映射， exclude排除拦截映射
                 //SpringBoot已经做好了静态资源映射
-                //拦截访问购物车、查看账户信息请求，没登录则不能访问
-                registry.addInterceptor(new userAccessHandlerInterceptor()).addPathPatterns("/cart/view_cart","/main/view_account").excludePathPatterns("");
-                registry.addInterceptor(new errorHandlerInterceptor()).addPathPatterns("/cart/view_cart");
+                //拦截访问购物车、查看账户信息、添加到购物车请求，没登录则不能访问
+                registry.addInterceptor(new userAccessHandlerInterceptor()).addPathPatterns("/cart/view_cart","/main/view_account","/cart/add_item_to_cart").excludePathPatterns("");
+                registry.addInterceptor(new errorHandlerInterceptor()).addPathPatterns("/*","/cart/*","/catalog/*","/main/*","/useraccess/*").excludePathPatterns("/cart/view_cart"
+                        ,"/cart/add_item_","/cart/remove_item_from_cart","/catalog/viewCategory","/catalog/viewProduct","/catalog/viewItem"
+                        ,"common/error.html","/main/view_main","/main/sign_out","/main/sign_out","/main/search","/main/view_account"
+                        ,"/useraccess/view_login","/useraccess/verifyCode","/useraccess/login","/useraccess/view_sign_up","/useraccess/sign_up");
                 //                registry.addInterceptor(new errorHandlerInterceptor()).addPathPatterns("/main/viewmaina");
                 //super.addInterceptors(registry);
             }

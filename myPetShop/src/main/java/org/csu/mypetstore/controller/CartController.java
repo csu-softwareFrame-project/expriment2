@@ -1,5 +1,6 @@
 package org.csu.mypetstore.controller;
 
+import org.csu.mypetstore.Constants;
 import org.csu.mypetstore.domain.Account;
 import org.csu.mypetstore.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,27 +27,26 @@ public class CartController {
     //查看购物车
     @GetMapping("/view_cart")
     public String viewCart(HttpSession session, Model model){
+        if(Constants.DEBUG_CONTROLLER) System.out.println("查看购物车");
         cartService.viewCart(session,model);
         return "cart/cart";
     }
 
     //添加到购物车
-    @PostMapping("/add_item_to_cart")
-    public String addToCart(String workingItemId){
-        return "cart/cart";
+    @GetMapping("/add_item_to_cart")
+    public String addToCart(String itemId,String productId,HttpSession session,Model model){
+        if(Constants.DEBUG_CONTROLLER) System.out.println("添加 itemID： "+itemId+" 进购物车");
+        if(cartService.addCartItem(itemId,session,model)) return "forward:/cart/view_cart";
+        else return "viewProduct?productId="+productId;
     }
 
     //从购物车中移出
     @GetMapping("/remove_item_from_cart")
     public String removeItemFromCart(String cartItemId,HttpSession session,Model model){
+        if(Constants.DEBUG_CONTROLLER) System.out.println("移 itemID： "+cartItemId+" 出购物车");
         cartService.removeCartItem(cartItemId,session);
         cartService.viewCart(session,model);
         return "cart/cart";
     }
 
-    //利用springboot精准匹配的原则处理404
-    @RequestMapping(value = "**")
-    public String handle404(){
-        return "common/error";
-    }
 }

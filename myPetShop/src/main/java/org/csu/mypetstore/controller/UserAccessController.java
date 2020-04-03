@@ -5,6 +5,7 @@ import org.csu.mypetstore.domain.Account;
 import org.csu.mypetstore.service.AccountService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -38,14 +39,15 @@ public class UserAccessController {
     @PostMapping("/login")
     public String logIn(String username, String password, String email, String checkCode, Map<String,Object> map, Model model, HttpSession session){
         System.out.println(checkCode);//从用户处获取验证码
-        System.out.println(session.getAttribute("checkCode"));//从服务器获取正确验证码
         System.out.println(username);
         System.out.println(password);
         System.out.println(email);
-        if(accountService.userAccessService(username, password, map, model)){
+        if(accountService.userAccessService(username, password,checkCode,session,map, model)){
+            session.removeAttribute("checkCode");
             System.out.println("登录成功");
-            return "catalog/main";
+            return "redirect:/main/view_main";
         }else {
+            session.removeAttribute("checkCode");
             System.out.println("登录失败");
             return "account/signonForm";
         }
@@ -57,8 +59,9 @@ public class UserAccessController {
     public String viewSignUp(){ return "account/newAccountForm"; }
 
     //注册功能跳转
-    @PostMapping("/sign_up")
-    public String signUp(Account account,String repeatedPassword, Map<String,Object> map){
+    @PostMapping("/sign_up")//一个小坑：用类获取参数的时候，类的属性名要和前端的name一样
+    public String signUp( Account account, String repeatedPassword, Map<String,Object> map){
+        System.out.println(account.getAddress2()+" "+account.getEmail());
         if(accountService.signUpservice(account,repeatedPassword,map)) {
             return "account/signOnForm";
         } else{
@@ -74,11 +77,5 @@ public class UserAccessController {
 //        return "catalog/main";
 //    }
 
-
-    //利用springboot精准匹配的原则处理404
-    @RequestMapping("**")
-    public String handle404(){
-        return "common/error";
-    }
 
 }

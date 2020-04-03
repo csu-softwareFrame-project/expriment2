@@ -42,9 +42,10 @@
             </td>
             <td th:text="${#numbers.formatDecimal(item.listPrice,0,2)}"></td>
             <td>
-                <a class="Button" th:href="@{'/catalog/add_item_to_cart?workingItemId='+${item.itemId}}" th:text="'Add to Cart'">Add to Cart</a>
+                <a class="Button" th:href="@{'/cart/add_item_to_cart?itemId='+${item.itemId}+'&productId='+${product.productId}}" th:text="'Add to Cart'">Add to Cart</a>
             </td>
         </tr>
+        <p th:text="${msg}" th:if="${#msg != null}"></pth>
     </table>
 
 </div>

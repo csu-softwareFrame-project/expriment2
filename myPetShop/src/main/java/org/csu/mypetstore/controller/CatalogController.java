@@ -63,10 +63,4 @@ public class CatalogController {
         return "";
     }
 
-    //todo 会丢失css和js样式
-    //利用springboot精准匹配的原则处理404
-    @RequestMapping("**")
-    public String handle404(){
-        return "common/error";
-    }
 }

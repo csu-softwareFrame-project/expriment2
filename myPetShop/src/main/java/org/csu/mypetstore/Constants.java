@@ -7,4 +7,5 @@ public interface Constants {
     static final boolean DEBUG_MODE = true;
     static final boolean DEBUG_SERVICE = false;
     static final boolean DEBUG_CONTROLLER = true;
+    static final boolean EMAIL_VERIFY = false;//开启邮箱验证
 }
