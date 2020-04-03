@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My Pet Store</title>
+</head>
+<body>
+<div th:replace="common/top">
+
+</div>
+
+<div>
+    <%@ include file="../common/IncludeTop.jsp"%>
+
+    <div id="templatemo_main" align="center">
+
+        <div>
+            <a href="main">Return to Main Menu</a>
+        </div>
+
+        <table id="table-4">
+            <tr>
+                <th align="center" colspan="2" th:text="${#dates.format(${order.orderDate},'yyyy-MM-dd HH:mm:ss')}">Order #${sessionScope.order.orderId}</th>
+            </tr>
+            <tr>
+                <th colspan="2">Payment Details</th>
+            </tr>
+            <tr>
+                <td>Card Type:</td>
+                <td th:value="${order.cardType}"></td>
+            </tr>
+            <tr>
+                <td>Card Number:</td>
+                <td th:value="${order.creditCard}"> * Fake
+                    number!</td>
+            </tr>
+            <tr>
+                <td>Expiry Date (MM/YYYY):</td>
+                <td th:value="${order.expiryDate}"></td>
+            </tr>
+            <tr>
+                <th colspan="2">Billing Address</th>
+            </tr>
+            <tr>
+                <td>First name:</td>
+                <td th:value="${order.billToFirstName}"></td>
+            </tr>
+            <tr>
+                <td>Last name:</td>
+                <td th:value="${order.billToLastName}"></td>
+            </tr>
+            <tr>
+                <td>Address 1:</td>
+                <td th:value="${order.billAddress1}"></td>
+            </tr>
+            <tr>
+                <td>Address 2:</td>
+                <td th:value="${order.billAddress2}"></td>
+            </tr>
+            <tr>
+                <td>City:</td>
+                <td th:value="${order.billCity}"></td>
+            </tr>
+            <tr>
+                <td>State:</td>
+                <td th:value="${order.billState}"></td>
+            </tr>
+            <tr>
+                <td>Zip:</td>
+                <td th:value="${order.billZip}"></td>
+            </tr>
+            <tr>
+                <td>Country:</td>
+                <td th:value="${order.billCountry}"></td>
+            </tr>
+            <tr>
+                <th colspan="2">Shipping Address</th>
+            </tr>
+            <tr>
+                <td>First name:</td>
+                <td th:value="${order.shipToFirstName}"></td>
+            </tr>
+            <tr>
+                <td>Last name:</td>
+                <td th:value="${order.shipToLastName}"></td>
+            </tr>
+            <tr>
+                <td>Address 1:</td>
+                <td th:value="${order.shipAddress1}"></td>
+            </tr>
+            <tr>
+                <td>Address 2:</td>
+                <td th:value="${order.shipAddress2}"></td>
+            </tr>
+            <tr>
+                <td>City:</td>
+                <td th:value="${order.shipCity}"></td>
+            </tr>
+            <tr>
+                <td>State:</td>
+                <td th:value="${order.shipState}"></td>
+            </tr>
+            <tr>
+                <td>Zip:</td>
+                <td th:value="${order.shipZip}"></td>
+            </tr>
+            <tr>
+                <td>Country:</td>
+                <td th:value="${order.shipCountry}"></td>
+            </tr>
+            <tr>
+                <td>Courier:</td>
+                <td th:value="${order.courier}"></td>
+            </tr>
+            <tr>
+                <td colspan="2" th:text="'Status: '+${order.status}"></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <table>
+                        <tr>
+                            <th>Item ID</th>
+                            <th>Description</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Total Cost</th>
+                        </tr>
+                        <tr th:each="lineItem:${order.lineItems}">
+                            <td>
+                                <a href="viewItem?itemId=${lineItem.item.itemId}">${lineItem.item.itemId}</a>
+                            </td>
+                            <td th:if="${lineItem.item}!=null">
+                                b><font size="1" th:if="${lineItem.item.attribute1}!=null" th:text="${lineItem.item.attribute1}+' '"></font></b>
+                                <b><font size="1" th:if="${lineItem.item.attribute2}!=null" th:text="${lineItem.item.attribute2}+' '"></font></b>
+                                <b><font size="1" th:if="${lineItem.item.attribute3}!=null" th:text="${lineItem.item.attribute3}+' '"></font></b>
+                                <b><font size="1" th:if="${lineItem.item.attribute4}!=null" th:text="${lineItem.item.attribute4}+' '"></font></b>
+                                <b><font size="1" th:if="${lineItem.item.attribute5}!=null" th:text="${lineItem.item.attribute5}+' '"></font></b>
+                                <b><font size="1" th:if="${lineItem.item.product.name}!=null" th:text="${lineItem.item.product.name}+' '"></font></b>
+                            </td>
+                            <td th:if="${lineItem.item}==null">
+                                <i>{description unavailable}</i>
+                            </td>
+
+                            <td>${lineItem.quantity}</td>
+                            <td th:text="${#numbers.formatDecimal(${lineItem.unitPrice},0,2)}"></td>
+                            <td th:text="${#numbers.formatDecimal(${lineItem.total},0,2)}"></td>
+                        </tr>
+                        <tr>
+                            <th colspan="5" th:text="${#numbers.formatDecimal(${order.totalPrice},0,2)}"></th>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <%@ include file="../common/IncludeBottom.jsp"%>
+
+</div>
+
+<div th:replace="common/buttom">
+
+</div>
+</body>
+</html>
