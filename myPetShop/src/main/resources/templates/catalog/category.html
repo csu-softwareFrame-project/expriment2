@@ -13,7 +13,7 @@
 
     <h2 th:text="${category.name}" th:if="${category != null}">Category</h2>
     <div>
-        <a href="/main/viewmain">Return to Main Menu</a>
+        <a href="/main/view_main">Return to Main Menu</a>
     </div>
     <br>
     <div  align="center" >
@@ -29,12 +29,12 @@
             </tr>
 
             <tr th:if="${categoryList != null}">
+                <th>ID</th>
                 <th>Name</th>
-                <th>Description</th>
             </tr>
             <tr th:each="category:${categoryList}" th:if="${categoryList != null}">
-                <td><a th:href="@{'/catalog/viewCategory?categoryId='+${category.name}}" th:text="${category.name}"></a></td>
-                <td ><img th:src="${category.description}"></td>
+                <td><a th:href="@{'/catalog/viewCategory?categoryId='+${category.name}}" th:text="${category.categoryId}"></a></td>
+                <td ><a th:href="@{'/catalog/viewCategory?categoryId='+${category.name}}" th:text="${category.name}"></a></td>
             </tr>
             <!--<c:forEach var="product" items="${sessionScope.productList}">-->
                 <!--<tr>-->
