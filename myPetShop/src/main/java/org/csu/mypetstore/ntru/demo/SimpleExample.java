@@ -57,7 +57,7 @@ public class SimpleExample {
     }
 
     //自己重写的加密方法，以便数据持久化
-    public static Map<String,Object> encrypt(String password) throws IOException, ClassNotFoundException {
+    public static Map<String,Object> encrypt(String password) throws IOException {
         Map<String,Object> map = new HashMap<>();
 
         // create an instance of NtruEncrypt with a standard parameter set
@@ -84,8 +84,8 @@ public class SimpleExample {
         System.out.println("转string（加密后）：");
         System.out.println(str);
 
-        map.put("enc",str);//密文字符串
-        map.put("kp",ret);//公私钥串
+        map.put("enc",str);//密文字符串(String)
+        map.put("kp",ret);//公私钥串(byte[])
         return map;
 
     }
@@ -108,8 +108,10 @@ public class SimpleExample {
         System.out.println(after.length);
         // decrypt the message with the private key created above
         byte[] dec = ntru.decrypt(after, kp1);
-        return new String(dec);
+        return new String(dec);//密码明文
     }
+
+
 
     private static void encrypt() throws IOException, ClassNotFoundException {
         System.out.println("NTRU encryption");
