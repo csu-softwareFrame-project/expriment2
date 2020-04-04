@@ -1,5 +1,6 @@
 package org.csu.mypetstore.service;
 
+import org.csu.mypetstore.Constants;
 import org.csu.mypetstore.domain.Category;
 import org.csu.mypetstore.domain.Item;
 import org.csu.mypetstore.domain.Product;
@@ -57,7 +58,7 @@ public class CatalogService {
     }  //获取产品库存
 
     public Item getItem(String itemId) {
-        System.out.println(itemId);
+        if(Constants.DEBUG_SERVICE) System.out.println("商品号:"+itemId);
         Item item = itemMapper.getItem(itemId);
         item.setProductId(item.getProduct().getProductId());
 

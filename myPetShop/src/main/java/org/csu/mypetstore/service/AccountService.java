@@ -32,7 +32,7 @@ public class AccountService {
         return accountMapper.getAccountByUsernameAndPassword(account);
     }
 
-    //todo insertProfile有问题
+
     public void insertAccount(Account account) {  //使用时注意填写信息要完整，不然可能出现前面一个表插入以后后面的表插入失败，这样子再次插入时会提示用户已存在
         if(account.getBannerOption() == null) account.setFavouriteCategoryId("NOBANNER");//默认NOBANNER
         accountMapper.insertAccount(account);
@@ -145,6 +145,58 @@ public class AccountService {
                 account.setLanguagePreference("English");
             }
             insertAccount(account);//插入数据库
+        }
+        return success;
+    }
+
+    public boolean editAccountService(Account account,String repeatedPassword,Map<String,Object> map){
+        boolean success = true;
+        //如果用户名为空，说明注册的逻辑有bug
+        if(account.getUsername().equals("")){
+            System.out.println("修改账户信息异常：userId为空");
+            map.put("username_msg","账户信息异常");
+            success =false;
+        }
+        //密码不能修改为空
+        if(account.getPassword().equals("")){
+            System.out.println("密码不能为空");
+            map.put("password_msg","密码不能为空");
+            success = false;
+        }
+        //确认密码不能为空
+        if(repeatedPassword.equals("")){
+            System.out.println("重复密码不能为空");
+            map.put("repeated_password_msg","重复密码不能为空");
+            success = false;
+        }
+        //如果密码和确认密码不一致
+        if(!account.getPassword().equals(repeatedPassword)){
+            System.out.println("重复密码有误");
+            map.put("repeated_password_msg","重复密码有误");
+            success = false;
+        }
+
+        if(success) {
+            //前端的checkbox勾选了，返回on，没勾选，返回null;将其转化为boolean
+            if(account.getListOption() != null){
+                if (account.getListOption().equals("on")) account.setBooleanListOption(true);
+                else account.setBooleanListOption(false);
+            }else{
+                account.setBooleanListOption(false);
+            }
+            if(account.getBannerOption() != null){
+                if(account.getBannerOption().equals("on")) account.setBooleanBannerOption(true);
+                else account.setBooleanBannerOption(false);
+            }else {
+                account.setBooleanBannerOption(false);
+            }
+            if(account.getLanguagePreference() == null){
+                account.setLanguagePreference("English");
+            }else if(account.getLanguagePreference().equals("")){
+                account.setLanguagePreference("English");
+            }
+            //将修改信息同步到数据库
+            updateAccount(account);
         }
         return success;
     }

@@ -20,7 +20,7 @@ import java.util.Map;
 
 
 /**
- * @desciption:登录注册相关跳转
+ * @desciption:用户相关跳转
  * @Date:2020.4.1
  */
 @Controller
@@ -76,6 +76,8 @@ public class UserAccessController {
 //        session.removeAttribute("loginUser");
 //        return "catalog/main";
 //    }
+
+
 
 
 }

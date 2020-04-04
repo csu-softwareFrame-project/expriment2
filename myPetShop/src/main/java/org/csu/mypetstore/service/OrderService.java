@@ -1,9 +1,7 @@
 package org.csu.mypetstore.service;
 
-import org.csu.mypetstore.domain.Item;
-import org.csu.mypetstore.domain.LineItem;
-import org.csu.mypetstore.domain.Order;
-import org.csu.mypetstore.domain.Sequence;
+import org.csu.mypetstore.Constants;
+import org.csu.mypetstore.domain.*;
 import org.csu.mypetstore.persistence.ItemMapper;
 import org.csu.mypetstore.persistence.LineItemMapper;
 import org.csu.mypetstore.persistence.OrderMapper;
@@ -11,6 +9,7 @@ import org.csu.mypetstore.persistence.SequenceMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +43,8 @@ public class OrderService {
         }
     }
 
-    public Order getOrder(int orderId) {  //获取订单
+    //获取订单
+    public Order getOrder(int orderId) {
         Order order = orderMapper.getOrder(orderId);  //获取订单基本信息
         order.setLineItems(lineItemMapper.getLineItemsByOrderId(orderId));  //获取订单的产品信息
 
@@ -58,6 +58,7 @@ public class OrderService {
         return order;
     }
 
+    //根据用户名获取订单
     public List<Order> getOrdersByUsername(String username) {
         List<Order> orderList = orderMapper.getOrdersByUsername(username);
         Order order = new Order();
@@ -74,14 +75,14 @@ public class OrderService {
         }
 
         return orderList;
-    }  //根据用户名获取订单
+    }
 
-    public int getOrderItemQuantity(int orderId,String itemId)
-    {
+    public int getOrderItemQuantity(int orderId,String itemId) {
         return orderMapper.getOrderItemQuantity(orderId,itemId);
     }
 
-    public int getNextId(String name) {  //获取订单号，name填ordernum
+    //获取订单号，name填ordernum；name填要生成的号码类型，有"ordernum"和"linenum".
+    public int getNextId(String name) {
         Sequence sequence = new Sequence(name, -1);
         sequence = (Sequence) sequenceMapper.getSequence(sequence);
         if (sequence == null) {
@@ -91,5 +92,21 @@ public class OrderService {
         Sequence parameterObject = new Sequence(name, sequence.getNextId() + 1);  //获得新的订单号
         sequenceMapper.updateSequence(parameterObject);  //更新订单号序列
         return sequence.getNextId();
+    }
+
+    //获取用户的订单列表
+    public void viewOrderList(HttpSession session,Map<String,Object> map){
+       Account account =(Account) session.getAttribute("loginUser");
+       List<Order> orderList = getOrdersByUsername(account.getUsername());
+        if(Constants.DEBUG_SERVICE && !orderList.isEmpty())System.out.println("订单日期:"+orderList.get(0).getOrderDate());
+        if(Constants.DEBUG_SERVICE && orderList.isEmpty()) System.out.println(account.getUsername()+"的订单表为空");
+       map.put("orderList",orderList);
+    }
+
+    //查看具体订单信息
+    public void viewOrder(Map<String,Object> map,String orderId){
+        Order order = getOrder(Integer.parseInt(orderId));
+        if(Constants.DEBUG_SERVICE)System.out.println("订单属性:"+order.toString());
+        map.put("order",order);
     }
 }

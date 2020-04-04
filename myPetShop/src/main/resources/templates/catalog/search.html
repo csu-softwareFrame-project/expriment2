@@ -10,11 +10,11 @@
 
 <div id="templatemo_main">
     <div>
-        <a href="/catalog/view">Return to Main Menu</a>
+        <a href="/main/view_main">Return to Main Menu</a>
     </div>
     <br>
 
-    <table id="table-4">
+    <table id="table-4" th:if="${!productList.isEmpty()}">
         <tr>
             <th>&nbsp;</th>
             <th>Product ID</th>
@@ -29,7 +29,13 @@
             </td>
             <td th:text="${product.name}">product.name</td>
         </tr>
+    </table>
 
+    <!--没搜到相关产品-->
+    <table id="table-4" th:if="${productList.isEmpty()}">
+        <tr>
+            <th>没有相关产品</th>
+        </tr>
     </table>
 
 </div>
