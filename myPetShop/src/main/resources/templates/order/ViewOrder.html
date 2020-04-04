@@ -19,8 +19,7 @@
 
         <table id="table-4">
             <tr>
-<!--                <th align="center" colspan="2" th:text="${#dates.format(${order.orderDate},'yyyy-MM-dd HH:mm:ss')}">Order #${sessionScope.order.orderId}</th>-->
-                <th>占位</th>
+                <th align="center" colspan="2" th:text="${#dates.format(order.orderDate,'yyyy-MM-dd HH:mm:ss')}">Order #${sessionScope.order.orderId}</th>
             </tr>
             <tr>
                 <th colspan="2">Payment Details</th>
@@ -127,10 +126,10 @@
                         </tr>
                         <tr th:each="lineItem:${order.lineItems}">
                             <td>
-                                <a href="viewItem?itemId=${lineItem.item.itemId}">${lineItem.item.itemId}</a>
+                                <a th:href="@{'viewItem?itemId='+${lineItem.item.itemId}}" th:text="${lineItem.item.itemId}">lineItem.item.itemId</a>
                             </td>
                             <td th:if="${lineItem.item}!=null">
-                                b><font size="1" th:if="${lineItem.item.attribute1}!=null" th:text="${lineItem.item.attribute1}+' '"></font></b>
+                                <b><font size="1" th:if="${lineItem.item.attribute1}!=null" th:text="${lineItem.item.attribute1}+' '"></font></b>
                                 <b><font size="1" th:if="${lineItem.item.attribute2}!=null" th:text="${lineItem.item.attribute2}+' '"></font></b>
                                 <b><font size="1" th:if="${lineItem.item.attribute3}!=null" th:text="${lineItem.item.attribute3}+' '"></font></b>
                                 <b><font size="1" th:if="${lineItem.item.attribute4}!=null" th:text="${lineItem.item.attribute4}+' '"></font></b>
@@ -140,8 +139,7 @@
                             <td th:if="${lineItem.item}==null">
                                 <i>{description unavailable}</i>
                             </td>
-
-                            <td>${lineItem.quantity}</td>
+                            <td th:text="${lineItem.quantity}">lineItem.quantity</td>
                             <td th:text="${#numbers.formatDecimal(lineItem.unitPrice,0,2)}"></td>
                             <td th:text="${#numbers.formatDecimal(lineItem.total,0,2)}"></td>
                         </tr>

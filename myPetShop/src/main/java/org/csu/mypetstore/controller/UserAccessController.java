@@ -53,6 +53,20 @@ public class UserAccessController {
         }
     }
 
+    @RequestMapping(value ="/alogin", method = RequestMethod.GET)
+    @ResponseBody
+    public String alogin(String username){
+        Account account = accountService.getAccount(username);
+        if(account != null && !username.equals("")){
+            return  "Exist";
+        }
+        else if (username.equals("")){
+            return "Null";
+        }
+        else {
+            return "NotExist";
+        }
+    }
 
     //进入注册页面
     @GetMapping("/view_sign_up")

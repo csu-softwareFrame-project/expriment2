@@ -27,7 +27,7 @@ function usernameIsExist() {
         isUsernameExist=true;
     }
     else {
-        sendRequest("alogin?username=" + username);
+        sendRequest("/useraccess/alogin?username=" + username);
     }
 }
 
@@ -41,6 +41,9 @@ function isPasswordNull() {
     else if(newPassword == password){
         document.getElementById("usernameMsg2").innerHTML = "<font color='green'><i class='fa fa-check-circle'></i>正确</font>";
         PasswordNull=false;
+    }
+    else {
+        document.getElementById("usernameMsg2").innerHTML = "";
     }
 }
 
@@ -64,24 +67,15 @@ function isPasswordTheSame() {
 }
 
 function sendRequest(url) {
-    createXMLHttpRequest();
-    xmlHttpRequest.open("GET", url, true);
-    xmlHttpRequest.onreadystatechange = processResponse;
-    xmlHttpRequest.send(null);
-}
-
-function processResponse() {
-    if (xmlHttpRequest.readyState == 4) {
-        if (xmlHttpRequest.status == 200) {
-            var responseInfo = xmlHttpRequest.responseXML.
-            getElementsByTagName("msg")[0].firstChild.data;
-
+    $.ajax({
+        type: "get",
+        url: url,    //向后端请求数据的url
+        success: function (data) {
             var div1 = document.getElementById("usernameMsg");
-
-            if (responseInfo == "Exist") {
+            if (data == "Exist") {
                 div1.innerHTML = "<font color='red'><i class='fa fa-ban'></i>用户名已存在</font>";
                 isUsernameExist=true;
-            } else if(responseInfo == "NotExist"){
+            } else if(data == "NotExist"){
                 div1.innerHTML = "<font color='green'><i class='fa fa-check-circle'></i>用户名可用</font>";
                 isUsernameExist=false;
             }
@@ -89,7 +83,8 @@ function processResponse() {
                 div1.innerHTML = "";
             }
         }
-    }
+    });
 }
+
 
 
