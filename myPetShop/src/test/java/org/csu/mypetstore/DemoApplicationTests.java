@@ -116,7 +116,7 @@ class DemoApplicationTests {
     void testAccountInsert()  //测试通过
     {
         Account account = new Account();
-        account.setUsername("667");
+        account.setUsername("66");
         account.setPassword("abaaba");
         account.setLanguagePreference("English");
         account.setEmail("777");
