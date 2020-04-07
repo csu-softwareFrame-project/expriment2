@@ -40,7 +40,11 @@ function isPasswordNull() {
     }
     else if(newPassword == password){
         document.getElementById("usernameMsg2").innerHTML = "<font color='green'><i class='fa fa-check-circle'></i>正确</font>";
+        document.getElementById("usernameMsg3").innerHTML = "<font color='green'><i class='fa fa-check-circle'></i>正确</font>";
         PasswordNull=false;
+    }
+    else if (password != ""){
+        document.getElementById("usernameMsg3").innerHTML = "<font color='red'><i class='fa fa-ban'></i>密码两次输入不相同</font>";
     }
     else {
         document.getElementById("usernameMsg2").innerHTML = "";
