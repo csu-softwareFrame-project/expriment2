@@ -9,16 +9,24 @@ import org.junit.jupiter.api.Test;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 @SpringBootTest
 @MapperScan("org.csu.mypetstore.persistence")
 class DemoApplicationTests {
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
 
     @Autowired
     private AccountService accountService;
@@ -343,4 +351,11 @@ class DemoApplicationTests {
         cartService.clear("233");
     }  //测试通过
 
+    @Test
+    void testEnc(){
+        String password = "qq973478592";
+        String enc = passwordEncoder.encode(password);
+        System.out.println(enc);
+        System.out.println(passwordEncoder.matches(password,enc));
+    }
 }

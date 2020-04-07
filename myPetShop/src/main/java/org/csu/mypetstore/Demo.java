@@ -9,6 +9,7 @@ public class Demo {
     @Autowired
     AccountMapper accountMapper;
 
+
     @Test
     public void test(){
         System.out.println(accountMapper);
@@ -18,4 +19,6 @@ public class Demo {
          * 方法二：断言assert
          */
     }
+
+
 }

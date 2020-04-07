@@ -6,6 +6,7 @@ import org.csu.mypetstore.persistence.AccountMapper;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.server.Session;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -15,6 +16,9 @@ import java.util.Map;
 
 @Service
 public class AccountService {
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     private AccountMapper accountMapper;
@@ -60,7 +64,7 @@ public class AccountService {
             map.put("msg","用户名不存在");
             pswd = "";
         }
-        if(pswd.equals(password)) {
+        if(passwordEncoder.matches(password,pswd)) {
             String right = (String)session.getAttribute("checkCode");//从服务器获取正确验证码
             if(checkCode != null && right != null){
                 if(right.isEmpty()){
@@ -144,6 +148,10 @@ public class AccountService {
             }else if(account.getLanguagePreference().equals("")){
                 account.setLanguagePreference("English");
             }
+            //加密
+            String password = passwordEncoder.encode(account.getPassword());
+            account.setPassword(password);
+
             insertAccount(account);//插入数据库
         }
         return success;
@@ -195,6 +203,11 @@ public class AccountService {
             }else if(account.getLanguagePreference().equals("")){
                 account.setLanguagePreference("English");
             }
+
+            //加密
+            String password = passwordEncoder.encode(account.getPassword());
+            account.setPassword(password);
+
             //将修改信息同步到数据库
             updateAccount(account);
         }
