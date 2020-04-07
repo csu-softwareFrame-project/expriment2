@@ -36,7 +36,7 @@ public class CartController {
     @GetMapping("/add_item_to_cart")
     public String addToCart(String itemId,String productId,HttpSession session,Model model){
         if(Constants.DEBUG_CONTROLLER) System.out.println("添加 itemID： "+itemId+" 进购物车");
-        if(cartService.addCartItem(itemId,session,model)) return "forward:/cart/view_cart";
+        if(cartService.addCartItem(itemId,session,model)) return "redirect:/cart/view_cart";
         else return "viewProduct?productId="+productId;
     }
 
