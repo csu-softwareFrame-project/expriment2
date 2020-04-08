@@ -91,15 +91,37 @@ public class CartService {
             model.addAttribute("msg","库存空了");
             return false;
         }else{
-            Item item = itemMapper.getItem(itemId);
-            CartItem cartItem = new CartItem();
-            cartItem.setItem(item);
-            cartItem.setQuantity(1);
-            cartItem.setInStock(true);
-            insertCartItem(account.getUsername(),cartItem);
+            int q = getQuantity(account.getUsername(),itemId);
+            if(q==0){
+                //购物车里没有，添加进购物车
+                Item item = itemMapper.getItem(itemId);
+                CartItem cartItem = new CartItem();
+                cartItem.setItem(item);
+                cartItem.setQuantity(1);
+                cartItem.setInStock(true);
+                insertCartItem(account.getUsername(),cartItem);
+            }else {
+                //购物车里有，数量加一
+                q+=1;
+                updateCartItemQuantity(account.getUsername(),itemId,q);
+            }
+
             return true;
         }
     }
 
-
+    //更新购物车里的物品数量
+    public String updateCart(HttpSession session,String itemId,String quantity){
+        Account account = (Account)session.getAttribute("loginUser");
+        int q = Integer.parseInt(quantity);
+        int k = catalogService.getInventoryQuantity(itemId);
+        //如果数量超出了库存量，
+        if(q>k){
+            System.out.println("超出了库存");
+            return "库存不足,剩余量:"+k;
+        }else{
+            updateCartItemQuantity(account.getUsername(),itemId,q);
+            return "";
+        }
+    }
 }

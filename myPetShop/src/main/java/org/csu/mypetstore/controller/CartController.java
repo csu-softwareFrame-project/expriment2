@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 
@@ -49,4 +50,11 @@ public class CartController {
         return "cart/cart";
     }
 
+    @PostMapping("/update_cart")
+    @ResponseBody
+    public String updateCart(HttpSession session,String itemId,String quantity){
+        String msg = cartService.updateCart(session,itemId,quantity);
+        System.out.println("返回值为:"+msg);
+        return msg;
+    }
 }

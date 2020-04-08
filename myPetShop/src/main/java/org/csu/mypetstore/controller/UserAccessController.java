@@ -91,7 +91,11 @@ public class UserAccessController {
 //        return "catalog/main";
 //    }
 
-
-
+    //测试用
+    @GetMapping("/test")
+    @ResponseBody
+    public String test(){
+        return "just a test";
+    }
 
 }
