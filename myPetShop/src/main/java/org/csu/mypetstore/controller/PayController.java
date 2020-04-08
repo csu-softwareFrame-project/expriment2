@@ -16,7 +16,7 @@ import java.io.IOException;
 public class PayController {
 
     //未填写
-    @RequestMapping("")
+    @RequestMapping("/1861681")  //先设置一个不存在的url，避免接受其他界面的请求
     public void payController(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
         //初始化AlipayClient

@@ -255,7 +255,7 @@ public class Order implements Serializable {
         return lineItems;
     }
 
-    public void initOrder(Account account, Cart cart) {
+    public void initOrder(Account account,List<CartItem> cartItemList,Payment payment) {
 
         username = account.getUsername();
         orderDate = new Date();
@@ -278,21 +278,19 @@ public class Order implements Serializable {
         billZip = account.getZip();
         billCountry = account.getCountry();
 
-        totalPrice = cart.getSubTotal();
+        creditCard = payment.getCreditCard();
+        expiryDate = payment.getExpiryDate();
+        cardType = payment.getCardType();
+        courier = payment.getCourier();
+        locale = payment.getLocale();
+        status = payment.getStatus();
 
-        creditCard = "999 9999 9999 9999";
-        expiryDate = "12/03";
-        cardType = "Visa";
-        courier = "UPS";
-        locale = "CA";
-        status = "P";
-
-        Iterator<CartItem> i = cart.getAllCartItems();
-        while (i.hasNext()) {
-            CartItem cartItem = (CartItem) i.next();
-            addLineItem(cartItem);
+        totalPrice = new BigDecimal("0");
+        for(int i=0;i<cartItemList.size();i++)
+        {
+            totalPrice = totalPrice.add(cartItemList.get(i).getTotal());
+            addLineItem(cartItemList.get(i));
         }
-
     }
 
     public void addLineItem(CartItem cartItem) {
