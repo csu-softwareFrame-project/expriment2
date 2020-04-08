@@ -15,19 +15,17 @@
 
         <h3>User Information</h3>
 
-        <label >User ID:</label>
+        <label >User ID: &nbsp;</label>
         <!--<label th:text="${session.loginUser.username}"></label>-->
         <input type="text" name="username" id="username" th:value="${session.loginUser.username}" onblur="usernameIsExist();"/>
         <label id="usernameMsg"></label>
         <div class="cleaner h10"></div>
 
-        <label for="password">New password:</label><div class="cleaner h10"></div><input type="password" name="password" id="password" onblur="isPasswordNull();"/>
-        <label id="usernameMsg2"></label>
-        <div class="cleaner h10"></div>
+        <div id="changePasswordButton"><label>password: &nbsp;</label><a href="#" onclick="changePassword()">change password</a></div>
 
-        <label for="repeatedPassword">Repeat password:</label><div class="cleaner h10"></div><input type="password" name="repeatedPassword" id="repeatedPassword" onblur="isPasswordTheSame();"/>
-        <label id="usernameMsg3"></label>
-        <div class="cleaner h10"></div>
+        <div id="changePassword">
+
+        </div>
 
         <div th:replace="account/includeAccountFields">
 

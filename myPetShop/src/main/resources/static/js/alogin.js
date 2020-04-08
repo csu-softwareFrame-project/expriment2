@@ -20,6 +20,28 @@ function createXMLHttpRequest()
     }
 }
 
+function notChange() {
+    var block = document.getElementById("changePasswordButton");
+    var block2 = document.getElementById("changePassword");
+    block.innerHTML = "<label>password: &nbsp;</label><a href='#' onclick=\"changePassword()\">change password</a>"
+    block2.innerHTML =""
+}
+
+function changePassword() {
+    // alert("a")
+    var block1 = document.getElementById("changePasswordButton");
+    var block2 = document.getElementById("changePassword");
+    block1.innerHTML = ""
+    block2.innerHTML = "<label for=\"password\">New password: &nbsp;</label><input type=\"password\" name=\"password\" id=\"password\" onblur=\"isPasswordNull();\"/>\n" +
+        "            <label id=\"usernameMsg2\"></label>\n" +
+        "            <div class=\"cleaner h10\"></div>\n" +
+        "\n" +
+        "            <label for=\"repeatedPassword\">Repeat password: &nbsp;</label><input type=\"password\" name=\"repeatedPassword\" id=\"repeatedPassword\" onblur=\"isPasswordTheSame();\"/>\n" +
+        "            <label id=\"usernameMsg3\"></label>\n" +
+        "            <div class=\"cleaner h10\"></div>\n" +
+        "            <div id=\"notChangeButton\"><a href='#' onclick='notChange()'>I don't want to change.</a></div>"
+}
+
 function usernameIsExist() {
     var username = document.getElementById("username").value;
     if(username == ""){
