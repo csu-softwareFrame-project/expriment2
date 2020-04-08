@@ -197,31 +197,31 @@
 <body id="home">
 <header th:fragment="header">
     <div id="templatemo_header_wrapper">
-        <h1 class="press">MyPetStore</h1>
+        <h1 class="press" th:text="#{top.title}">MyPetStore</h1>
         <div id="templatemo_menu" class="ddsmoothmenu">
             <ul>
-                <li><a href="/main/view_main" class="selected">Home</a></li>
-                <li th:if="${session.loginUser}==null"><a href="/useraccess/view_login">Sign In</a></li>
-                <li th:if="${session.loginUser}!=null"> <a href="/main/view_account">Account</a>
+                <li><a href="/main/view_main" class="selected" th:text="#{top.home}">Home</a></li>
+                <li th:if="${session.loginUser}==null"><a href="/useraccess/view_login" th:text="#{top.signIn}">Sign In</a></li>
+                <li th:if="${session.loginUser}!=null"> <a href="/main/view_account" th:text="#{top.Account}">Account</a>
                     <ul>
                         <li><span class="top"></span><span class="bottom"></span></li>
-                        <li><a href="/main/view_account">account</a></li>
-                        <li><a href="/order/view_orderList">orders</a></li>
-                        <li><a href="/main/sign_out">sign out</a></li>
+                        <li><a href="/main/view_account" th:text="#{top.account}">account</a></li>
+                        <li><a href="/order/view_orderList" th:text="#{top.orders}">orders</a></li>
+                        <li><a href="/main/sign_out"th:text="#{top.signout}">sign out</a></li>
                     </ul>
                 </li>
 
-                <li><a href="/catalog/viewCategory">Pet</a>
+                <li><a href="/catalog/viewCategory" th:text="#{top.Pet}">Pet</a>
                     <ul>
                         <li><span class="top"></span><span class="bottom"></span></li>
-                        <li><a href="/catalog/viewCategory?categoryId=FISH">fish</a></li>
-                        <li><a href="/catalog/viewCategory?categoryId=DOGS">dogs</a></li>
-                        <li><a href="/catalog/viewCategory?categoryId=REPTILES">reptiles</a></li>
-                        <li><a href="/catalog/viewCategory?categoryId=CATS">cats</a></li>
-                        <li><a href="/catalog/viewCategory?categoryId=BIRDS">birds</a></li>
+                        <li><a href="/catalog/viewCategory?categoryId=FISH" th:text="#{top.fish}">fish</a></li>
+                        <li><a href="/catalog/viewCategory?categoryId=DOGS" th:text="#{top.dogs}">dogs</a></li>
+                        <li><a href="/catalog/viewCategory?categoryId=REPTILES" th:text="#{top.reptiles}">reptiles</a></li>
+                        <li><a href="/catalog/viewCategory?categoryId=CATS" th:text="#{top.cats}">cats</a></li>
+                        <li><a href="/catalog/viewCategory?categoryId=BIRDS" th:text="#{top.birds}">birds</a></li>
                     </ul>
                 </li>
-                <li><a href="/help.html">help</a></li>
+                <li><a href="/help.html" th:text="#{top.help}">help</a></li>
                 <li><a href="/cart/view_cart"><img align="middle" name="img_cart" src="../images/cart.gif" /></a></li>
             </ul>
             <br style="clear: left" />
@@ -234,7 +234,7 @@
                         <input type="search" name="keyword" size="30" id="tags" />
                     </div>
                     <div class="col-xs-3">
-                        <div class="admin5"><button type="submit" name="searchProducts"  value="Search" class="btn btn-block btn-sm btn-success"><font size="1">s&nbsp;e&nbsp;a&nbsp;r&nbsp;c&nbsp;h</font></button></div>
+                        <div class="admin5"><button type="submit" name="searchProducts"  value="Search" class="btn btn-block btn-sm btn-success"><font size="1" th:text="#{top.search}">s&nbsp;e&nbsp;a&nbsp;r&nbsp;c&nbsp;h</font></button></div>
                     </div>
                     <br/>
                 </div>

@@ -83,7 +83,7 @@ public class CartService {
         removeCartItem(account.getUsername(),itemId);
     }
 
-
+    //添加商品进购物车
     public boolean addCartItem(String itemId,HttpSession session,Model model){
         Account account = (Account)(session.getAttribute("loginUser"));
         int stock = catalogService.getInventoryQuantity(itemId);
@@ -100,4 +100,6 @@ public class CartService {
             return true;
         }
     }
+
+
 }

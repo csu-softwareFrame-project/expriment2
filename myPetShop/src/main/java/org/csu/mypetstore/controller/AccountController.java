@@ -18,8 +18,8 @@ public class AccountController {
     AccountService accountService;
 
     @PostMapping("/edit_account")
-    public String editAccount(Account account, String repeatedPassword, Map<String,Object> map){
-        if(accountService.editAccountService(account,repeatedPassword,map)){}
+    public String editAccount(HttpSession session,Account account, String repeatedPassword, Map<String,Object> map){
+        if(accountService.editAccountService(session,account,repeatedPassword,map)){}
         return "account/editAccountForm";
     }
 

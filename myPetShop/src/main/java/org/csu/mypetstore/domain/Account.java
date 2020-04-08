@@ -32,6 +32,30 @@ public class Account implements Serializable {
     private String bannerOption;
     private String bannerName;
 
+    public void duplicate(Account account){
+        username = account.getUsername();
+        password = account.getPassword();
+        email = account.getEmail();
+        firstName = account.getFirstName();
+        lastName = account.getLastName();
+        status = account.getStatus();
+        address1 = account.getAddress1();
+        address2 = account.getAddress2();
+        city = account.getCity();
+        state = account.getState();
+        zip = account.getZip();
+        country = account.getCountry();
+        phone = account.getPhone();
+        favouriteCategoryId = account.getFavouriteCategoryId();
+        languagePreference = account.getLanguagePreference();
+        booleanListOption = account.isBooleanListOption();
+        booleanBannerOption = account.isBooleanBannerOption();
+        listOption = account.getListOption();
+        bannerOption = account.getBannerOption();
+        bannerName = account.getBannerName();
+
+    }
+
     public String getUsername() {
         return username;
     }

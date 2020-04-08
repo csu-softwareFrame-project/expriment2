@@ -1,5 +1,6 @@
 package org.csu.mypetstore.service;
 
+import com.alipay.api.domain.Car;
 import org.csu.mypetstore.Constants;
 import org.csu.mypetstore.domain.*;
 import org.csu.mypetstore.persistence.ItemMapper;
@@ -24,8 +25,11 @@ public class OrderService {
     private SequenceMapper sequenceMapper;
     @Autowired
     private LineItemMapper lineItemMapper;
+    @Autowired
+    private CartService cartService;
 
-    public void insertOrder(Order order) {  //新建订单
+    //根据Order参数，将订单信息插入数据库并返回订单id
+    public int insertOrder(Order order) {
         order.setOrderId(getNextId("ordernum"));  //根据队列情况自动生成订单号
         for (int i = 0; i < order.getLineItems().size(); i++) {  //对订单内所有的产品进行库存更新
             LineItem lineItem = (LineItem) order.getLineItems().get(i);
@@ -41,6 +45,7 @@ public class OrderService {
             lineItem.setOrderId(order.getOrderId());  //对订单内的产品设置订单号
             lineItemMapper.insertLineItem(lineItem);  //新建订单的产品内容
         }
+        return order.getOrderId();
     }
 
     //获取订单
@@ -94,6 +99,7 @@ public class OrderService {
         return sequence.getNextId();
     }
 
+
     //获取用户的订单列表
     public void viewOrderList(HttpSession session,Map<String,Object> map){
        Account account =(Account) session.getAttribute("loginUser");
@@ -108,5 +114,34 @@ public class OrderService {
         Order order = getOrder(Integer.parseInt(orderId));
         if(Constants.DEBUG_SERVICE)System.out.println("订单属性:"+order.toString());
         map.put("order",order);
+    }
+
+    //生成新订单并加入session
+    public Order generateOrder(HttpSession session, Payment payment,Order order){
+        Account account = (Account)session.getAttribute("loginUser");
+        Account account1 = new Account();
+        account1.duplicate(account);
+        account1.setFirstName(order.getBillToFirstName());
+        account1.setLastName(order.getBillToLastName());
+        account1.setAddress1(order.getBillAddress1());
+        account1.setAddress2(order.getBillAddress2());
+        account1.setCity(order.getBillCity());
+        account1.setState(order.getBillState());
+        account1.setZip(order.getBillZip());
+        account1.setCountry(order.getBillCountry());
+        List<CartItem> cartItemList = cartService.getCartItemListByUsername(account1.getUsername());
+        Order order1 = new Order();
+        order1.initOrder(account1,cartItemList,payment);
+        order1.setStatus("0");
+        return order1;
+    }
+
+    public int confirmOrder(HttpSession session){
+        Account account = (Account)session.getAttribute("loginUser");
+        Order order = (Order) session.getAttribute("order");
+        int orderid = insertOrder(order);
+        session.removeAttribute("order");//移出订单
+        cartService.clear(account.getUsername());//清空购物车
+        return orderid;
     }
 }

@@ -36,7 +36,6 @@ public class AccountService {
         return accountMapper.getAccountByUsernameAndPassword(account);
     }
 
-
     public void insertAccount(Account account) {  //使用时注意填写信息要完整，不然可能出现前面一个表插入以后后面的表插入失败，这样子再次插入时会提示用户已存在
         if(account.getBannerOption() == null) account.setFavouriteCategoryId("NOBANNER");//默认NOBANNER
         accountMapper.insertAccount(account);
@@ -157,7 +156,7 @@ public class AccountService {
         return success;
     }
 
-    public boolean editAccountService(Account account,String repeatedPassword,Map<String,Object> map){
+    public boolean editAccountService(HttpSession session,Account account,String repeatedPassword,Map<String,Object> map){
         boolean success = true;
         //如果用户名为空，说明注册的逻辑有bug
         if(account.getUsername().equals("")){
@@ -165,6 +164,7 @@ public class AccountService {
             map.put("username_msg","账户信息异常");
             success =false;
         }
+
         //密码不能修改为空
         if(account.getPassword().equals("")){
             System.out.println("密码不能为空");
@@ -207,6 +207,9 @@ public class AccountService {
             //加密
             String password = passwordEncoder.encode(account.getPassword());
             account.setPassword(password);
+
+            session.removeAttribute("loginUser");
+            session.setAttribute("loginUser",account);
 
             //将修改信息同步到数据库
             updateAccount(account);
