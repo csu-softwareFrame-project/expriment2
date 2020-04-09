@@ -43,7 +43,7 @@
                     <h th:if="${cart_item.item.attribute5}!=null" th:text="${cart_item.item.attribute5}+' '"></h>
             <!--                   <h th:if="${product.name}!=null" th:text="${product.name}+' '"></h>-->
                 </td>
-                <td id="inStock" th:text="${cart_item.inStock}">
+                <td th:text="${cart_item.inStock}">
                     cartItem.inStock
                 </td>
                 <td>
@@ -79,7 +79,7 @@
         var itemId = label.name
         var quantity = label.value
         var id = label.id
-        var inStock = document.getElementById('inStock')
+        var inStock = label.parentElement.previousElementSibling
         
         axios.post('/cart/update_cart?itemId='+itemId+'&quantity='+quantity).then(
              function (response) {
