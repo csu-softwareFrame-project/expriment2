@@ -329,6 +329,14 @@ class DemoApplicationTests {
     }
 
     @Test
+    void testIsCartItemExist()
+    {
+        String username = "abc";
+        String itemId = "EST-18";
+        System.out.println(cartService.isCartItemExist(username,itemId));
+    }
+
+    @Test
     void testCartItemQuantityGet()  //测试通过
     {
         int quantity = cartService.getQuantity("233","EST-1");

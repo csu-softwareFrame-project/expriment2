@@ -16,7 +16,7 @@ public interface CartItemMapper {
 
     void updateCartItemQuantity(@Param("username") String username,@Param("itemId") String itemID, @Param("quantity") int quantity);
 
-    //boolean isCartItemExist(@Param("username") String username,@Param("itemId") String itemId);
+    CartItem isCartItemExist(@Param("username") String username,@Param("itemId") String itemId);
 
     int getQuantity(@Param("username") String username,@Param("itemId") String itemID);
 

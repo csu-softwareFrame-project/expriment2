@@ -1,5 +1,6 @@
 package org.csu.mypetstore.controller;
 
+//import com.sun.tools.corba.se.idl.constExpr.Or;
 import org.csu.mypetstore.domain.Account;
 import org.csu.mypetstore.domain.CartItem;
 import org.csu.mypetstore.domain.Order;
@@ -57,8 +58,8 @@ public class OrderController {
 
 
     //最终提交订单。使用重定向，避免重复提交订单
-    @GetMapping("/final_confirm_order")
-    public String finalConfirmOrder(HttpSession session) {
-        return "redirect:view_order?orderId="+orderService.confirmOrder(session);
-    }
+//    @GetMapping("/final_confirm_order")
+//    public String finalConfirmOrder(HttpSession session) {
+//        return "redirect:view_order?orderId="+orderService.confirmOrder(session);
+//    }
 }

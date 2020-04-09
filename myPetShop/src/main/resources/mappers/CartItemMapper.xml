@@ -10,6 +10,12 @@
         WHERE USERNAME = #{username}
     </select>
 
+    <select id="isCartItemExist" resultType="CartItem">
+        SELECT ITEMID,QUANTITY,INSTOCK
+        FROM CARTITEM
+        WHERE ITEMID = #{itemId} AND USERNAME = #{username}
+    </select>
+
     <insert id="insertCartItem">
         INSERT INTO CARTITEM
         (USERNAME, ITEMID, QUANTITY, INSTOCK)

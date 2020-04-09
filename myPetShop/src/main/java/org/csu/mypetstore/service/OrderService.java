@@ -133,6 +133,7 @@ public class OrderService {
         Order order1 = new Order();
         order1.initOrder(account1,cartItemList,payment);
         order1.setStatus("0");
+        order1.setOrderId(getNextId("ordernum"));
         return order1;
     }
 

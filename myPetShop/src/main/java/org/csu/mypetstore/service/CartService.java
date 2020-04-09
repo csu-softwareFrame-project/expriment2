@@ -83,6 +83,11 @@ public class CartService {
         removeCartItem(account.getUsername(),itemId);
     }
 
+    public boolean isCartItemExist(String username,String itemId)
+    {
+        return !(cartItemMapper.isCartItemExist(username,itemId) == null);
+    }
+
     //添加商品进购物车
     public boolean addCartItem(String itemId,HttpSession session,Model model){
         Account account = (Account)(session.getAttribute("loginUser"));
