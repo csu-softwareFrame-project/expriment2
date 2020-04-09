@@ -91,7 +91,12 @@ public class CartService {
             model.addAttribute("msg","库存空了");
             return false;
         }else{
-            int q = getQuantity(account.getUsername(),itemId);
+            int q = 0;
+            try {
+                q = getQuantity(account.getUsername(),itemId);
+            }catch (Exception e){
+
+            }
             if(q==0){
                 //购物车里没有，添加进购物车
                 Item item = itemMapper.getItem(itemId);

@@ -50,12 +50,11 @@
                     <input type="text" th:name="${cart_item.item.itemId}" th:value="${cart_item.quantity}" th:id="${cart_item.item.itemId}"
                            th:onblur="'updateQuantity([[${cart_item.item.itemId}]],[[${loginUser.username}]])'"
                            oninput="aaatest(this)"/>
-                    <script type="text/javascript" src="js/update-quantity.js"></script>
                 </td>
-                            <td id="listPrice" th:text="${#numbers.formatDecimal(cart_item.item.listPrice,0,2)}"></td>
-                            <td id="totalcost" th:text="${#numbers.formatDecimal(cart_item.total,0,2)}"></td>
+                <td id="listPrice" th:text="${#numbers.formatDecimal(cart_item.item.listPrice,0,2)}"></td>
+                <td id="totalcost" th:text="${#numbers.formatDecimal(cart_item.total,0,2)}"></td>
                 <td>
-                                <a th:href="'/cart/remove_item_from_cart?cartItemId='+${cart_item.item.itemId}" class="Button" th:text="'Remove'">Remove</a>
+                    <a th:href="'/cart/remove_item_from_cart?cartItemId='+${cart_item.item.itemId}" class="Button" th:text="'Remove'">Remove</a>
                 </td>
 
             </tr>
@@ -80,7 +79,11 @@
         var quantity = label.value
         var id = label.id
         var inStock = label.parentElement.previousElementSibling
-        
+        var listPrice = label.parentElement.nextElementSibling
+        var totalPrice = listPrice.nextElementSibling
+
+        totalPrice.innerText = (parseFloat(listPrice.innerText)*quantity).toFixed(2)
+
         axios.post('/cart/update_cart?itemId='+itemId+'&quantity='+quantity).then(
              function (response) {
                  if(response.data != ""){
@@ -90,8 +93,6 @@
                  else {
                      inStock.innerText="true"
                  }
-                 // var input = document.getElementById(id)
-                 // input.value = q
                  console.log(label.value)
              }
         );
