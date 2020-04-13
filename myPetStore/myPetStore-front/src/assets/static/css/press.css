@@ -1,0 +1,7 @@
+.press {
+    color: transparent;
+    font-family: Algerian;
+    background-color : darkseagreen;
+    /*text-shadow : rgba(	20,220,60,0.5) 0 5px 6px, rgba(220,20,0,0.5) 1px 1px 1px;*/
+    -webkit-background-clip : text;
+}

@@ -1,0 +1,72 @@
+<template>
+  <page-frame>
+    <div>
+      <div id="BackLink">
+        <a href="/cart/view_cart">Return to Shopping Cart</a>
+      </div>
+
+      <div id="Catalog">
+
+        <table>
+          <tr>
+            <td>
+              <h2>Checkout Summary</h2>
+
+              <table>
+
+                <tr>
+                  <td><b>Item ID</b></td>
+                  <td><b>Product ID</b></td>
+                  <td><b>Description</b></td>
+                  <td><b>In Stock?</b></td>
+                  <td><b>Quantity</b></td>
+                  <td><b>List Price</b></td>
+                  <td><b>Total Cost</b></td>
+                </tr>
+
+<!--                <tr th:each="cartItem:${cart.cartItems}">-->
+<!--                  <td th:href="@{'/catalog/viewItem?itemId='+${cartItem.item.itemId}}" th:text="${cartItem.item.itemId}">-->
+<!--                    ${cartItem.item.itemId}</td>-->
+<!--                  <td th:text="${cartItem.item.product.productId}">${cartItem.item.product.productId}</td>-->
+<!--                  <td>-->
+<!--                    <b><font size="1" th:if="${cartItem.item.attribute1}!=null" th:text="${cartItem.item.attribute1}+' '"></font></b>-->
+<!--                    <b><font size="1" th:if="${cartItem.item.attribute2}!=null" th:text="${cartItem.item.attribute2}+' '"></font></b>-->
+<!--                    <b><font size="1" th:if="${cartItem.item.attribute3}!=null" th:text="${cartItem.item.attribute3}+' '"></font></b>-->
+<!--                    <b><font size="1" th:if="${cartItem.item.attribute4}!=null" th:text="${cartItem.item.attribute4}+' '"></font></b>-->
+<!--                    <b><font size="1" th:if="${cartItem.item.attribute5}!=null" th:text="${cartItem.item.attribute5}+' '"></font></b>-->
+<!--                    <b><font size="1" th:if="${cartItem.item.product.name}!=null" th:text="${cartItem.item.product.name}+' '"></font></b></td>-->
+<!--                  <td th:text="${cartItem.inStock}">${cartItem.inStock}</td>-->
+<!--                  <td th:text="${cartItem.quantity}">${cartItem.quantity}</td>-->
+<!--                  <td th:text="${#numbers.formatDecimal(cartItem.item.listPrice,0,2)}"></td>-->
+<!--                  <td th:text="${#numbers.formatDecimal(cartItem.total,0,2)}"></td>-->
+<!--                </tr>-->
+
+
+                <tr>
+<!--                  <td colspan="7" th:text="'>Sub Total: '+${#numbers.formatDecimal(cart.subTotal,0,2)}">Sub Total: </td>-->
+                  <td colspan="7">Sub Total: </td>
+                </tr>
+              </table>
+
+            <td>&nbsp;</td>
+
+          </tr>
+        </table>
+
+      </div>
+    </div>
+  </page-frame>
+</template>
+
+<script>
+  import pageFrame from '../../components/pageframe'
+  export default {
+    components:{
+      pageFrame,
+    }
+  }
+</script>
+
+<style>
+
+</style>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:replace="common/top">
+
+</div>
+
+<div id="templatemo_main">
+
+    <h2 th:text="${category.name}" th:if="${category != null}">Category</h2>
+    <div>
+        <a href="/main/view_main">Return to Main Menu</a>
+    </div>
+    <br>
+    <div  align="center" >
+        <table id="table-4">
+
+            <tr th:if="${productList != null}">
+                <th>Product ID</th>
+                <th>Name</th>
+            </tr>
+            <tr th:each="product:${productList}" th:if="${productList != null}">
+                <td><a th:href="@{'/catalog/viewProduct?productId='+${product.productId}}" th:text="${product.productId}">prductId</a></td>
+                <td th:text="${product.name}">Product Name</td>
+            </tr>
+
+            <tr th:if="${categoryList != null}">
+                <th>ID</th>
+                <th>Name</th>
+            </tr>
+            <tr th:each="category:${categoryList}" th:if="${categoryList != null}">
+                <td><a th:href="@{'/catalog/viewCategory?categoryId='+${category.name}}" th:text="${category.categoryId}"></a></td>
+                <td ><a th:href="@{'/catalog/viewCategory?categoryId='+${category.name}}" th:text="${category.name}"></a></td>
+            </tr>
+            <!--<c:forEach var="product" items="${sessionScope.productList}">-->
+                <!--<tr>-->
+                    <!--<td>-->
+                        <!--<a href="viewProduct?productId=${product.productId}">${product.productId}</a>-->
+                    <!--</td>-->
+                    <!--<td>${product.name}</td>-->
+                <!--</tr>-->
+            <!--</c:forEach>-->
+        </table>
+    </div>
+
+
+</div>
+
+<div th:replace="common/buttom">
+
+</div>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My Pet Store</title>
+    <script type="text/javascript" src="../js/alogin.js"></script>
+</head>
+<body>
+<div th:replace="common/top">
+
+</div>
+
+<div id="templatemo_main" align="center">
+    <form  action="/account/edit_account" method="post">
+
+        <h3>User Information</h3>
+
+        <label >User ID: &nbsp;</label>
+        <!--<label th:text="${session.loginUser.username}"></label>-->
+        <input type="text" name="username" id="username" th:value="${session.loginUser.username}" onblur="usernameIsExist();"/>
+        <label id="usernameMsg"></label>
+        <div class="cleaner h10"></div>
+
+        <div id="changePasswordButton"><label>password: &nbsp;</label><a href="#" onclick="changePassword()">change password</a></div>
+
+        <div id="changePassword">
+
+        </div>
+
+        <div th:replace="account/includeAccountFields">
+
+        </div>
+
+        <div class="admin5"><input type="submit" name="editAccountForm" value="Save Account Information" class="btn btn-block btn btn-success" id="submit"/></div>
+
+    </form>
+    <br>
+    <div><a href="/order/view_orderList"><font size="3" th:text="'My Orders'">My Orders</font></a></div>
+</div>
+
+<div th:replace="common/buttom">
+
+</div>
+</body>
+</html>
