@@ -111,11 +111,11 @@
     },
     methods:{
       submitOrder(){
-          if(this.$store.state.account == null){
-              alert("请先登录")
-              this.$router.push('/account/view-sign-in')
-          }
-          else {
+          // if(this.$store.state.account == null){
+          //     alert("请先登录")
+          //     this.$router.push('/account/view-sign-in')
+          // }
+          // else {
               let order = {
                   orderId: this.order.orderId,
                   username: this.order.username,
@@ -164,7 +164,7 @@
 
                   })
           }
-      }
+      // }
     }
   }
 </script>

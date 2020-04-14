@@ -45,21 +45,21 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 //        }
         //如果没有token，就需要颁发
         if(token.equals("undefined")) {
-            System.out.println("没有token，就需要颁发,放行");
-            return true;
+           httpServletResponse.sendError(401);
         };
         //token过期
         if(JwtUtil.isExpirate(token)){
             System.out.println("token过期，拦截");
-            throw new RuntimeException("401");
+            httpServletResponse.sendError(401);
         }
         //token无效
-        if(username != null && !JwtUtil.dec(token).equals(username)){
+        if(!JwtUtil.dec(token).equals(username)){
             System.out.println("token无效");
             //抛出401错误
-            throw new RuntimeException("401");
+            httpServletResponse.sendError(401);
         }
-        System.out.println("进入的token:"+token+".进入的username");
+
+        System.out.println("进入的token:"+token+".进入的username:"+username);
         System.out.println("token没过期，放行");
         return true;
     }

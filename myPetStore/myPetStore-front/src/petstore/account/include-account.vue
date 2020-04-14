@@ -145,11 +145,11 @@
     },
     methods:{
       editAccount(){
-          if(this.$store.state.account == null){
-              alert("请先登录")
-              this.$router.push('/account/view-sign-in')
-          }
-          else {
+          // if(this.$store.state.account == null){
+          //     alert("请先登录")
+          //     this.$router.push('/account/view-sign-in')
+          // }
+          // else {
               let account = {
                   email: this.editForm.email,
                   firstName: this.editForm.firstName,
@@ -174,7 +174,7 @@
                   })
           }
 
-      }
+      // }
     },
     created(){
     }

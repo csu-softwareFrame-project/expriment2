@@ -40,18 +40,23 @@ router.beforeEach((to, from, next) => {
   to.path === '/viewCategory' || to.path === '/viewProduct' || to.path === '/viewItem' ||
     to.path === '/account/signup')
     && store.state.account === null) { //不用验证的路由范围
+    //如果token不为空，更新token
     //是登录，继续路由
     next();
   } else {
-    //其他地址则要判断token有效性,和是否登录
+    //其他地址则要判断token有效性
     let token = localStorage.getItem('Authorization');
     console.log("router.beforeEach.toke:"+token)
-    if (store.state.account === null) {//如果没有登录
+    // if (store.state.account === null) {//如果没有登录
+    //   alert("你还没登录")
+    //   // console.log("router:你还没登录")
+    //   console.log(from.path)
+    //   next('/account/view-sign-in')
+    // } else{
+    if( token === null || token === "" || token === undefined){
       alert("你还没登录")
-      // console.log("router:你还没登录")
-      console.log(from.path)
       next('/account/view-sign-in')
-    } else{
+    }else{
       let strToken = qs.stringify({
         token : token.toString(),
       })
@@ -61,17 +66,20 @@ router.beforeEach((to, from, next) => {
         data: strToken
       }).then(res => {
         next();
-      }).catch(err => {
-        //如果token失效，跳转到登录页
-        if(err.response.status === 500){
-          console.log("router.beforeEach:500错误")
-          store.commit("changeLogin","undefined")
-          store.commit("removeAccount");
-          alert("登录信息已失效");
-          router.push('/account/view-sign-in');
-        }
       })
     }
+
+        // .catch(err => {
+        // // 如果token失效，跳转到登录页
+        // if(err.response.status === 500){
+        //   console.log("router.beforeEach:500错误")
+        //   store.commit("changeLogin","undefined")
+        //   store.commit("removeAccount");
+        //   alert("登录信息已失效");
+        //   router.push('/account/view-sign-in');
+        // }
+      // })
+    // }
   }
   //到达前修改title
   if (to.meta.title) {
@@ -99,6 +107,7 @@ axios.interceptors.response.use(function (response) {
 // 对响应数据做点什么
   return response;
 }, function (err) {
+  console.log(err.response)
   if (err && err.response) {
     switch (err.response.status) {
       case 400: err.message = '请求错误(400)' ; break;

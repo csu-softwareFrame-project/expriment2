@@ -109,11 +109,11 @@
     },
     methods:{
       ProceedToConfirm(){
-          if(this.$store.state.account == null){
-              alert("请先登录")
-              this.$router.push('/account/view-sign-in')
-          }
-          else {
+          // if(this.$store.state.account == null){
+          //     alert("请先登录")
+          //     this.$router.push('/account/view-sign-in')
+          // }
+          // else {
               this.axios.post('/newOrders',{
                   cardType: this.OrderForm.cartType,
                   creditCard: this.OrderForm.creditCard,
@@ -140,7 +140,7 @@
               })
           }
 
-      }
+      // }
     }
   }
 </script>

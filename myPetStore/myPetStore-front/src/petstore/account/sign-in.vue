@@ -105,7 +105,7 @@
       signIn(form) {
         // 登录时把token设置为"undefined"
         this.$store.commit('changeLogin',{ Authorization: "undefined" })
-        this.axios.post('/accounts',{
+        this.axios.post('/users',{
           username: this.signInForm.username,
           password: this.signInForm.password,
           token: this.token,

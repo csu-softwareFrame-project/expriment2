@@ -36,7 +36,7 @@ public class UserAccessController {
     JwtService jwtService;
 
     //登录验证跳转
-    @PostMapping("/accounts")
+    @PostMapping("/users")
     public ReturnPack signIn(@RequestBody Map<String, String> params){
         if(DEBUG){
             System.out.println("收到请求");
@@ -69,18 +69,10 @@ public class UserAccessController {
     }
 
     @PostMapping("/tokens")
-    public ReturnPack verifyToken(@RequestParam String token){
+    public ReturnPack verifyToken(HttpServletRequest httpServletRequest,@RequestParam String token){
         JSONObject data = new JSONObject();
-//        if (token != null && !jwtService.isJwtFailure(token)) {
-//            if (jwtService.isJwtExpired(token)) {
-//                //过期但未失效，重新登录
-//                return ReturnPack.fail("用户认证过期，请重新登录");
-//            }
-//            System.out.println("token内容:"+JwtUtil.decode(token, JwtUtil.SECRET).get("name").asString());
-//            return ReturnPack.success(data);
-//        }else {
-//            return ReturnPack.fail("还没登录");
-//        }
+        String username =  httpServletRequest.getHeader("UserName");
+        data.put("token",JwtUtil.generate(username));
         return ReturnPack.success(data);
     }
 
