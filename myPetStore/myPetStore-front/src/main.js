@@ -46,41 +46,26 @@ router.beforeEach((to, from, next) => {
   } else {
     //其他地址则要判断token有效性
     let token = localStorage.getItem('Authorization');
-    console.log("router.beforeEach.toke:"+token)
-    // if (store.state.account === null) {//如果没有登录
-    //   alert("你还没登录")
-    //   // console.log("router:你还没登录")
-    //   console.log(from.path)
-    //   next('/account/view-sign-in')
-    // } else{
+    console.log("router.beforeEach.toke:"+token);
     if( token === null || token === "" || token === 'undefined'){
-      alert("你还没登录")
+      alert("你还没登录");
       next('/account/view-sign-in')
+    }else{
+      next()
     }
-  else{
-      let strToken = qs.stringify({
-        token : token.toString(),
-      })
-      axios({
-        method: 'post',
-        url: '/tokens',
-        data: strToken
-      }).then(res => {
-        next();
-      })
-    }
+  // else{
+  //     let strToken = qs.stringify({
+  //       token : token.toString(),
+  //     })
+  //     axios({
+  //       method: 'post',
+  //       url: '/tokens',
+  //       data: strToken
+  //     }).then(res => {
+  //       next();
+  //     })
+  //   }
 
-        // .catch(err => {
-        // // 如果token失效，跳转到登录页
-        // if(err.response.status === 500){
-        //   console.log("router.beforeEach:500错误")
-        //   store.commit("changeLogin","undefined")
-        //   store.commit("removeAccount");
-        //   alert("登录信息已失效");
-        //   router.push('/account/view-sign-in');
-        // }
-      // })
-    // }
   }
   //到达前修改title
   if (to.meta.title) {
