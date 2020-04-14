@@ -379,4 +379,93 @@ class DemoApplicationTests {
         System.out.println(enc);
         System.out.println(passwordEncoder.matches(password,enc));
     }
+
+    @Test
+    void testCategoryInsert(){
+        Category category = new Category();
+        category.setCategoryId("PIGS");
+        category.setName("Pigs");
+        category.setDescription("233");
+        catalogService.insertCategory(category);
+    }
+
+    @Test
+    void testCategoryRemove(){
+        String categoryId = "PG";
+        catalogService.removeCategory(categoryId);
+    }
+
+    @Test
+    void testCategoryUpdate(){
+        Category category = new Category();
+        category.setCategoryId("PG");
+        category.setName("Pigs");
+        category.setDescription("8848");
+        String oldId = "PIGS";
+        catalogService.updateCategory(category,oldId);
+    }
+
+    @Test
+    void testProductInsert(){
+        Product product = new Product();
+        product.setProductId("777");
+        product.setName("Pink Pig");
+        product.setCategoryId("PIGS");
+        product.setDescription("233");
+        catalogService.insertProduct(product);
+    }
+
+    @Test
+    void testProductRemove() {
+        String productId = "777";
+        catalogService.removeProduct(productId);
+    }
+
+    @Test
+    void testProductUpdate(){
+        Product product = new Product();
+        product.setProductId("888");
+        product.setName("Pink Pig");
+        product.setCategoryId("PIGS");
+        product.setDescription("999");
+        String oldId = "777";
+        catalogService.updateProduct(product,oldId);
+    }
+
+    @Test
+    void testItemInsert(){
+        Item item = new Item();
+        item.setQuantity(10000);
+        item.setItemId("EST-99");
+        item.setProductId("777");
+        item.setUnitCost(new BigDecimal("15"));
+        item.setListPrice(new BigDecimal("25"));
+        item.setStatus("P");
+        item.setSupplierId(1);
+        item.setAttribute1("666");
+        item.setAttribute2("777");
+        catalogService.insertItem(item);
+    }
+
+    @Test
+    void testItemRemove(){
+        String itemId = "EST-99";
+        catalogService.removeItem(itemId);
+    }
+
+    @Test
+    void testItemUpdate(){
+        Item item = new Item();
+        item.setQuantity(9000);
+        item.setItemId("EST-66");
+        item.setProductId("777");
+        item.setUnitCost(new BigDecimal("15"));
+        item.setListPrice(new BigDecimal("25"));
+        item.setStatus("P");
+        item.setSupplierId(1);
+        item.setAttribute1("888");
+        item.setAttribute2("999");
+        String oldId = "EST-99";
+        catalogService.updateItem(item,oldId);
+    }
 }
