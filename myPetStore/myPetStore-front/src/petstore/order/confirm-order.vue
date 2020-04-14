@@ -4,7 +4,7 @@
       <div id="templatemo_main">Please confirm the information below and then
         press continue...
         <div>
-          <router-link to="/main/viewMain">Return to Main Menu</router-link>
+          <router-link to="/main/view-main">Return to Main Menu</router-link>
         </div>
 
         <table id="table-4">
@@ -111,53 +111,59 @@
     },
     methods:{
       submitOrder(){
-        let order = {
-          orderId: this.order.orderId,
-          username: this.order.username,
-          orderDate: this.order.orderDate,
-          shipAddress1: this.order.shipAddress1,
-          shipAddress2: this.order.shipAddress2,
-          shipCity: this.order.shipCity,
-          shipState: this.order.shipState,
-          shipZip: this.order.shipZip,
-          shipCountry: this.order.shipCountry,
-          billAddress1: this.order.billAddress1,
-          billAddress2: this.order.billAddress2,
-          billCity: this.order.billCity,
-          billState: this.order.billState,
-          billZip: this.order.billZip,
-          billCountry: this.order.billCountry,
-          courier: this.order.courier,
-          totalPrice: this.order.totalPrice,
-          billToFirstName: this.order.billToFirstName,
-          billToLastName: this.order.billToLastName,
-          shipToFirstName: this.order.shipToFirstName,
-          shipToLastName: this.order.shipToLastName,
-          creditCard: this.order.creditCard,
-          expiryDate: this.order.expiryDate,
-          cardType: this.order.cardType,
-          locale: this.order.locale,
-          status: this.order.status,
-          lineItems: this.order.lineItems
-        }
-        this.axios.post('/submitOrder',order)
-          .then(res => {
-          if(res.status){
-            //更新token
-            this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
-            this.$store.commit('removeOrder')
-            //跳转到查看相应订单
-            this.$router.push('/order/viewOrder?orderId='+res.data.result.orderId)
-          }else {
-            //提交订单失败，库存不足
-            alert("提交订单失败，库存不足")
-            //更新token
-            this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
-            //跳转到购物车
-            this.$router.push('/viewCart')
+          if(this.$store.state.account == null){
+              alert("请先登录")
+              this.$router.push('/account/view-sign-in')
           }
+          else {
+              let order = {
+                  orderId: this.order.orderId,
+                  username: this.order.username,
+                  orderDate: this.order.orderDate,
+                  shipAddress1: this.order.shipAddress1,
+                  shipAddress2: this.order.shipAddress2,
+                  shipCity: this.order.shipCity,
+                  shipState: this.order.shipState,
+                  shipZip: this.order.shipZip,
+                  shipCountry: this.order.shipCountry,
+                  billAddress1: this.order.billAddress1,
+                  billAddress2: this.order.billAddress2,
+                  billCity: this.order.billCity,
+                  billState: this.order.billState,
+                  billZip: this.order.billZip,
+                  billCountry: this.order.billCountry,
+                  courier: this.order.courier,
+                  totalPrice: this.order.totalPrice,
+                  billToFirstName: this.order.billToFirstName,
+                  billToLastName: this.order.billToLastName,
+                  shipToFirstName: this.order.shipToFirstName,
+                  shipToLastName: this.order.shipToLastName,
+                  creditCard: this.order.creditCard,
+                  expiryDate: this.order.expiryDate,
+                  cardType: this.order.cardType,
+                  locale: this.order.locale,
+                  status: this.order.status,
+                  lineItems: this.order.lineItems
+              }
+              this.axios.post('/finalOrders',order)
+                  .then(res => {
+                      if(res.status){
+                          //更新token
+                          this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
+                          this.$store.commit('removeOrder')
+                          //跳转到查看相应订单
+                          this.$router.push('/order/viewOrder?orderId='+res.data.result.orderId)
+                      }else {
+                          //提交订单失败，库存不足
+                          alert("提交订单失败，库存不足")
+                          //更新token
+                          this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
+                          //跳转到购物车
+                          this.$router.push('/viewCart')
+                      }
 
-        })
+                  })
+          }
       }
     }
   }

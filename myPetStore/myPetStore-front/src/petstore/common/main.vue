@@ -68,7 +68,7 @@
       pageFrame,
     },
     methods:{
-      refresh(){
+      refresh(){ //弃用
         console.log("刷新页面")
         this.reload();
       }

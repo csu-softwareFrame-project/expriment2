@@ -109,53 +109,37 @@
     },
     methods:{
       ProceedToConfirm(){
-        // let postData = this.$qs.stringify({
-        //   cardType: this.OrderForm.cartType,
-        //   creditCard: this.OrderForm.creditCard,
-        //   expiryDate: this.OrderForm.expiryDate,
-        //   billToFirstName: this.OrderForm.billToFirstName,
-        //   billToLastName: this.OrderForm.billToFirstName,
-        //   billAddress1: this.OrderForm.billAddress1,
-        //   billAddress2: this.OrderForm.billAddress2,
-        //   billCity: this.OrderForm.billCity,
-        //   billState: this.OrderForm.billState,
-        //   billZip: this.OrderForm.billZip,
-        //   billCountry: this.OrderForm.billCountry
-        // })
-        // this.axios({
-        //   method: 'post',
-        //   url: '/confirmNewOrder',
-        //   data: postData
-        // })
-        if(this.$store.state.account === null){
-          alert("请先登录")
-          this.$router.push("/account/signin")
-        }else{
-          this.axios.post('/confirmNewOrder',{
-            cardType: this.OrderForm.cartType,
-            creditCard: this.OrderForm.creditCard,
-            expiryDate: this.OrderForm.expiryDate,
-            billToFirstName: this.OrderForm.billToFirstName,
-            billToLastName: this.OrderForm.billToLastName,
-            billAddress1: this.OrderForm.billAddress1,
-            billAddress2: this.OrderForm.billAddress2,
-            billCity: this.OrderForm.billCity,
-            billState: this.OrderForm.billState,
-            billZip: this.OrderForm.billZip,
-            billCountry: this.OrderForm.billCountry
-          }).then(res =>{
-            if(res.data.status){
-              //更新token
-              this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
-              //更新当前订单
-              this.$store.commit('updateOrder',res.data.result.order)
-              //进入确认订单界面（未减库存）
-              this.$router.push("/viewConfirmOrder")
-            } else {
-              alert(res.data.msg)
-            }
-          })
-        }
+          if(this.$store.state.account == null){
+              alert("请先登录")
+              this.$router.push('/account/view-sign-in')
+          }
+          else {
+              this.axios.post('/newOrders',{
+                  cardType: this.OrderForm.cartType,
+                  creditCard: this.OrderForm.creditCard,
+                  expiryDate: this.OrderForm.expiryDate,
+                  billToFirstName: this.OrderForm.billToFirstName,
+                  billToLastName: this.OrderForm.billToLastName,
+                  billAddress1: this.OrderForm.billAddress1,
+                  billAddress2: this.OrderForm.billAddress2,
+                  billCity: this.OrderForm.billCity,
+                  billState: this.OrderForm.billState,
+                  billZip: this.OrderForm.billZip,
+                  billCountry: this.OrderForm.billCountry
+              }).then(res =>{
+                  if(res.data.status){
+                      //更新token
+                      this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
+                      //更新当前订单
+                      this.$store.commit('updateOrder',res.data.result.order)
+                      //进入确认订单界面（未减库存）
+                      this.$router.push("/viewConfirmOrder")
+                  } else {
+                      alert(res.data.msg)
+                  }
+              })
+          }
+
       }
     }
   }

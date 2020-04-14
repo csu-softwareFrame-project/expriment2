@@ -4,7 +4,7 @@
       <div id="templatemo_main" align="center">
 
         <div>
-          <a href="/main/viewMain">Return to Main Menu</a>
+          <a href="/main/view-main">Return to Main Menu</a>
         </div>
 
         <table id="table-4">
@@ -162,7 +162,7 @@
     components:{
       pageFrame,
     },created(){
-      this.axios.get('/getOrder',{
+      this.axios.get('/orders',{
         params:{
           orderId: this.orderId
         }

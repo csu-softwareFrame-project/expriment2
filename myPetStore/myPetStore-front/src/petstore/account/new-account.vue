@@ -133,36 +133,39 @@
     },
     methods:{
       signUp(form){
-        this.passwordMsg = ''
-        this.usernameMsg = ''
-        this.repeatedPasswordMsg = ''
-        this.axios.post('/signup',{
-          username: this.signUpForm.username,
-          password: this.signUpForm.password,
-          repeatedPassword: this.signUpForm.repeatedPassword,
-          firstName: this.signUpForm.firstName,
-          lastName: this.signUpForm.lastName,
-          email: this.signUpForm.email,
-          phone: this.signUpForm.phone,
-          address1: this.signUpForm.address1,
-          address2: this.signUpForm.address2,
-          city: this.signUpForm.city,
-          state: this.signUpForm.state,
-          zip: this.signUpForm.zip,
-          country: this.signUpForm.country,
-          languagePreference: this.signUpForm.languagePreference,
-          favouriteCategoryId: this.signUpForm.favouriteCategoryId,
-          listOption: this.signUpForm.listOption,
-          bannerOption: this.signUpForm.bannerOption,
-        }).then(res => {
+          let postData = this.$qs.stringify({
+              username: this.signUpForm.username,
+              password: this.signUpForm.password,
+              repeatedPassword: this.signUpForm.repeatedPassword,
+              firstName: this.signUpForm.firstName,
+              lastName: this.signUpForm.lastName,
+              email: this.signUpForm.email,
+              phone: this.signUpForm.phone,
+              address1: this.signUpForm.address1,
+              address2: this.signUpForm.address2,
+              city: this.signUpForm.city,
+              state: this.signUpForm.state,
+              zip: this.signUpForm.zip,
+              country: this.signUpForm.country,
+              languagePreference: this.signUpForm.languagePreference,
+              favouriteCategoryId: this.signUpForm.favouriteCategoryId,
+              listOption: this.signUpForm.listOption,
+              bannerOption: this.signUpForm.bannerOption,
+          })
+        this.axios({
+            method: 'post',
+            url: '/accounts/'+this.signUpForm.username,
+            data: postData,
+        })
+            .then(res => {
           if(res.data.status){
             //注册成功返回登录页面
-            this.$router.push("/account/signin")
+            this.$router.push("/account/view-sign-in")
           }else {
             //注册失败，返回失败原因
-            this.usernameMsg = res.data.result.usernameMsg
-            this.passwordMsg = res.data.result.passwordMsg
-            this.repeatedPasswordMsg = res.data.result.repeatedPasswordMsg
+            this.usernameMsg = res.data.result.usernameMsg;
+            this.passwordMsg = res.data.result.passwordMsg;
+            this.repeatedPasswordMsg = res.data.result.repeatedPasswordMsg;
           }
         })
       }

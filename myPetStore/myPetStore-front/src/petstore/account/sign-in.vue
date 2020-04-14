@@ -103,9 +103,9 @@
     },
     methods:{
       signIn(form) {
-        // if(this.token === "undefined") this.token = ''
-        this.$store.commit('changeLogin',{ Authorization: "undefined" })//token存入全局变量
-        this.axios.post('/signin',{
+        // 登录时把token设置为"undefined"
+        this.$store.commit('changeLogin',{ Authorization: "undefined" })
+        this.axios.post('/accounts',{
           username: this.signInForm.username,
           password: this.signInForm.password,
           token: this.token,
@@ -114,11 +114,9 @@
         }).then(res =>{
           if(res.data.status){
             //登录成功
-            // console.log(res.data.result.account)
             this.$store.commit("updateAccount",res.data.result.account) //account存入全局变量
             this.$store.commit('changeLogin',{ Authorization: res.data.result.token })//token存入全局变量
-            // console.log("新的token:("+typeof(res.data.result.token)+")"+res.data.result.token)
-            this.$router.push("/main/viewmain")
+            this.$router.push("/main/view-main")
           } else {
             //登录失败，返回失败消息
             this.signInMsg = res.data.msg

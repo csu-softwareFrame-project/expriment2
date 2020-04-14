@@ -29,10 +29,11 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 //        }
         System.out.println("methods:"+httpServletRequest.getMethod());
         //option方法，放行
-        if (HttpMethod.OPTIONS.toString().equals(httpServletRequest.getMethod())) {
-            System.out.println("OPTIONS请求，放行");
-            return true;
-        }
+//        if (HttpMethod.OPTIONS.toString().equals(httpServletRequest.getMethod())) {
+//            System.out.println("OPTIONS请求，放行");
+//            return true;
+//        }
+
         //打印请求头
 //        int i = 0;
 //        Enumeration<String> headerNames = httpServletRequest.getHeaderNames();
@@ -58,6 +59,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             //抛出401错误
             throw new RuntimeException("401");
         }
+        System.out.println("进入的token:"+token+".进入的username");
         System.out.println("token没过期，放行");
         return true;
     }

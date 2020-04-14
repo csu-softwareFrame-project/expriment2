@@ -27,7 +27,7 @@ export default new Router({
       component: () => import('../petstore/account/include-account')
     },
     {
-      path: '/account/signin',
+      path: '/account/view-sign-in',
       name: '登录',
       //渲染是否可见
       hidden: true,
@@ -37,7 +37,7 @@ export default new Router({
       component: () => import('../petstore/account/sign-in')
     },
     {
-      path: '/main/viewMain',
+      path: '/main/view-main',
       name: '主页',
       hidden: true,
       meta: {

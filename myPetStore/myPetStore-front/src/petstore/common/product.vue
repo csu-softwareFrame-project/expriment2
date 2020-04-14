@@ -60,7 +60,7 @@
     },
     methods:{
       getData(){
-        this.axios.get('/getProduct',{
+        this.axios.get('/products',{
           params:{
             productId: this.$route.query.productId
           }

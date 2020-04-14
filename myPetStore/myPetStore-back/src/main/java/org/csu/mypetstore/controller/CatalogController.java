@@ -30,14 +30,14 @@ public class CatalogController {
     private CatalogService catalogService;
 
     //主目录跳转
-    @GetMapping("/getCategory")
+    @GetMapping("/categories")
     public ReturnPack viewCategory(HttpServletRequest httpServletRequest, @RequestParam String categoryId){
         JSONObject data = new JSONObject();
         return catalogService.viewCategoryService(httpServletRequest,categoryId,data);
     }
 
     //product目录跳转
-    @GetMapping("/getProduct")
+    @GetMapping("/products")
     public ReturnPack viewProduct(HttpServletRequest httpServletRequest,@RequestParam String productId){
         String username =  httpServletRequest.getHeader("UserName");
         JSONObject data = new JSONObject();
@@ -53,7 +53,7 @@ public class CatalogController {
     }
 
     //Item目录跳转
-    @GetMapping("/getItem")
+    @GetMapping("/items")
     public ReturnPack viewItem(HttpServletRequest httpServletRequest,@RequestParam String itemId){
         String username =  httpServletRequest.getHeader("UserName");
         JSONObject data = new JSONObject();

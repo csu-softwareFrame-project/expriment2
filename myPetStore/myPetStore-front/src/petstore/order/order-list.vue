@@ -36,7 +36,7 @@
     components:{
       pageFrame,
     },created(){
-      this.axios.get('/getOrderList',{params:{
+      this.axios.get('/orderLists',{params:{
         username: this.$store.state.account.username
         }}).then(res => {
         this.orderList = res.data.result.orderList

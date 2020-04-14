@@ -145,36 +145,38 @@
     },
     methods:{
       editAccount(){
-        let account = {
-          email: this.editForm.email,
-          firstName: this.editForm.firstName,
-          lastName: this.editForm.lastName,
-          address1: this.editForm.address1,
-          address2: this.editForm.address2,
-          city: this.editForm.city,
-          state: this.editForm.state,
-          zip: this.editForm.zip,
-          country: this.editForm.country,
-          phone: this.editForm.phone,
-          favouriteCategoryId: this.editForm.favouriteCategoryId,
-          languagePreference: this.editForm.languagePreference,
-          listOption: this.editForm.listOption,
-          bannerOption: this.editForm.bannerOption,
-        }
-        this.axios.post('/editAccount',account)
-          .then(res => {
-            this.$store.commit('updateAccount',res.data.result.account)
-            //更新token
-            this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
-          })
+          if(this.$store.state.account == null){
+              alert("请先登录")
+              this.$router.push('/account/view-sign-in')
+          }
+          else {
+              let account = {
+                  email: this.editForm.email,
+                  firstName: this.editForm.firstName,
+                  lastName: this.editForm.lastName,
+                  address1: this.editForm.address1,
+                  address2: this.editForm.address2,
+                  city: this.editForm.city,
+                  state: this.editForm.state,
+                  zip: this.editForm.zip,
+                  country: this.editForm.country,
+                  phone: this.editForm.phone,
+                  favouriteCategoryId: this.editForm.favouriteCategoryId,
+                  languagePreference: this.editForm.languagePreference,
+                  listOption: this.editForm.listOption,
+                  bannerOption: this.editForm.bannerOption,
+              }
+              this.axios.put('/accounts',account)
+                  .then(res => {
+                      this.$store.commit('updateAccount',res.data.result.account)
+                      //更新token
+                      this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
+                  })
+          }
+
       }
     },
     created(){
-      if(this.account === null){
-        alert("请先登录")
-        this.$router.push("/account/signin")
-      }else{
-      }
     }
   }
 </script>

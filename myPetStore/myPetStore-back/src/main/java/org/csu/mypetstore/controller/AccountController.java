@@ -12,24 +12,23 @@ import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 @RestController
-//@RequestMapping("/account")
 public class AccountController {
     private boolean DEBUG = false;
     @Autowired
     AccountService accountService;
 
     //修改账户信息
-    @PostMapping("/editAccount")
+    @PutMapping("/accounts")
     public ReturnPack editAccount(HttpServletRequest httpServletRequest, @RequestBody Account account){
         System.out.println(account);
         return accountService.editAccountService(httpServletRequest,account);
     }
 
     //注册功能跳转
-    @PostMapping("/signup")
-    public ReturnPack signUp(@RequestBody Map<String, String> params){
+    @PostMapping("/accounts/{id}")
+    public ReturnPack signUp(@PathVariable("id") String username,@RequestParam Map<String, String> params){
         if (DEBUG){
-            String username = params.get("username");
+//            String username = params.get("username");
             String password = params.get("password");
             String firstName = params.get("firstName");
             String lastName = params.get("lastName");
@@ -63,10 +62,5 @@ public class AccountController {
             System.out.println("16   "+bannerOption);
         }
         return accountService.signUpservice(params);
-//        if(accountService.signUpservice(account,repeatedPassword,map)) {
-//            return "account/signOnForm";
-//        } else{
-//            return "account/newAccountForm";
-//        }
     }
 }

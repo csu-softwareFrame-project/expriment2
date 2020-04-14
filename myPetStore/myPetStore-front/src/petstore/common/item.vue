@@ -64,7 +64,7 @@
     },
     methods:{
       getData(){
-        this.axios.get('/getItem',{
+        this.axios.get('/items',{
           params:{
             itemId: this.$route.query.itemId
           }
@@ -75,32 +75,33 @@
           window.console.error(err)
         })
       },
-      addToCart(){
-        if(this.$store.state.account === null){
-          alert("请先登录")
-          this.$router.push("/account/signin")
-        }else{
-          let id = this.item.itemId.toString()
-          let postData = this.$qs.stringify({
-            itemId: id,
-            username: this.$store.state.account.username,
-          })
-          this.axios({
-            method: 'post',
-            url: '/addToCart',
-            data: postData,
-          }).then(res => {
-            if(res.data.status){
-              this.$router.push("/viewCart")
-              console.log("item:"+res.data.result.token)
-              //更新token
-              this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
-            }else {
-              //显示库存不足消息
-              alert(res.data.msg)
-            }
-          })
-        }
+      addToCart(){ //添加到购物
+          if(this.$store.state.account == null){
+              alert("请先登录")
+              this.$router.push('/account/view-sign-in')
+          }
+          else {
+              let id = this.item.itemId.toString()
+              let postData = this.$qs.stringify({
+                  itemId: id,
+                  username: this.$store.state.account.username,
+              })
+              this.axios({
+                  method: 'post',
+                  url: '/carts',
+                  data: postData,
+              }).then(res => {
+                  if(res.data.status){
+                      this.$router.push("/viewCart")
+                      console.log("item:"+res.data.result.token)
+                      //更新token
+                      this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
+                  }else {
+                      //显示库存不足消息
+                      alert(res.data.msg)
+                  }
+              })
+          }
 
       }
     },

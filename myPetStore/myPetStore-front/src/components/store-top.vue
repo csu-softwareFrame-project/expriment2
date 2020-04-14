@@ -11,8 +11,8 @@
 <!--          <li><a href="/main/view_main" class="selected" th:text="#{top.home}">Home</a></li>-->
 <!--          <li th:if="${session.loginUser}==null"><a href="/useraccess/view_login" th:text="#{top.signIn}">Sign In</a></li>-->
 <!--          <li th:if="${session.loginUser}!=null"> <a href="/main/view_account" th:text="#{top.Account}">Account</a>-->
-          <li><router-link to="/main/viewMain" class="selected">Home</router-link></li>
-          <li ><router-link to="/account/signin" v-if="account === null">Sign In</router-link></li>
+          <li><router-link to="/main/view-main" class="selected">Home</router-link></li>
+          <li ><router-link to="/account/view-sign-in" v-if="account === null">Sign In</router-link></li>
           <li > <router-link to="/account/edit" v-if="account != null">Account</router-link></li>
 
             <ul>
@@ -90,7 +90,7 @@
         console.log("登出")
         this.$store.commit("removeAccount")
         this.$store.commit("changeLogin","undefined")
-        // this.$router.push("/account/signin")
+        // this.$router.push("/account/view-sign-in")
         this.$router.go(0)//全局刷新，清空store
       }
     }

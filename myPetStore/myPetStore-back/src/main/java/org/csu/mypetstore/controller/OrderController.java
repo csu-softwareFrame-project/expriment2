@@ -30,13 +30,13 @@ public class OrderController {
     AccountService accountService;
 
     //查看个人订单列表
-    @GetMapping("/getOrderList")
+    @GetMapping("/orderLists")
     public ReturnPack viewOrderList(@RequestParam String username){
         return orderService.viewOrderList(username);
     }
 
     //查看指定订单
-    @GetMapping("/getOrder")
+    @GetMapping("/orders")
     public ReturnPack viewOrder(HttpServletRequest httpServletRequest, @RequestParam String orderId){
         return orderService.viewOrder(httpServletRequest,orderId);
     }
@@ -48,7 +48,7 @@ public class OrderController {
 //    }
 
     //生成订单，跳转到订单页面让用户确认
-    @PostMapping("/confirmNewOrder")
+    @PostMapping("/newOrders")
     public ReturnPack confirmNewOrder(HttpServletRequest httpServletRequest,@RequestBody Map<String,String> map){
         String cardType = map.get("cardType");
         String creditCard = map.get("creditCard");
@@ -81,7 +81,7 @@ public class OrderController {
 
 
     //最终提交订单.
-    @PostMapping("/submitOrder")
+    @PostMapping("/finalOrders")
     public ReturnPack finalConfirmOrder(HttpServletRequest httpServletRequest,@RequestBody Order order) {
         return orderService.confirmOrder(httpServletRequest,order);
     }

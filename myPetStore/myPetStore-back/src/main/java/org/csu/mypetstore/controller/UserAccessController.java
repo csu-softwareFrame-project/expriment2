@@ -28,8 +28,6 @@ import java.util.Map;
  * @Date:2020.4.1
  */
 @RestController
-//@RequestMapping("/useraccess")
-//@SessionAttributes(value = {"loginUser"})//设置后会使方法中的session参数失效
 public class UserAccessController {
     private boolean DEBUG = true;
     @Autowired
@@ -37,15 +35,9 @@ public class UserAccessController {
     @Autowired
     JwtService jwtService;
 
-    //进入登录页面
-    @RequestMapping("/view_login")
-    public String viewLogIn(){
-        return "account/signonForm";
-    }
-
     //登录验证跳转
-    @PostMapping("/signin")
-    public ReturnPack logIn(@RequestBody Map<String, String> params){
+    @PostMapping("/accounts")
+    public ReturnPack signIn(@RequestBody Map<String, String> params){
         if(DEBUG){
             System.out.println("收到请求");
             System.out.println(params.get("username"));
@@ -63,7 +55,6 @@ public class UserAccessController {
     }
 
     @RequestMapping(value ="/alogin", method = RequestMethod.GET)
-    @ResponseBody
     public String alogin(String username){
         Account account = accountService.getAccount(username);
         if(account != null && !username.equals("")){
@@ -77,7 +68,7 @@ public class UserAccessController {
         }
     }
 
-    @GetMapping("/verifyToken")
+    @PostMapping("/tokens")
     public ReturnPack verifyToken(@RequestParam String token){
         JSONObject data = new JSONObject();
 //        if (token != null && !jwtService.isJwtFailure(token)) {
@@ -93,27 +84,6 @@ public class UserAccessController {
         return ReturnPack.success(data);
     }
 
-//    //进入注册页面
-//    @GetMapping("/view_sign_up")
-//    public String viewSignUp(){ return "account/newAccountForm"; }
-
-
-
-    //不知道session为什么无效
-//    //登出跳转
-//    @GetMapping("/sign_out")
-//    public String signOut(HttpSession session){
-//        session.removeAttribute("loginUser");
-//        return "catalog/main";
-//    }
-
-
-    //登出跳转
-//    @GetMapping("/sign_out")
-//    public String signOut(HttpSession session){
-//        session.removeAttribute("loginUser");
-//        return "catalog/main";
-//    }
 
     //测试用
     @GetMapping("/test")

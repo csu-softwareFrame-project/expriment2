@@ -5,7 +5,7 @@
 <!--      <h2 th:text="${}" v-if="category != null">Category</h2>-->
       <h2 v-if="category != null">{{category.name}}</h2>
       <div>
-        <router-link to="/main/viewMain">Return to Main Menu</router-link>
+        <router-link to="/main/view-main">Return to Main Menu</router-link>
       </div>
       <br>
       <div  align="center" >
@@ -52,7 +52,7 @@
     },
     methods: {
       getData() {
-        this.axios.get('/getCategory', {
+        this.axios.get('/categories', {
           params: {
             categoryId: this.$route.query.categoryId
           }

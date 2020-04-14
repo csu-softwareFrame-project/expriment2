@@ -109,8 +109,8 @@
           quantity: e.currentTarget.value
         })
         this.axios({
-          method: 'post',
-          url: '/updateCart',
+          method: 'put',
+          url: '/carts',
           data: postData
         }).then(res => {
           if(res.data.status){
@@ -130,8 +130,8 @@
           cartItemId: e.currentTarget.id,
         })
         this.axios({
-          method: 'post',
-          url: '/removeFromCart',
+          method: 'delete',
+          url: '/carts',
           data: postData,
         }).then(res => {
           this.cart = res.data.result.cart
@@ -142,21 +142,16 @@
       }
     },
     created(){
-      // console.log("创建时:"+this.account)
-      if(this.account === null){
-        alert("请先登录")
-        this.$router.push("/account/signin")
-      }else{
-        this.axios.get('/viewCart',{
-          params:{
-            username: this.account.username
-          }
+        this.axios.get('/carts',{
+            params:{
+                username: this.account.username
+            }
         }).then(res => {
-          this.cart = res.data.result.cart
-          // console.log("查看购物车而产生的新token:"+res.data.result.token)
-          this.$store.commit('changeLogin',{ Authorization: res.data.result.token })//token存入全局变量
+            this.cart = res.data.result.cart
+            // console.log("查看购物车而产生的新token:"+res.data.result.token)
+            //  更新token
+            this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
         })
-      }
     }
   }
 </script>
