@@ -79,24 +79,24 @@ public class CatalogService {
     }
 
     public ReturnPack viewCategoryService(HttpServletRequest httpServletRequest,String categoryId, JSONObject data ){
-        String username =  httpServletRequest.getHeader("UserName");
+//        String username =  httpServletRequest.getHeader("UserName");
         //如果有选定宠物类型，展示该类型的菜单；否则展示宠物类型菜单
         if (categoryId != null){
             Category category = getCategory(categoryId);
             List<Product> productList = getProductListByCategory(categoryId);
-            if(username != null && username != "") {
-                String token = JwtUtil.generate(username);
-                data.put("token",token);
-            }
+//            if(username != null && username != "") {
+//                String token = JwtUtil.generate(username);
+//                data.put("token",token);
+//            }
             data.put("category", category);
             data.put("productList", productList);
             return ReturnPack.success(data);
         }else{
             List<Category> categoryList = getCategoryList();
-            if(username != null && username != "") {
-                String token = JwtUtil.generate(username);
-                data.put("token",token);
-            }
+//            if(username != null && username != "") {
+//                String token = JwtUtil.generate(username);
+//                data.put("token",token);
+//            }
             data.put("categoryList",categoryList);
             return ReturnPack.success(data);
         }

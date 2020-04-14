@@ -53,10 +53,11 @@ router.beforeEach((to, from, next) => {
     //   console.log(from.path)
     //   next('/account/view-sign-in')
     // } else{
-    if( token === null || token === "" || token === undefined){
+    if( token === null || token === "" || token === 'undefined'){
       alert("你还没登录")
       next('/account/view-sign-in')
-    }else{
+    }
+  else{
       let strToken = qs.stringify({
         token : token.toString(),
       })
@@ -113,8 +114,11 @@ axios.interceptors.response.use(function (response) {
       case 400: err.message = '请求错误(400)' ; break;
       case 401:{
         // err.message = '未授权，请重新登录(401)';
+        store.commit("removeAccount")
+        store.commit("changeLogin","undefined")
+        console.log(store.state.Authorization)
         alert('登录认证已过期');
-        router.push('/account/view-sign-in')
+        router.push('/account/view-sign-in');
         break;
       }
       case 403: err.message = '拒绝访问(403)'; break;

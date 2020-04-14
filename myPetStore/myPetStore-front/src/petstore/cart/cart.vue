@@ -142,16 +142,22 @@
       }
     },
     created(){
-        this.axios.get('/carts',{
-            params:{
-                username: this.account.username
-            }
-        }).then(res => {
-            this.cart = res.data.result.cart
-            // console.log("查看购物车而产生的新token:"+res.data.result.token)
-            //  更新token
-            this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
-        })
+        if(this.account === null){
+            alert("请先登录")
+            this.$router.push('/account/view-sign-in')
+        }else {
+            this.axios.get('/carts',{
+                params:{
+                    username: this.account.username
+                }
+            }).then(res => {
+                this.cart = res.data.result.cart
+                // console.log("查看购物车而产生的新token:"+res.data.result.token)
+                //  更新token
+                this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
+            })
+        }
+
     }
   }
 </script>

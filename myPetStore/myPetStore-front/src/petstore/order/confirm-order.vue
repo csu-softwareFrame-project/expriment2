@@ -149,15 +149,15 @@
                   .then(res => {
                       if(res.status){
                           //更新token
-                          this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
-                          this.$store.commit('removeOrder')
+                          this.$store.commit('changeLogin',{ Authorization: res.data.result.token });
+                          this.$store.commit('removeOrder');
                           //跳转到查看相应订单
                           this.$router.push('/order/viewOrder?orderId='+res.data.result.orderId)
                       }else {
                           //提交订单失败，库存不足
-                          alert("提交订单失败，库存不足")
+                          alert("提交订单失败，库存不足");
                           //更新token
-                          this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
+                          this.$store.commit('changeLogin',{ Authorization: res.data.result.token });
                           //跳转到购物车
                           this.$router.push('/viewCart')
                       }
