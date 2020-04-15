@@ -6,9 +6,21 @@ import router from './router'
 import VueCookies from 'vue-cookies'
 import VueAxios from 'vue-axios'
 import axios from 'axios'
-import store from "./store/index"
+import store from './store/index'
 import qs from 'qs'
+// import '../static/css/jquery-ui.css'
+import '../static/css/bootstrap.min.css'
+import '../static/css/font-awesome.min.css'
+import '../static/css/zzsc.css'
+import '../static/css/templatemo_style.css'
+import '../static/css/ddsmoothmenu.css'
+import '../static/css/table.css'
+import '../static/css/press.css'
+import '../static/css/hover.css'
 
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+Vue.use(ElementUI)
 // // 1、引入组件
 // import Users from './components/Users'
 // // 2、注册全局组件

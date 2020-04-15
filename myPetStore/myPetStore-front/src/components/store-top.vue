@@ -14,7 +14,6 @@
           <li><router-link to="/main/view-main" class="selected">Home</router-link></li>
           <li ><router-link to="/account/view-sign-in" v-if="account === null">Sign In</router-link></li>
           <li > <router-link to="/account/edit" v-if="account != null">Account</router-link></li>
-
             <ul>
               <li>
                 <span class="top"></span>
@@ -26,7 +25,6 @@
               <li><router-link to="/order/viewOrderList" v-if="account != null">orders</router-link></li>
               <li><a href="javascript:void(0);" v-on:click="signOut('')" v-if="account != null">sign out</a></li>
             </ul>
-        </ul>
 <!--          <li><a href="/catalog/viewCategory" th:text="#{top.Pet}">Pet</a>-->
           <li><a >Pet</a>
 
@@ -43,13 +41,12 @@
               <li><router-link to="/viewCategory?categoryId=CATS">cats</router-link></li>
               <li><router-link to="/viewCategory?categoryId=BIRDS">birds</router-link></li>
             </ul>
-
-          </li>
 <!--          <li><a href="/help.html" th:text="#{top.help}">help</a></li>-->
           <li><a>help</a></li>
 
 <!--          <li><a href="/cart/view_cart"><img align="middle" name="img_cart" src="../assets/static/images/cart.gif" /></a></li>-->
           <li><router-link to="/viewCart"><img align="middle" name="img_cart" src="../assets/static/images/cart.gif" /></router-link></li>
+        </ul>
 
         <br style="clear: left" />
       </div> <!-- end of templatemo_menu -->
@@ -66,7 +63,9 @@
 <!--                <button v-on:click="search()" class="btn btn-block btn-sm btn-success">-->
 <!--                <font size="1">s&nbsp;e&nbsp;a&nbsp;r&nbsp;c&nbsp;h</font>-->
 <!--                </button>-->
-                <router-link v-bind:to="'/result?keyword='+keyword">s&nbsp;e&nbsp;a&nbsp;r&nbsp;c&nbsp;h</router-link>
+                <button  name="searchProducts"  value="Search" class="btn btn-block btn-sm btn-success">
+                  <router-link v-bind:to="'/result?keyword='+keyword">s&nbsp;e&nbsp;a&nbsp;r&nbsp;c&nbsp;h</router-link>
+                </button>
               </div>
             </div>
             <br/>
