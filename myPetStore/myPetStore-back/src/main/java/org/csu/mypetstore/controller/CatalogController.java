@@ -16,12 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
-
-/**
- * @desciption:目录相关跳转
- * @Date:2020.4.1
- */
-
 @RestController
 //@RequestMapping("/catalog")
 public class CatalogController {

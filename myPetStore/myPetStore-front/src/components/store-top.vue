@@ -50,7 +50,7 @@
 
 <!--          <li><a href="/cart/view_cart"><img align="middle" name="img_cart" src="../assets/static/images/cart.gif" /></a></li>-->
           <li><router-link to="/viewCart"><img align="middle" name="img_cart" src="../assets/static/images/cart.gif" /></router-link></li>
-        </ul>
+
         <br style="clear: left" />
       </div> <!-- end of templatemo_menu -->
       <div>
@@ -59,12 +59,15 @@
         <form>
           <div class="column-header">
             <div class="col-xs-3">
-              <input type="search" name="keyword" size="30" id="tags" />
+              <input type="search" name="keyword" size="30" id="tags" v-model="keyword"/>
             </div>
             <div class="col-xs-3">
-              <div class="admin5"><button type="submit" name="searchProducts"  value="Search" class="btn btn-block btn-sm btn-success">
-<!--                <font size="1" th:text="#{top.search}">s&nbsp;e&nbsp;a&nbsp;r&nbsp;c&nbsp;h</font></button></div>-->
-                <font size="1">s&nbsp;e&nbsp;a&nbsp;r&nbsp;c&nbsp;h</font></button></div>
+              <div class="admin5">
+<!--                <button v-on:click="search()" class="btn btn-block btn-sm btn-success">-->
+<!--                <font size="1">s&nbsp;e&nbsp;a&nbsp;r&nbsp;c&nbsp;h</font>-->
+<!--                </button>-->
+                <router-link v-bind:to="'/result?keyword='+keyword">s&nbsp;e&nbsp;a&nbsp;r&nbsp;c&nbsp;h</router-link>
+              </div>
             </div>
             <br/>
           </div>
@@ -82,6 +85,7 @@
   export default {
     data(){
       return{
+          keyword: '',
         token: this.$store.state.Authorization,
         account: this.$store.state.account
       }
@@ -92,6 +96,8 @@
         this.$store.commit("changeLogin","undefined")
         // this.$router.push("/account/view-sign-in")
         this.$router.go(0)//全局刷新，清空store
+       }, search(){
+          this.$router.push({path:'/result',query:{keyword: this.keyword}});
       }
     }
   }

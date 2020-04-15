@@ -38,7 +38,7 @@ router.beforeEach((to, from, next) => {
 // 使用 router.beforeEach 注册一个全局前置守卫，判断用户登录验证是否过期
   if ((to.path === '/' || to.path === '/account/view-sign-in' || to.path === '/main/view-main' ||
   to.path === '/viewCategory' || to.path === '/viewProduct' || to.path === '/viewItem' ||
-    to.path === '/account/signup')
+    to.path === '/account/signup' || to.path === '/result')
     && store.state.account === null) { //不用验证的路由范围
     //如果token不为空，更新token
     //是登录，继续路由
@@ -102,7 +102,7 @@ axios.interceptors.response.use(function (response) {
         store.commit("removeAccount")
         store.commit("changeLogin","undefined")
         console.log(store.state.Authorization)
-        alert('登录认证已过期');
+        alert('后台：登录认证已过期');
         router.push('/account/view-sign-in');
         break;
       }

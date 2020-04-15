@@ -45,6 +45,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 //        }
         //如果没有token，就需要颁发
         if(token.equals("undefined")) {
+            System.out.println("token:undefined");
            httpServletResponse.sendError(401);
         };
         //token过期

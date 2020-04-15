@@ -181,7 +181,7 @@ public class Account implements Serializable {
     }
 
     public void setBooleanListOption(boolean listOption) {
-        this.booleanBannerOption = listOption;
+        this.booleanListOption = listOption;
     }
 
     public boolean isBooleanBannerOption() {

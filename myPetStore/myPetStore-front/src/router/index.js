@@ -123,6 +123,14 @@ export default new Router({
         title: 'myPetStore - 确认订单'
       },
       component: () => import('../petstore/order/confirm-order')
+    },{
+      path: '/result',
+      name: '搜索结果',
+      hidden: true,
+      meta: {
+        title: 'myPetStore - 搜索结果'
+      },
+      component: () => import('../petstore/common/search')
     },
     { path: '*',  component: () => import('../components/HelloWorld'), }
   ]

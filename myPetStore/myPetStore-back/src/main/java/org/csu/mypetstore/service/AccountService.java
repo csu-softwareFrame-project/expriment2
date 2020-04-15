@@ -104,6 +104,10 @@ public class AccountService {
 //            }
             if(Constants.DEBUG_MODE&&Constants.DEBUG_CONTROLLER)System.out.println("登录成功");
             account = getAccount(username);
+            if(account.getBannerOption().equals("1")) account.setBooleanBannerOption(true);
+            else account.setBooleanBannerOption(false);
+            if(account.getListOption().equals("1")) account.setBooleanListOption(true);
+            else account.setBooleanListOption(false);
             data.put("account",account);
            return ReturnPack.success(data);
         }else {
@@ -238,19 +242,13 @@ public class AccountService {
 //        }
 
         if(success) {
-            //前端的checkbox勾选了，返回on，没勾选，返回null;将其转化为boolean
-            if(account.getListOption() != null){
-                if (account.getListOption().equals("on")) account.setBooleanListOption(true);
-                else account.setBooleanListOption(false);
-            }else{
-                account.setBooleanListOption(false);
-            }
-            if(account.getBannerOption() != null){
-                if(account.getBannerOption().equals("on")) account.setBooleanBannerOption(true);
-                else account.setBooleanBannerOption(false);
-            }else {
-                account.setBooleanBannerOption(false);
-            }
+            System.out.println("l:"+account.getListOption()+"  b:"+account.getBannerOption());
+            if (account.getListOption().equals("true")) account.setBooleanListOption(true);
+            else account.setBooleanListOption(false);
+            if(account.getBannerOption().equals("true")) account.setBooleanBannerOption(true);
+            else account.setBooleanBannerOption(false);
+            System.out.println("l:"+account.isBooleanListOption()+"  b:"+account.isBooleanBannerOption());
+
             if(account.getLanguagePreference() == null){
                 account.setLanguagePreference("English");
             }else if(account.getLanguagePreference().equals("")){
@@ -262,14 +260,14 @@ public class AccountService {
 //            account.setPassword(password);
             System.out.println("修改后:"+account);
             account.setUsername(username);
+            //将修改信息同步到数据库
+            updateAccount(account);
+
             data.put("account",account);
             String token = JwtUtil.generate(username);
             data.put("token",token);
-//            session.removeAttribute("loginUser");
-//            session.setAttribute("loginUser",account);
 
-            //将修改信息同步到数据库
-            updateAccount(account);
+
         }
         return ReturnPack.success(data);
     }

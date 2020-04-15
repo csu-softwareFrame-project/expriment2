@@ -125,8 +125,8 @@
           account: this.$store.state.account,
           languagePreference: this.$store.state.account.languagePreference,
           favouriteCategoryId: this.$store.state.account.favouriteCategoryId,
-          listOption: this.$store.state.account.listOption,
-          bannerOption: this.$store.state.account.bannerOption,
+          listOption: this.$store.state.account.booleanListOption,
+          bannerOption: this.$store.state.account.booleanBannerOption,
           firstName: this.$store.state.account.firstName,
           lastName: this.$store.state.account.lastName,
           email: this.$store.state.account.email,
@@ -145,38 +145,34 @@
     },
     methods:{
       editAccount(){
-          // if(this.$store.state.account == null){
-          //     alert("请先登录")
-          //     this.$router.push('/account/view-sign-in')
-          // }
-          // else {
-              let account = {
-                  email: this.editForm.email,
-                  firstName: this.editForm.firstName,
-                  lastName: this.editForm.lastName,
-                  address1: this.editForm.address1,
-                  address2: this.editForm.address2,
-                  city: this.editForm.city,
-                  state: this.editForm.state,
-                  zip: this.editForm.zip,
-                  country: this.editForm.country,
-                  phone: this.editForm.phone,
-                  favouriteCategoryId: this.editForm.favouriteCategoryId,
-                  languagePreference: this.editForm.languagePreference,
-                  listOption: this.editForm.listOption,
-                  bannerOption: this.editForm.bannerOption,
-              }
-              this.axios.put('/accounts',account)
-                  .then(res => {
-                      this.$store.commit('updateAccount',res.data.result.account)
-                      //更新token
-                      this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
-                  })
+          let account = {
+              email: this.editForm.email,
+              firstName: this.editForm.firstName,
+              lastName: this.editForm.lastName,
+              address1: this.editForm.address1,
+              address2: this.editForm.address2,
+              city: this.editForm.city,
+              state: this.editForm.state,
+              zip: this.editForm.zip,
+              country: this.editForm.country,
+              phone: this.editForm.phone,
+              favouriteCategoryId: this.editForm.favouriteCategoryId,
+              languagePreference: this.editForm.languagePreference,
+              listOption: this.editForm.listOption,
+              bannerOption: this.editForm.bannerOption,
           }
-
-      // }
+          console.log("listOption:"+this.editForm.listOption);
+          this.axios.put('/accounts',account)
+              .then(res => {
+                  this.$store.commit('updateAccount',res.data.result.account)
+                  console.log("更新listOption:"+res.data.result.account.booleanListOption)
+                  //更新token
+                  this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
+              })
+      }
     },
     created(){
+        console.log("当前listOption:"+this.editForm.listOption)
     }
   }
 </script>

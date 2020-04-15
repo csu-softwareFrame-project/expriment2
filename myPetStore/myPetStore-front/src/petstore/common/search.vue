@@ -2,30 +2,31 @@
   <page-frame>
     <div id="templatemo_main">
       <div align="left">
-        <a href="/main/viewMain">Return to Main Menu</a>
+        <a href="/main/view-main">Return to Main Menu</a>
       </div>
       <br>
 
-<!--      <table id="table-4" th:if="${!productList.isEmpty()}">-->
-<!--        <tr>-->
-<!--          <th>&nbsp;</th>-->
-<!--          <th>Product ID</th>-->
-<!--          <th>Name</th>-->
-<!--        </tr>-->
-<!--        <tr th:each="product:${productList}">-->
-<!--          <td>-->
-<!--            <a th:href="@{'/catalog/viewProduct?productId='+${product.productId}}" th:utext="${product.description}">description</a>-->
-<!--          </td>-->
-<!--          <td>-->
-<!--            <b><a th:href="@{'/catalog/viewProduct?productId='+${product.productId}}"><font color="BLACK" th:text="${product.productId}"> productId </font></a></b>-->
-<!--          </td>-->
-<!--          <td th:text="${product.name}">product.name</td>-->
-<!--        </tr>-->
-<!--      </table>-->
+      <table id="table-4" v-if="productList != null && productList.length > 0">
+        <tr>
+          <th>&nbsp;</th>
+          <th>Product ID</th>
+          <th>Name</th>
+        </tr>
+        <tr v-for="product in productList">
+          <td>
+            <router-link v-bind:to="'/catalog/viewProduct?productId='+product.productId">{{product.description}}</router-link>
+          </td>
+          <td>
+            <b>
+              <router-link v-bind:to="'/catalog/viewProduct?productId='+product.productId">
+                <font color="BLACK"> {{product.productId}} </font></router-link></b>
+          </td>
+          <td>{{product.name}}</td>
+        </tr>
+      </table>
 
       <!--没搜到相关产品-->
-<!--      <div th:if="${productList.isEmpty()}" align="center">-->
-      <div align="center">
+      <div v-if="productList === null || productList < 0" align="center">
         <br>
         <br>
         <svg id="approved" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 650.6 650.6">
@@ -54,7 +55,6 @@
         <br>
         <br>
       </div>
-
     </div>
 
   </page-frame>
@@ -63,9 +63,23 @@
 <script>
   import pageFrame from '../../components/pageframe'
   export default {
+      data(){
+          return{
+              productList: null
+          }
+      },
     components:{
       pageFrame,
-    }
+    },
+      created() {
+        this.axios.get('/results',{
+            params:{
+               keyword : this.$route.query.keyword
+            }
+        }).then(res => {
+            this.productList = res.data.result.productList
+        })
+      }
   }
 </script>
 
