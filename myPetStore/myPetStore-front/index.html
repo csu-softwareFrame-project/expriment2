@@ -5,7 +5,50 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <!--全局引入css，js-->
     <title>my-petstore</title>
-  </head>
+    <script src="/static/js/jquery-1-4-2.min.js"></script>
+    <script src="/static/js/jquery-ui.min.js"></script>
+    <script src="/static/js/showhide.js"></script>
+    <script src="/static/js/jquery.mousewheel.js"></script>
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/ddsmoothmenu.js"></script>
+
+    <script>
+
+      ddsmoothmenu.init({
+        mainmenuid: "templatemo_menu", //menu DIV id
+        orientation: 'h', //Horizontal or vertical menu: Set to "h" or "v"
+        classname: 'ddsmoothmenu', //class added to menu's outer DIV
+        //customtheme: ["#1c5a80", "#18374a"],
+        contentsource: "markup" //"markup" or ["container_id", "path_to_menu_file"]
+      })
+
+    </script>
+    <script src="/static/js/cloud-carousel.1.0.5.js"></script>
+    <!-- Load the CloudCarousel JavaScript file -->
+
+    <script>
+      $(document).ready(function(){
+
+        // This initialises carousels on the container elements specified, in this case, carousel1.
+        $("#carousel1").CloudCarousel(
+          {
+            reflHeight: 40,
+            reflGap:2,
+            titleBox: $('#da-vinci-title'),
+            altBox: $('#da-vinci-alt'),
+            buttonLeft: $('#slider-left-but'),
+            buttonRight: $('#slider-right-but'),
+            yRadius:30,
+            xPos: 480,
+            yPos: 32,
+            speed:0.15,
+          }
+        );
+      });
+
+    </script>
+
+      </head>
   <body>
   <!--最外层容器-->
     <div id="app">

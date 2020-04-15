@@ -9,18 +9,31 @@ import axios from 'axios'
 import store from './store/index'
 import qs from 'qs'
 // import '../static/css/jquery-ui.css'
+import '../static/css/style.css'
 import '../static/css/bootstrap.min.css'
 import '../static/css/font-awesome.min.css'
 import '../static/css/zzsc.css'
-import '../static/css/templatemo_style.css'
 import '../static/css/ddsmoothmenu.css'
 import '../static/css/table.css'
 import '../static/css/press.css'
 import '../static/css/hover.css'
+import '../static/css/templatemo_style.css'
+import '../static/css/login.css'
+import 'jquery'
+// import jquery142 from '../static/js/jquery-1-4-2.min'
+// import '../static/js/jquery-ui.min'
+// import '../static/js/showhide'
+// import '../static/js/jquery.mousewheel'
+// import '../static/js/jquery.min'
+// import '../static/js/ddsmoothmenu'
+// import '../static/js/cloud-carousel.1.0.5'
 
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+
 Vue.use(ElementUI)
+// Vue.use(jquery142)
+
 // // 1、引入组件
 // import Users from './components/Users'
 // // 2、注册全局组件
@@ -34,7 +47,7 @@ Vue.prototype.axios = axios
 Vue.prototype.$cookies = VueCookies
 Vue.prototype.$store = store
 // 下面这个配置貌似前端没有highlight
-Vue.use(VueAxios,axios)
+Vue.use(VueAxios, axios)
 Vue.use(VueCookies)
 // 设置axios的默认路径
 axios.defaults.baseURL = '/back'

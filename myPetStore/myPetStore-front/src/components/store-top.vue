@@ -63,9 +63,9 @@
 <!--                <button v-on:click="search()" class="btn btn-block btn-sm btn-success">-->
 <!--                <font size="1">s&nbsp;e&nbsp;a&nbsp;r&nbsp;c&nbsp;h</font>-->
 <!--                </button>-->
-                <button  name="searchProducts"  value="Search" class="btn btn-block btn-sm btn-success">
-                  <router-link v-bind:to="'/result?keyword='+keyword">s&nbsp;e&nbsp;a&nbsp;r&nbsp;c&nbsp;h</router-link>
-                </button>
+                <router-link v-bind:to="'/result?keyword='+keyword"><button  name="searchProducts"  value="Search" class="btn btn-block btn-sm btn-success">
+                  s&nbsp;e&nbsp;a&nbsp;r&nbsp;c&nbsp;h
+                </button></router-link>
               </div>
             </div>
             <br/>
@@ -81,24 +81,25 @@
 </template>
 
 <script>
-  export default {
-    data(){
-      return{
-          keyword: '',
-        token: this.$store.state.Authorization,
-        account: this.$store.state.account
-      }
-    },methods:{
-      signOut(){
-        console.log("登出")
-        this.$store.commit("removeAccount")
-        this.$store.commit("changeLogin","undefined")
-        // this.$router.push("/account/view-sign-in")
-        this.$router.go(0)//全局刷新，清空store
-       }, search(){
-          this.$router.push({path:'/result',query:{keyword: this.keyword}});
-      }
+export default {
+  data () {
+    return {
+      keyword: '',
+      token: this.$store.state.Authorization,
+      account: this.$store.state.account
+    }
+  },
+  methods: {
+    signOut () {
+      console.log('登出')
+      this.$store.commit('removeAccount')
+      this.$store.commit('changeLogin', 'undefined')
+      // this.$router.push("/account/view-sign-in")
+      this.$router.go(0)// 全局刷新，清空store
+    },
+    search () {
+      this.$router.push({path: '/result', query: {keyword: this.keyword}})
     }
   }
+}
 </script>
-

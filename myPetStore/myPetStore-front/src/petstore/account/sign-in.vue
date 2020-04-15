@@ -4,7 +4,7 @@
       <div class="container">
         <div class="row">
           <div class="col-md-offset-3 col-md-6">
-<!--            <form class="form-horizontal" action="/useraccess/login" method="post" id="form1">-->
+            <form class="form-horizontal" action="#" method="post">
 <!--              <span class="heading" th:text="#{signon.tip}">Login</span>-->
               <span class="heading" >Login</span>
 
@@ -23,11 +23,13 @@
               <div class="form-group">
 <!--                <input id="email" type="email" name="email" class="form-control" lay-verify="required" th:placeholder="#{signon.email}"/>-->
                 <input id="email" type="email"  v-model="signInForm.email" class="form-control" lay-verify="required"/>
+                <i class="fa fa-code"></i>
               </div>
 
               <div class="form-group">
 <!--                <input id="checkCode" type="text" name="checkCode" autocomplete="Off" class="form-control" th:placeholder="#{signon.verifycode}" lay-verify="required"/>-->
                 <input id="checkCode" type="text" v-model="signInForm.checkCode" autocomplete="Off" class="form-control" lay-verify="required"/>
+                <i class="fa fa-bars"></i>
                 <h1 id="result"></h1>
               </div>
               <div class="form-group">
@@ -75,6 +77,7 @@
 <!--                <a href="/useraccess/view_sign_up" th:text="#{signon.signup}">Register Now!</a>-->
                 <router-link to="/account/signup">Register Now!</router-link>
               </div>
+            </form>
           </div>
         </div>
       </div>
@@ -83,63 +86,66 @@
 </template>
 
 <script>
-  import pageFrame from '../../components/pageframe'
-  export default {
-    data() {
-      return {
-        signInForm: {
-          username: '',
-          password: '',
-          email: '',
-          checkCode: '',
-          cToken: '',
-          token: this.$store.state.Authorization,
-        },
-        signInMsg: '',
-      }
-    },
-    components:{
-      pageFrame,
-    },
-    methods:{
-      signIn(form) {
-        // 登录时把token设置为"undefined"
-        this.$store.commit('changeLogin',{ Authorization: "undefined" })
-        this.axios.post('/users',{
-          username: this.signInForm.username,
-          password: this.signInForm.password,
-          token: this.token,
-          cToken: this.signInForm.cToken,
-          checkCode: this.signInForm.checkCode
-        }).then(res =>{
-          if(res.data.status){
-            //登录成功
-            this.$store.commit("updateAccount",res.data.result.account) //account存入全局变量
-            this.$store.commit('changeLogin',{ Authorization: res.data.result.token })//token存入全局变量
-            this.$router.push("/main/view-main")
-          } else {
-            //登录失败，返回失败消息
-            this.signInMsg = res.data.msg
-            // console.log(res.data.status)
-          }
-        }).catch(err => {
-          // 异常处理
-          window.console.error(err)
-
-        })
+// import '../../../static/css/bootstrap.min.css'
+// import '../../../static/css/font-awesome.min.css'
+// import '../../../static/css/zzsc.css'
+// import '../../../static/css/login.css'
+import pageFrame from '../../components/pageframe'
+export default {
+  data () {
+    return {
+      signInForm: {
+        username: '',
+        password: '',
+        email: '',
+        checkCode: '',
+        cToken: '',
+        token: this.$store.state.Authorization
       },
+      signInMsg: ''
+    }
+  },
+  components: {
+    pageFrame
+  },
+  methods: {
+    signIn (form) {
+      // 登录时把token设置为"undefined"
+      this.$store.commit('changeLogin', { Authorization: 'undefined' })
+      this.axios.post('/users', {
+        username: this.signInForm.username,
+        password: this.signInForm.password,
+        token: this.token,
+        cToken: this.signInForm.cToken,
+        checkCode: this.signInForm.checkCode
+      }).then(res => {
+        if (res.data.status) {
+          // 登录成功
+          this.$store.commit('updateAccount', res.data.result.account) // account存入全局变量
+          this.$store.commit('changeLogin', { Authorization: res.data.result.token })// token存入全局变量
+          this.$router.push('/main/view-main')
+        } else {
+          // 登录失败，返回失败消息
+          this.signInMsg = res.data.msg
+          // console.log(res.data.status)
+        }
+      }).catch(err => {
+        // 异常处理
+        window.console.error(err)
+      })
     }
   }
+}
 
-  // $("#checkCode").change(function (){
-  //   var verifyCode = $("#checkCode").val();
-  //   if (verifyCode != checkCode){
-  //     $("#result").html("<a>false</a>")
-  //   }
-  //   else {
-  //     $("#result").html("<a>correct</a>")
-  //   }
-  // });
+// $("#checkCode").change(function (){
+//   var verifyCode = $("#checkCode").val();
+//   if (verifyCode != checkCode){
+//     $("#result").html("<a>false</a>")
+//   }
+//   else {
+//     $("#result").html("<a>correct</a>")
+//   }
+// });
 </script>
 
 <style>
