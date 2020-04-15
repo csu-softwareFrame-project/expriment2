@@ -17,7 +17,20 @@ const createLintingRule = () => ({
     formatter: require('eslint-friendly-formatter'),
     emitWarning: !config.dev.showEslintErrorsInOverlay
   }
-})
+},
+  {
+    test: /.css$/,
+    loader: "style!css",
+    // exclude: /node_modules/
+  },
+  {
+    test: /.(eot|woff|woff2|ttf)([\\\\\\\\?]?.*)$/,
+    loader: "file"
+  },
+  {
+    test: /.(eot|woff|ttf)$/,
+    loader: 'url-loader'
+  })
 
 module.exports = {
   context: path.resolve(__dirname, '../'),
@@ -68,21 +81,14 @@ module.exports = {
         }
       },
       {
-        test: /.css$/,
-        loader: "style!css"
-      },
-      {
-        test: /.(eot|woff|woff2|ttf)([\\\\\\\\?]?.*)$/,
-        loader: "file"
-      },
-      {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
         loader: 'url-loader',
         options: {
           limit: 10000,
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
-      }
+      },
+
     ]
   },
   node: {

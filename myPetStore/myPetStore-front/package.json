@@ -20,7 +20,7 @@
     "vue-axios": "latest",
     "vue-cookies": "latest",
     "vue-router": "^3.0.1",
-    "vuex": "latest"
+    "vuex": "^3.1.3"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
@@ -71,7 +71,7 @@
     "shelljs": "^0.7.6",
     "style-loader": "^1.1.3",
     "uglifyjs-webpack-plugin": "^1.1.1",
-    "url-loader": "^0.5.8",
+    "url-loader": "^0.5.9",
     "vue-jest": "^1.0.2",
     "vue-loader": "^13.3.0",
     "vue-style-loader": "^3.0.1",
