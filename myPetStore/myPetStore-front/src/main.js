@@ -10,6 +10,7 @@ import store from './store/index'
 import qs from 'qs'
 // import '../static/css/jquery-ui.css'
 import '../static/css/style.css'
+import '../static/css/style2.css'
 import '../static/css/bootstrap.min.css'
 import '../static/css/font-awesome.min.css'
 import '../static/css/zzsc.css'
@@ -19,7 +20,8 @@ import '../static/css/press.css'
 import '../static/css/hover.css'
 import '../static/css/templatemo_style.css'
 import '../static/css/login.css'
-// import 'jquery'
+
+import 'jquery'
 // import jquery142 from '../static/js/jquery-1-4-2.min'
 // import '../static/js/jquery-ui.min'
 // import '../static/js/showhide'
@@ -57,25 +59,24 @@ axios.defaults.baseURL = '/back'
 //   localStorage.setItem('signed',store.state.signed)
 // })
 
-
-//部分页面没登录不能访问，另外部分可以。但是登录后每次操作都要更新token时效
+// 部分页面没登录不能访问，另外部分可以。但是登录后每次操作都要更新token时效
 router.beforeEach((to, from, next) => {
 // 使用 router.beforeEach 注册一个全局前置守卫，判断用户登录验证是否过期
   if ((to.path === '/' || to.path === '/account/view-sign-in' || to.path === '/main/view-main' ||
   to.path === '/viewCategory' || to.path === '/viewProduct' || to.path === '/viewItem' ||
-    to.path === '/account/signup' || to.path === '/result')
-    && store.state.account === null) { //不用验证的路由范围
-    //如果token不为空，更新token
-    //是登录，继续路由
-    next();
+    to.path === '/account/signup' || to.path === '/result') &&
+    store.state.account === null) { // 不用验证的路由范围
+    // 如果token不为空，更新token
+    // 是登录，继续路由
+    next()
   } else {
-    //其他地址则要判断token有效性
-    let token = localStorage.getItem('Authorization');
-    console.log("router.beforeEach.toke:"+token);
-    if( token === null || token === "" || token === 'undefined'){
-      alert("你还没登录");
+    // 其他地址则要判断token有效性
+    let token = localStorage.getItem('Authorization')
+    console.log('router.beforeEach.toke:' + token)
+    if (token === null || token === '' || token === 'undefined') {
+      alert('你还没登录')
       next('/account/view-sign-in')
-    }else{
+    } else {
       next()
     }
   // else{
@@ -90,68 +91,67 @@ router.beforeEach((to, from, next) => {
   //       next();
   //     })
   //   }
-
   }
-  //到达前修改title
+  // 到达前修改title
   if (to.meta.title) {
     document.title = to.meta.title
   }
 })
 
-//token插入请求头
+// token插入请求头
 axios.interceptors.request.use(
   config => {
     if (localStorage.getItem('Authorization')) {
       // console.log("修改请求头")
-      config.headers.Authorization = localStorage.getItem('Authorization');
-      if(store.state.account != null){
+      config.headers.Authorization = localStorage.getItem('Authorization')
+      if (store.state.account != null) {
         config.headers.UserName = store.state.account.username
       }
     }
-    return config;
+    return config
   },
   error => {
-    return Promise.reject(error);
-  });
+    return Promise.reject(error)
+  })
 
 axios.interceptors.response.use(function (response) {
 // 对响应数据做点什么
-  return response;
+  return response
 }, function (err) {
   console.log(err.response)
   if (err && err.response) {
     switch (err.response.status) {
-      case 400: err.message = '请求错误(400)' ; break;
-      case 401:{
+      case 400: err.message = '请求错误(400)'; break
+      case 401: {
         // err.message = '未授权，请重新登录(401)';
-        store.commit("removeAccount")
-        store.commit("changeLogin","undefined")
+        store.commit('removeAccount')
+        store.commit('changeLogin', 'undefined')
         console.log(store.state.Authorization)
-        alert('后台：登录认证已过期');
-        router.push('/account/view-sign-in');
-        break;
+        alert('后台：登录认证已过期')
+        router.push('/account/view-sign-in')
+        break
       }
-      case 403: err.message = '拒绝访问(403)'; break;
-      case 404: err.message = '请求出错(404)'; break;
-      case 408: err.message = '请求超时(408)'; break;
-      case 500:{
+      case 403: err.message = '拒绝访问(403)'; break
+      case 404: err.message = '请求出错(404)'; break
+      case 408: err.message = '请求超时(408)'; break
+      case 500: {
         alert('服务器错误')
-        break;
+        break
         // err.message = '服务器错误(500)'; break;
       }
-      case 501: err.message = '服务未实现(501)'; break;
-      case 502: err.message = '网络错误(502)'; break;
-      case 503: err.message = '服务不可用(503)'; break;
-      case 504: err.message = '网络超时(504)'; break;
-      case 505: err.message = 'HTTP版本不受支持(505)'; break;
-      default: err.message = `连接出错(${err.response.status})!`;
+      case 501: err.message = '服务未实现(501)'; break
+      case 502: err.message = '网络错误(502)'; break
+      case 503: err.message = '服务不可用(503)'; break
+      case 504: err.message = '网络超时(504)'; break
+      case 505: err.message = 'HTTP版本不受支持(505)'; break
+      default: err.message = `连接出错(${err.response.status})!`
     }
-  }else{
+  } else {
     err.message = '连接服务器失败!'
   }
-  message.error(err.message);
-  return Promise.reject(err);
-});
+  message.error(err.message)
+  return Promise.reject(err)
+})
 
 /* eslint-disable no-new */
 new Vue({

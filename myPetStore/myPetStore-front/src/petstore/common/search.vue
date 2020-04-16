@@ -26,7 +26,7 @@
       </table>
 
       <!--没搜到相关产品-->
-      <div v-if="productList === null || productList < 0" align="center">
+      <div v-if="productList === null || productList <= 0" align="center">
         <br>
         <br>
         <svg id="approved" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 650.6 650.6">

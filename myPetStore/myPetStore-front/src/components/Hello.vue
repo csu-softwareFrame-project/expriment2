@@ -1,55 +1,61 @@
 <template>
-  <div class="demo-1">
-  <svg class="hidden">
-    <defs>
-      <symbol id="icon-arrow" viewBox="0 0 24 24">
-        <title>arrow</title>
-        <polygon points="6.3,12.8 20.9,12.8 20.9,11.2 6.3,11.2 10.2,7.2 9,6 3.1,12 9,18 10.2,16.8 " />
-      </symbol>
-      <symbol id="icon-drop" viewBox="0 0 24 24">
-        <title>drop</title>
-        <path d="M12,21c-3.6,0-6.6-3-6.6-6.6C5.4,11,10.8,4,11.4,3.2C11.6,3.1,11.8,3,12,3s0.4,0.1,0.6,0.3c0.6,0.8,6.1,7.8,6.1,11.2C18.6,18.1,15.6,21,12,21zM12,4.8c-1.8,2.4-5.2,7.4-5.2,9.6c0,2.9,2.3,5.2,5.2,5.2s5.2-2.3,5.2-5.2C17.2,12.2,13.8,7.3,12,4.8z" />
-        <path d="M12,18.2c-0.4,0-0.7-0.3-0.7-0.7s0.3-0.7,0.7-0.7c1.3,0,2.4-1.1,2.4-2.4c0-0.4,0.3-0.7,0.7-0.7c0.4,0,0.7,0.3,0.7,0.7C15.8,16.5,14.1,18.2,12,18.2z" />
-      </symbol>
-    </defs>
-  </svg>
-  <main>
+  <div id="hello">
+    <div class="wrap">   <!--最大的空间div-->
+      <div class="cube">   <!--正方体的box-->
+        <!--这个是大的正方体的六面-->
+        <div class="out-front"><router-link to="/main/view-main"><div><font color="aqua">welcome</font></div></router-link></div>
+        <div class="out-back"><router-link to="/main/view-main"><div><font color="aqua">mypetstore</font></div></router-link></div>
+        <div class="out-left"><router-link to="/main/view-main"><div><font color="aqua">enter</font></div></router-link></div>
+        <div class="out-right"><a href="../../static/help.html"><div><font color="#7fff00">help</font></div></a></div>
+        <div class="out-top"><router-link to="/main/view-main"><div><font color="aqua">(^-^)</font></div></router-link></div>
+        <div class="out-bottom"><router-link to="/main/view-main"><div><font color="aqua">to</font></div></router-link></div>
 
-    <!-- Initial markup -->
-<!--    <div class="segmenter" style="background-image: url(images/catW.jpg)"></div>-->
-    <h2 class="trigger-headline trigger-headline--hidden"><span>W</span><span>e</span><span>l</span><span>c</span><span>o</span><span>m</span><span>e</span></h2>
-    <div class="bottom-nav">
-      <button class="btn btn--trigger btn--hidden">Welcome to PetStore</button>
-      <p id="enter"></p>
-      <nav class="codrops-demos">
-        <p><sub>Copyright Central South University </sub></p>
-      </nav>
+        <!--这个是小的正方体的六面-->
+        <span class="in-front">             <!--前面的点数1-->
+                <span class="points"></span>
+            </span>
+        <span class="in-back">              <!--后面的点数3-->
+                <span class="points"></span>
+                <span class="points pitB2"></span>
+                <span class="points pitB3"></span>
+            </span>
+        <span class="in-left">              <!--左面的点数2-->
+                <span class="points"></span>
+                <span class="points pitL2"></span>
+            </span>
+        <span class="in-right">             <!--右面的点数4-->
+                <span class="points"></span>
+            </span>
+        <span class="in-top">               <!--上面的点数5-->
+                <span class="pitT1">
+                    <span class="points"></span>
+                    <span class="points "></span>
+                </span>
+                <span class="pitT2">
+                    <span class="points"></span>
+                </span>
+                <span class="pitT3">
+                    <span class="points"></span>
+                    <span class="points"></span>
+                </span>
+            </span>
+        <span class="in-bottom">            <!--下面的点数6-->
+                <span class="points"></span>
+                <span class="points"></span>
+                <span class="points"></span>
+                <span class="points"></span>
+                <span class="points"></span>
+                <span class="points"></span>
+            </span>
+
+      </div>
     </div>
-  </main>
-<!--  <script src="js/anime.min.js"></script>-->
-<!--  <script src="js/imagesloaded.pkgd.min.js"></script>-->
-<!--  <script src="js/main.js"></script>-->
+    <br><br><br><br><br><br><br><br>
+    <router-link to="/main/view-main"><div><font color="aqua" size="5px">click here or the dice to enter mypetstore</font></div></router-link>
   </div>
 </template>
 
 <script>
-  export default {}
-  // function() {
-  //   var headline = document.querySelector('.trigger-headline'),
-  //     trigger = document.querySelector('.btn--trigger'),
-  //     segmenter = new Segmenter(document.querySelector('.segmenter'), {
-  //       onReady: function() {
-  //         trigger.classList.remove('btn--hidden');
-  //         trigger.addEventListener('click', function() {
-  //           segmenter.animate();
-  //           headline.classList.remove('trigger-headline--hidden');
-  //           this.classList.add('btn--hidden');
-  //           //链接待修改
-  //           document.getElementById("enter").innerHTML="<a href='/main/view_main'><button class=\"btn btn--trigger\">Enter the store</button></a>";
-  //         });
-  //       }
-  //     });
-  // };
 </script>
 
 <style>

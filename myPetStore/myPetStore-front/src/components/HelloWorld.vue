@@ -13,16 +13,16 @@
 <!-- js部分 逻辑部分-->
 <script>
 // 局部调用
-import test from '../components/test';
-import PageFrame from "../components/pageframe";
-import Users from '../components/Users';
+import test from '../components/test'
+import PageFrame from '../components/pageframe'
+import Users from '../components/Users'
 
 export default {
   components: {// 组册组件
     test,
     PageFrame,
     Users
-    //users : Users和上面相同
+    // users : Users和上面相同
   },
   name: 'HelloWorld',
   data () {
@@ -31,11 +31,11 @@ export default {
     }
   },
   methods: {
-    greeting(){
-      return `aaaa,${this.msg}，欢迎来到petstore`;
+    greeting () {
+      return `aaaa,${this.msg}，欢迎来到petstore`
     },
-    tedst(){
-      this.axios.post('/signin',{
+    tedst () {
+      this.axios.post('/signin', {
         // username: this.signInForm.username,
       }).then(res => {
         alert(res.data.result.status)

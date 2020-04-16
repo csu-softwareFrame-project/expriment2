@@ -1,24 +1,23 @@
 <template>
   <page-frame>
-    <div id="templatemo_slider" >
-      <!-- This is the container for the carousel. -->
-      <div id = "carousel1" style="width:960px; height:280px;background:none;overflow:scroll; margin-top: 20px; z-index: 1">
-        <!-- All ../images with class of "cloudcarousel" will be turned into carousel items -->
-        <!-- You can place links around these ../images -->
-        <router-link to="/viewCategory?categoryId=FISH" rel="lightbox"><img class="cloudcarousel" src="../../assets/static/images/fishT1.jpg" alt="CSS Templates 1" title="Fish" /></router-link>
-        <router-link to="/viewCategory?categoryId=BIRDS" rel="lightbox"><img class="cloudcarousel" src="../../assets/static/images/birdT.jpg" alt="CSS Templates 2" title="Bird" /></router-link>
-        <router-link to="/viewCategory?categoryId=DOGS" rel="lightbox"><img class="cloudcarousel" src="../../assets/static/images/dogT.jpg" alt="CSS Templates 3" title="Dog" /></router-link>
-        <router-link to="/viewCategory?categoryId=REPTILES" rel="lightbox"><img class="cloudcarousel" src="../../assets/static/images/lizardT.jpg" alt="CSS Templates 4" title="Lizard" /></router-link>
-        <router-link to="/viewCategory?categoryId=CATS" rel="lightbox"><img class="cloudcarousel" src="../../assets/static/images/catT.jpg" alt="Flash Templates 1" title="Cat" /></router-link>
-      </div>
+    <!--<div id="templatemo_slider" >-->
+      <!--&lt;!&ndash; This is the container for the carousel. &ndash;&gt;-->
+      <!--<div id = "carousel1" style="width:960px; height:280px;background:none;overflow:scroll; margin-top: 20px; z-index: 1">-->
+        <!--&lt;!&ndash; All ../images with class of "cloudcarousel" will be turned into carousel items &ndash;&gt;-->
+        <!--&lt;!&ndash; You can place links around these ../images &ndash;&gt;-->
+        <!--<router-link to="/viewCategory?categoryId=FISH" rel="lightbox"><img class="cloudcarousel" src="../../assets/static/images/fishT1.jpg" alt="CSS Templates 1" title="Fish" /></router-link>-->
+        <!--<router-link to="/viewCategory?categoryId=BIRDS" rel="lightbox"><img class="cloudcarousel" src="../../assets/static/images/birdT.jpg" alt="CSS Templates 2" title="Bird" /></router-link>-->
+        <!--<router-link to="/viewCategory?categoryId=DOGS" rel="lightbox"><img class="cloudcarousel" src="../../assets/static/images/dogT.jpg" alt="CSS Templates 3" title="Dog" /></router-link>-->
+        <!--<router-link to="/viewCategory?categoryId=REPTILES" rel="lightbox"><img class="cloudcarousel" src="../../assets/static/images/lizardT.jpg" alt="CSS Templates 4" title="Lizard" /></router-link>-->
+        <!--<router-link to="/viewCategory?categoryId=CATS" rel="lightbox"><img class="cloudcarousel" src="../../assets/static/images/catT.jpg" alt="Flash Templates 1" title="Cat" /></router-link>-->
+      <!--</div>-->
 
-      <!-- Define left and right buttons. -->
-      <center>
-        <input id="slider-left-but" type="button" value="" />
-        <input id="slider-right-but" type="button" value="" />
-      </center>
-    </div>
-
+      <!--&lt;!&ndash; Define left and right buttons. &ndash;&gt;-->
+      <!--<center>-->
+        <!--<input id="slider-left-but" type="button" value="" />-->
+        <!--<input id="slider-right-but" type="button" value="" />-->
+      <!--</center>-->
+    <!--</div>-->
 
     <div id="templatemo_main">
 
@@ -55,25 +54,26 @@
 </template>
 
 <script>
-  import pageFrame from '../../components/pageframe'
-  export default {
-    inject:['reload'],    //注入App里的reload方法
-    data(){
-      return {
-        account: this.$store.state.account,
-        token: this.$store.state.Authorization
-      }
-    },
-    components:{
-      pageFrame,
-    },
-    methods:{
-      refresh(){ //弃用
-        console.log("刷新页面")
-        this.reload();
-      }
+
+import pageFrame from '../../components/pageframe'
+export default {
+  inject: ['reload'], // 注入App里的reload方法
+  data () {
+    return {
+      account: this.$store.state.account,
+      token: this.$store.state.Authorization
+    }
+  },
+  components: {
+    pageFrame
+  },
+  methods: {
+    refresh () { // 弃用
+      console.log('刷新页面')
+      this.reload()
     }
   }
+}
 </script>
 
 <style>
