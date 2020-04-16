@@ -34,32 +34,9 @@
               </div>
               <div class="form-group">
 <!--                <button id="sendCheckCode" type="button" class="btn btn-default" th:text="#{signon.getVerify}">get verify</button>-->
-                <button id="sendCheckCode" type="button"  class="btn btn-default">get verify</button>
+                <button id="sendCheckCode" type="button"  class="btn btn-default" @click="verify">get verify</button>
               </div>
-              <!--验证码脚本-->
-<!--              <script>-->
-<!--                $("#sendCheckCode").click(function () {-->
-<!--                  var email = $("#email").val();-->
-<!--                  if (email == null || email == ""){-->
-<!--                    alert("请输入邮箱！！！");-->
-<!--                    return;-->
-<!--                  }-->
-<!--                  alert("邮件发送中......");-->
-<!--                  $.ajax({-->
-<!--                    url:"/mail/getCheckCode?email="+email,-->
-<!--                    type:"get",-->
-<!--                    success:function (text) {-->
-<!--                      if (text != null && text != ""){-->
-<!--                        alert("已发送");-->
-<!--                        checkCode = text;-->
-<!--                        countDown();-->
-<!--                      } else{-->
-<!--                        alert("获取失败，请重新获取")-->
-<!--                      }-->
-<!--                    }-->
-<!--                  });-->
-<!--                });-->
-<!--              </script>-->
+
               <p style="color: red" >{{signInMsg}}</p>
               <p style="color: red"></p>
               <div class="form-group">
@@ -109,6 +86,39 @@ export default {
     pageFrame
   },
   methods: {
+    verify () {
+      var email = this.signInForm.email
+      if (email == null || email === '') {
+        alert('请输入邮箱！！！')
+        return
+      }
+      alert('邮件发送中......')
+      var url = '/mail/getCheckCode'
+      // 发送get请求
+      this.axios.get(
+        url,
+        {params: {email: email}}).then(this.getVal, function () {
+        console.log('请求失败处理')
+        alert('获取失败，请重新获取')
+      })
+    },
+    getVal (res) {
+      console.log(res.data.token)
+      alert('已发送')
+    },
+    // $.ajax({
+    //   url: '/mail/getCheckCode?email=' + email,
+    //   type: 'get',
+    //   success: function (text) {
+    //     if (text != null && text != '') {
+    //       alert('已发送')
+    //       checkCode = text
+    //       countDown()
+    //     } else {
+    //       alert('获取失败，请重新获取')
+    //     }
+    //   }
+    // })
     signIn (form) {
       // 登录时把token设置为"undefined"
       this.$store.commit('changeLogin', { Authorization: 'undefined' })
