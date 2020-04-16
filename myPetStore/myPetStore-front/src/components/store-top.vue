@@ -8,9 +8,7 @@
       <h1 class="press">MyPetStore</h1>
       <div id="templatemo_menu" class="ddsmoothmenu">
         <ul>
-<!--          <li><a href="/main/view_main" class="selected" th:text="#{top.home}">Home</a></li>-->
-<!--          <li th:if="${session.loginUser}==null"><a href="/useraccess/view_login" th:text="#{top.signIn}">Sign In</a></li>-->
-<!--          <li th:if="${session.loginUser}!=null"> <a href="/main/view_account" th:text="#{top.Account}">Account</a>-->
+
           <li><router-link to="/main/view-main" class="selected">Home</router-link></li>
           <li ><router-link to="/account/view-sign-in" v-if="account === null">Sign In</router-link></li>
           <li > <router-link to="/account/edit" v-if="account != null">Account</router-link></li>
@@ -19,28 +17,21 @@
 
           <li><a href="../../static/help.html">help</a></li>
 
-<!--          <li><a href="/cart/view_cart"><img align="middle" name="img_cart" src="../assets/static/images/cart.gif" /></a></li>-->
           <li><router-link to="/viewCart"><img align="middle" name="img_cart" src="../assets/static/images/cart.gif" /></router-link></li>
         </ul>
 
         <br style="clear: left" />
       </div> <!-- end of templatemo_menu -->
       <div>
-
-<!--        <form action="/main/search" method="post">-->
+>
         <form>
           <div class="column-header">
             <div class="col-xs-3">
               <input type="search" name="keyword" size="30" id="tags" v-model="keyword"/>
             </div>
-            <div class="col-xs-3">
+            <div class="col-sm-1">
               <div class="admin5">
-<!--                <button v-on:click="search()" class="btn btn-block btn-sm btn-success">-->
-<!--                <font size="1">s&nbsp;e&nbsp;a&nbsp;r&nbsp;c&nbsp;h</font>-->
-<!--                </button>-->
-                <router-link v-bind:to="'/result?keyword='+keyword"><button  name="searchProducts"  value="Search" class="btn btn-block btn-sm btn-success">
-                  s&nbsp;e&nbsp;a&nbsp;r&nbsp;c&nbsp;h
-                </button></router-link>
+                <router-link v-bind:to="'/result?keyword='+keyword"><input class="btn" alt="Search" type="image" name="searchsubmit" title="Search" src="../../static/images/search.png" /></router-link>
               </div>
             </div>
             <br/>

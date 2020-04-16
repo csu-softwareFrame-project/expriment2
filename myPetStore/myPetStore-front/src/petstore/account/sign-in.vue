@@ -4,7 +4,7 @@
       <div class="container">
         <div class="row">
           <div class="col-md-offset-3 col-md-6">
-            <form class="form-horizontal" action="#" method="post">
+            <div class="form-horizontal">
 <!--              <span class="heading" th:text="#{signon.tip}">Login</span>-->
               <span class="heading" >Login</span>
 
@@ -48,13 +48,13 @@
                 <span class="text">Remember me</span>
 
 <!--                <button type="submit" id="submit" class="btn btn-default" th:text="#{signon.tip}">Login</button>-->
-                <button v-on:click="signIn('signInForm')" id="submit" class="btn btn-default">Login</button>
+                <button v-on:click="signIn('signInForm')" class="btn btn-default">Login</button>
               </div>
               <div class="form-group">
 <!--                <a href="/useraccess/view_sign_up" th:text="#{signon.signup}">Register Now!</a>-->
                 <router-link to="/account/signup">Register Now!</router-link>
               </div>
-            </form>
+            </div>
           </div>
         </div>
       </div>
@@ -106,19 +106,6 @@ export default {
       console.log(res.data.token)
       alert('已发送')
     },
-    // $.ajax({
-    //   url: '/mail/getCheckCode?email=' + email,
-    //   type: 'get',
-    //   success: function (text) {
-    //     if (text != null && text != '') {
-    //       alert('已发送')
-    //       checkCode = text
-    //       countDown()
-    //     } else {
-    //       alert('获取失败，请重新获取')
-    //     }
-    //   }
-    // })
     signIn (form) {
       // 登录时把token设置为"undefined"
       this.$store.commit('changeLogin', { Authorization: 'undefined' })
