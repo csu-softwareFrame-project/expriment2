@@ -8,14 +8,15 @@
 </template>
 
 <script>
-  import storeButtom from "../components/store-buttom";
-  import storeTop from "../components/store-top";
+import storeButtom from '../components/store-buttom'
+import storeTop from '../components/store-top'
 
-  export default {
-    components:{
-      storeButtom,
-      storeTop,
-    },methods:{
-    }
+export default {
+  components: {
+    storeButtom,
+    storeTop
+  },
+  methods: {
   }
+}
 </script>
