@@ -171,6 +171,14 @@ export default new Router({
         title: 'myPetStore - 搜索结果'
       },
       component: () => import('../petstore/common/search')
+    },{
+      path: '/help',
+      name: '帮助',
+      hidden: true,
+      meta: {
+        title: 'myPetStore - 帮助'
+      },
+      component: () => import('../petstore/common/main')
     },
     { path: '*', component: () => import('../components/HelloWorld') }
   ]

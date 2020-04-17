@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -42,9 +43,13 @@ public class CartService {
     }
 
     //获得用户购物车中某商品的数量（用户购买的数量，不是商品库存）
-    public int getQuantity(String username,String itemId)
+    public Integer getQuantity(String username,String itemId)
     {
-        return cartItemMapper.getQuantity(username,itemId);
+
+        Integer i = cartItemMapper.getQuantity(username,itemId);
+        System.out.println("quantity"+i);
+        if(i == null) i=0;
+        return i;
     }
 
     //向用户的购物车中插入新的商品
@@ -72,11 +77,15 @@ public class CartService {
     }
 
     //查看购物车
-    public ReturnPack viewCart(String username){
-        JSONObject data = new JSONObject();
+    public ReturnPack viewCart(HttpServletRequest httpServletRequest, String username){
+        JSONObject data;
+        if(httpServletRequest.getAttribute("data")!=null) data = (JSONObject) httpServletRequest.getAttribute("data");
+        else  {
+            data = new JSONObject();
+//            String token = JwtUtil.generate(username);
+//            data.put("token",token);
+        }
         List<CartItem> list = getCartItemListByUsername(username);
-        String token = JwtUtil.generate(username);
-        data.put("token",token);
         data.put("cart",list);
         return ReturnPack.success(data);
     }
@@ -87,45 +96,54 @@ public class CartService {
 //    }
 
     //添加商品进购物车
-    public ReturnPack addCartItem(String itemId,String username){
+    public ReturnPack addCartItem(HttpServletRequest httpServletRequest,String itemId,String username){
+        JSONObject data;
+        if(httpServletRequest.getAttribute("data")!=null) data = (JSONObject) httpServletRequest.getAttribute("data");
+        else  {
+            data = new JSONObject();
+            //            String token = JwtUtil.generate(username);
+//            data.put("token",token);
+        }
         int stock = catalogService.getInventoryQuantity(itemId);
         if(stock<=0){
             return ReturnPack.fail("库存不足");
         }else{
-            JSONObject data = new JSONObject();
-//            int q = getQuantity(username,itemId);//方法报错
-//            if(q==0){
-//                //购物车里没有，添加进购物车
+
+            int q = getQuantity(username,itemId);//方法报错
+            if(q == 0){
+                //购物车里没有，添加进购物车x
             Item item = itemMapper.getItem(itemId);
             CartItem cartItem = new CartItem();
             cartItem.setItem(item);
             cartItem.setQuantity(1);
             cartItem.setInStock(true);
             insertCartItem(username,cartItem);
-//            }else {
-//                //购物车里有，数量加一
-//                q+=1;
-//                updateCartItemQuantity(username,itemId,q);
-//            }
+            }else {
+                //购物车里有，数量加一
+                q+=1;
+                updateCartItemQuantity(username,itemId,q);
+            }
             List<CartItem> list = getCartItemListByUsername(username);
-            String token = JwtUtil.generate(username);
-            data.put("token",token);
             data.put("cart",list);
             return ReturnPack.success(data);
         }
     }
 
     //更新购物车里的物品数量
-    public ReturnPack updateCart(String username,String itemId,String quantity){
-        JSONObject data = new JSONObject();
+    public ReturnPack updateCart(HttpServletRequest httpServletRequest,String username,String itemId,String quantity){
+        JSONObject data;
+        if(httpServletRequest.getAttribute("data")!=null) data = (JSONObject) httpServletRequest.getAttribute("data");
+        else  {
+            data = new JSONObject();
+//            String token = JwtUtil.generate(username);
+//            data.put("token",token);
+        }
         int q = Integer.parseInt(quantity);
         int k = catalogService.getInventoryQuantity(itemId);
         //如果数量超出了库存量，
         if(q>k){
             updateCartItemQuantity(username,itemId,k);
             List<CartItem> list = getCartItemListByUsername(username);
-            String token = JwtUtil.generate(username);
-            data.put("token",token);
             data.put("cart",list);
             data.put("msg","超出了库存");
             System.out.println();
@@ -133,8 +151,6 @@ public class CartService {
         }else{
             updateCartItemQuantity(username,itemId,q);
             List<CartItem> list = getCartItemListByUsername(username);
-            String token = JwtUtil.generate(username);
-            data.put("token",token);
             data.put("cart",list);
             return ReturnPack.success(data);
         }

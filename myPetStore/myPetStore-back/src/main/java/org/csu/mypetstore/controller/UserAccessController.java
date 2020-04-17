@@ -49,9 +49,7 @@ public class UserAccessController {
         String password = params.get("password");
         String checkCode = params.get("checkCode");
         String getterToken = params.get("token");
-        JSONObject data = new JSONObject();
-
-        return accountService.signInService(username,password,checkCode,getterToken,data);
+        return accountService.signInService(username,password,checkCode,getterToken);
     }
 
     @RequestMapping(value ="/alogin", method = RequestMethod.GET)
@@ -71,8 +69,8 @@ public class UserAccessController {
     @PostMapping("/tokens")
     public ReturnPack verifyToken(HttpServletRequest httpServletRequest,@RequestParam String token){
         JSONObject data = new JSONObject();
-        String username =  httpServletRequest.getHeader("UserName");
-        data.put("token",JwtUtil.generate(username));
+//        String username =  httpServletRequest.getHeader("UserName");
+//        data.put("token",JwtUtil.generate(username));
         return ReturnPack.success(data);
     }
 

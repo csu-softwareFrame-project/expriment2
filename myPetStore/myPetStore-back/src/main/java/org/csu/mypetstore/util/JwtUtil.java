@@ -8,6 +8,7 @@ import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -58,9 +59,22 @@ public class JwtUtil {
         return  Jwts.builder().setSubject(keyword).setExpiration(expiresDate).signWith(key).compact();
     }
 
+    public static String generateFail(String keyword){
+        //按照自己的密钥生成加密钥匙
+        SecretKey key = Keys.hmacShaKeyFor(SECRET.getBytes());
+        //有效时间
+        Date expiresDate = new Date(System.currentTimeMillis() + FAILURE_TIME);
+        return  Jwts.builder().setSubject(keyword).setExpiration(expiresDate).signWith(key).compact();
+    }
+
     //判断token是否过期
     public static boolean isExpirate(String token){
         SecretKey key = Keys.hmacShaKeyFor(SECRET.getBytes());
+        try{
+            Date deadDate = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getExpiration();
+        }catch (ExpiredJwtException e){
+            return true;
+        }
         Date deadDate = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getExpiration();
         Date now = new Date(System.currentTimeMillis());
         if(now.before(deadDate)) return false;

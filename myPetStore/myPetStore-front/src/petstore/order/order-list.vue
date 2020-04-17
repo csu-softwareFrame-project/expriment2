@@ -30,20 +30,32 @@
   export default {
     data(){
       return {
+        account: this.$store.state.account,
         orderList: null
       }
     },
     components:{
       pageFrame,
     },created(){
-      this.axios.get('/orderLists',{params:{
-        username: this.$store.state.account.username
-        }}).then(res => {
-        this.orderList = res.data.result.orderList
-        //更新token
-        this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
-        console.log(this.orderList.length)
-      })
+
+        if(this.account === null){
+            alert("身份验证已过期")
+            this.$router.push('/account/view-sign-in')
+        }else {
+            this.axios.get('/orderLists',{params:{
+                    username: this.$store.state.account.username
+                }}).then(res => {
+                this.orderList = res.data.result.orderList
+                //更新token
+                if(typeof(res.data.result.token) !== "undefined"){
+                    // console.log("更新了token:         "+res.data.result.token);
+                    // console.log("更新了failToken:     "+res.data.result.failToken)
+                    this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
+                    this.$store.commit('changeFail', { failToken: res.data.result.failToken})
+                }
+                // console.log(this.orderList.length)
+            })
+        }
     }
   }
 </script>

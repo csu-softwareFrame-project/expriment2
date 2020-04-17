@@ -13,6 +13,8 @@ export default new Vuex.Store({
     productList: null,
     // 存储token
     Authorization: localStorage.getItem('Authorization')? localStorage.getItem('Authorization') : '',
+    // 存储failToken
+    failToken: localStorage.getItem('failToken')? localStorage.getItem('failToken') : '',
     //订单
     order: null,
   },
@@ -38,6 +40,10 @@ export default new Vuex.Store({
       // 修改token，并将token存入localStorage
       state.Authorization = user.Authorization;
       localStorage.setItem('Authorization', user.Authorization);
+    },
+    changeFail:(state,user) =>{
+      state.failToken = user.failToken;
+      localStorage.setItem('failToken',user.failToken);
     },
     updateOrder: (state ,order) =>{
       state.order = order

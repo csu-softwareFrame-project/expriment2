@@ -121,6 +121,7 @@
   export default {
     data(){
       return{
+        account: this.$store.state.account,
         editForm:{
           account: this.$store.state.account,
           languagePreference: this.$store.state.account.languagePreference,
@@ -164,16 +165,45 @@
           console.log("listOption:"+this.editForm.listOption);
           this.axios.put('/accounts',account)
               .then(res => {
-                  this.$store.commit('updateAccount',res.data.result.account)
-                  console.log("更新listOption:"+res.data.result.account.booleanListOption)
+                  if(typeof(res.data.result.account) !== "undefined")
+                      this.$store.commit('updateAccount',res.data.result.account);
+                  console.log("更新listOption:"+res.data.result.account.booleanListOption);
                   //更新token
-                  this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
+                  if(typeof(res.data.result.token) !== "undefined"){
+                      console.log("更新了token:"+res.data.result.token);
+                      this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
+                  }
               })
       }
     },
-    created(){
-        console.log("当前listOption:"+this.editForm.listOption)
-    }
+      created(){
+          console.log("type:"+typeof(this.account)+"  "+this.account)
+          // console.log("当前listOption:"+this.editForm.listOption)
+          if(this.account === null){
+              alert("请先登录")
+              this.$router.push('/account/view-sign-in')
+          }else {
+              //验证token是否还有效
+              console.log("验证token")
+              let token = localStorage.getItem('Authorization')
+              let strToken = this.$qs.stringify({
+                  token : token
+              })
+              this.axios({
+                  method: 'post',
+                  url: '/tokens',
+                  data: strToken
+              }).then(res => {
+                  //更新token
+                  if(typeof(res.data.result.token) !== "undefined"){
+                      // console.log("更新了token:         "+res.data.result.token);
+                      // console.log("更新了failToken:     "+res.data.result.failToken);
+                      this.$store.commit('changeLogin',{ Authorization: res.data.result.token });
+                      this.$store.commit('changeFail', { failToken: res.data.result.failToken})
+                  }
+              })
+          }
+      }
   }
 </script>
 

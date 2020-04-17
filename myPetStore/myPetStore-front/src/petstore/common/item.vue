@@ -9,10 +9,10 @@
 
       <table id="table-4">
         <tr>
-          <td v-if="item != null">{{item.product.description}}</td>
+          <td v-if="item != null" v-html="item.product.description"></td>
         </tr>
         <tr>
-          <td v-if="item != null"><b>{{item.itemId}}</b></td>
+          <td v-if="item != null"><b>{{item.itemId}}f</b></td>
         </tr>
         <tr>
           <td>
@@ -56,6 +56,7 @@
     inject:['reload'],    //注入App里的reload方法
     data(){
       return{
+          account: this.$store.state.account,
         item: null
       }
     },
@@ -95,7 +96,12 @@
                       this.$router.push("/viewCart")
                       console.log("item:"+res.data.result.token)
                       //更新token
-                      this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
+                      if(typeof(res.data.result.token) !== "undefined"){
+                          // console.log("更新了token:         "+res.data.result.token);
+                          // console.log("更新了failToken:     "+res.data.result.failToken)
+                          this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
+                          this.$store.commit('changeFail', { failToken: res.data.result.failToken})
+                      }
                   }else {
                       //显示库存不足消息
                       alert(res.data.msg)

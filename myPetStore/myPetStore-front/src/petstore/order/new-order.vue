@@ -129,7 +129,12 @@
               }).then(res =>{
                   if(res.data.status){
                       //更新token
-                      this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
+                      if(typeof(res.data.result.token) !== "undefined"){
+                          // console.log("更新了token:         "+res.data.result.token);
+                          // console.log("更新了failToken:     "+res.data.result.failToken)
+                          this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
+                          this.$store.commit('changeFail', { failToken: res.data.result.failToken})
+                      }
                       //更新当前订单
                       this.$store.commit('updateOrder',res.data.result.order)
                       //进入确认订单界面（未减库存）
@@ -141,7 +146,15 @@
           }
 
       // }
-    }
+    },
+      created() {
+          if(this.account === null){
+              alert("身份验证已过期")
+              this.$router.push('/account/view-sign-in')
+          }else {
+
+          }
+      }
   }
 </script>
 

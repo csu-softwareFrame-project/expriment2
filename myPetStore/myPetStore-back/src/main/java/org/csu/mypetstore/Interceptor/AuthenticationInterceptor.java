@@ -1,9 +1,11 @@
 package org.csu.mypetstore.Interceptor;
 
+import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import org.csu.mypetstore.service.AccountService;
 import org.csu.mypetstore.util.JwtUtil;
+import org.csu.mypetstore.util.ReturnPack;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.method.HandlerMethod;
@@ -21,6 +23,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object object) throws Exception {
+        String failToken = httpServletRequest.getHeader("failToken");//
         String token = httpServletRequest.getHeader("Authorization");// 从 http 请求头中取出 token
         String username =  httpServletRequest.getHeader("UserName");
         // 如果不是映射到方法直接通过
@@ -50,8 +53,26 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         };
         //token过期
         if(JwtUtil.isExpirate(token)){
-            System.out.println("token过期，拦截");
-            httpServletResponse.sendError(401);
+            System.out.println("token过期");
+            System.out.println("用failToken生成新token");
+            System.out.println("failToken:"+failToken);
+            JSONObject data = new JSONObject();
+            if(!JwtUtil.isExpirate(failToken)){
+                System.out.println("原token有效");
+                String newToken = JwtUtil.generate(username);
+                String newFailToken = JwtUtil.generateFail(username);
+                data.put("failToken",newFailToken);
+                data.put("token",newToken);
+                System.out.println("新token:"+newToken);
+                httpServletRequest.setAttribute("data",data);
+                return true;
+            }else {
+                //token失效，发送401错误
+                System.out.println("原token失效");
+                httpServletResponse.sendError(401);
+                return false;
+            }
+
         }
         //token无效
         if(!JwtUtil.dec(token).equals(username)){

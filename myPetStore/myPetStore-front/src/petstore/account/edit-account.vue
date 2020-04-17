@@ -38,9 +38,13 @@
 <script>
   import pageFrame from '../../components/pageframe'
   export default {
+      data(){
+          return {
+              account: this.$store.state.account,
+          }
+      },
     components:{
       pageFrame,
-    },created(){
     }
   }
 </script>

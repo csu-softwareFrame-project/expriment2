@@ -64,7 +64,8 @@ public class AccountService {
     }
 
     //todo 验证码部分
-    public ReturnPack signInService(String username, String password, String checkCode, String getterToken,JSONObject data){
+    public ReturnPack signInService(String username, String password, String checkCode, String getterToken){
+        JSONObject data = new JSONObject();
         String pswd = accountMapper.getPasswordByUsername(username);
         if(pswd == null){
             if(Constants.DEBUG_MODE&&Constants.DEBUG_CONTROLLER)System.out.println("用户名不存在");
@@ -78,6 +79,8 @@ public class AccountService {
             //生成token
             String token = JwtUtil.generate(account.getUsername());
             data.put("token",token);
+            String failToken = JwtUtil.generateFail(account.getUsername());
+            data.put("failToken",failToken);
 //            System.out.println(JwtUtil.decode(token, JwtUtil.SECRET).get("name").asString());
 
             //验证码验证部分
@@ -108,6 +111,7 @@ public class AccountService {
             else account.setBooleanBannerOption(false);
             if(account.getListOption().equals("1")) account.setBooleanListOption(true);
             else account.setBooleanListOption(false);
+            System.out.println(account);
             data.put("account",account);
            return ReturnPack.success(data);
         }else {
@@ -214,7 +218,13 @@ public class AccountService {
     public ReturnPack editAccountService(HttpServletRequest httpServletRequest,Account account){
         String username =  httpServletRequest.getHeader("UserName");
         boolean success = true;
-        JSONObject data = new JSONObject();
+        JSONObject data;
+        if(httpServletRequest.getAttribute("data")!=null) data = (JSONObject) httpServletRequest.getAttribute("data");
+        else  {
+            data = new JSONObject();
+//            String token = JwtUtil.generate(username);
+//            data.put("token",token);
+        }
 //        //如果用户名为空，说明注册的逻辑有bug
 //        if(account.getUsername().equals("")){
 //            System.out.println("修改账户信息异常：userId为空");
@@ -264,10 +274,6 @@ public class AccountService {
             updateAccount(account);
 
             data.put("account",account);
-            String token = JwtUtil.generate(username);
-            data.put("token",token);
-
-
         }
         return ReturnPack.success(data);
     }

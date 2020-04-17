@@ -23,7 +23,6 @@
         <br style="clear: left" />
       </div> <!-- end of templatemo_menu -->
       <div>
->
         <form>
           <div class="column-header">
             <div class="col-xs-3">
@@ -59,9 +58,10 @@ export default {
   },
   methods: {
     signOut () {
-      console.log('登出')
-      this.$store.commit('removeAccount')
-      this.$store.commit('changeLogin', 'undefined')
+      console.log('登出');
+      this.$store.commit('removeAccount');
+      this.$store.commit('changeLogin', 'undefined');
+      this.$store.commit('changeFail', 'undefined');
       // this.$router.push("/account/view-sign-in")
       this.$router.go(0)// 全局刷新，清空store
     },

@@ -4,7 +4,7 @@
       <div id="templatemo_main" align="center">
 
         <div>
-          <a href="/main/view-main">Return to Main Menu</a>
+          <router-link to="/main/view-main">Return to Main Menu</router-link>
         </div>
 
         <table id="table-4">
@@ -155,6 +155,7 @@
   export default {
     data(){
       return{
+          account: this.$store.state.account,
         orderId: this.$route.query.orderId,
         order:  null,
       }
@@ -162,15 +163,26 @@
     components:{
       pageFrame,
     },created(){
-      this.axios.get('/orders',{
-        params:{
-          orderId: this.orderId
+        if(this.account === null){
+            alert("身份验证已过期")
+            this.$router.push('/account/view-sign-in')
+        }else {
+            this.axios.get('/orders',{
+                params:{
+                    orderId: this.orderId
+                }
+            }).then(res => {
+                console.log("account:"+this.$store.state.account)
+                this.order = res.data.result.order
+                //更新token
+                if(typeof(res.data.result.token) !== "undefined"){
+                    // console.log("更新了token:         "+res.data.result.token);
+                    // console.log("更新了failToken:     "+res.data.result.failToken)
+                    this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
+                    this.$store.commit('changeFail', { failToken: res.data.result.failToken})
+                }
+            })
         }
-      }).then(res => {
-        this.order = res.data.result.order
-        //更新token
-        this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
-      })
     }
   }
 </script>

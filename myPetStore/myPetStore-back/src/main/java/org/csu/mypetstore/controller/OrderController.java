@@ -30,8 +30,8 @@ public class OrderController {
 
     //查看个人订单列表
     @GetMapping("/orderLists")
-    public ReturnPack viewOrderList(@RequestParam String username){
-        return orderService.viewOrderList(username);
+    public ReturnPack viewOrderList(HttpServletRequest httpServletRequest,@RequestParam String username){
+        return orderService.viewOrderList(httpServletRequest,username);
     }
 
     //查看指定订单

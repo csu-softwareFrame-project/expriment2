@@ -110,8 +110,14 @@ public class OrderService {
 
 
     //获取用户的订单列表
-    public ReturnPack viewOrderList(String username){
-        JSONObject data = new JSONObject();
+    public ReturnPack viewOrderList(HttpServletRequest httpServletRequest,String username){
+        JSONObject data;
+        if(httpServletRequest.getAttribute("data")!=null) data = (JSONObject) httpServletRequest.getAttribute("data");
+        else  {
+            data = new JSONObject();
+//            String token = JwtUtil.generate(username);
+//            data.put("token",token);
+        }
         List<Order> orderList = getOrdersByUsername(username);
         if(Constants.DEBUG_SERVICE && !orderList.isEmpty())System.out.println("订单日期:"+orderList.get(0).getOrderDate());
         if(Constants.DEBUG_SERVICE && orderList.isEmpty()) System.out.println(username+"的订单表为空");
@@ -125,18 +131,29 @@ public class OrderService {
     public ReturnPack viewOrder(HttpServletRequest httpServletRequest, String orderId){
         String username =  httpServletRequest.getHeader("UserName");
 //        System.out.println("查看订单时获取的username:"+username);
-        JSONObject data = new JSONObject();
+        JSONObject data;
+        if(httpServletRequest.getAttribute("data")!=null) data = (JSONObject) httpServletRequest.getAttribute("data");
+        else  {
+            data = new JSONObject();
+//            String token = JwtUtil.generate(username);
+//            data.put("token",token);
+        }
         Order order = getOrder(Integer.parseInt(orderId));
         if(Constants.DEBUG_SERVICE)System.out.println("订单属性:"+order.toString());
         String token = JwtUtil.generate(username);
-        data.put("token",token);
         data.put("order",order);
         return ReturnPack.success(data);
     }
 
     //生成新订单并加入session
     public ReturnPack generateOrder(HttpServletRequest httpServletRequest, Payment payment,Order order){
-        JSONObject data = new JSONObject();
+        JSONObject data;
+        if(httpServletRequest.getAttribute("data")!=null) data = (JSONObject) httpServletRequest.getAttribute("data");
+        else  {
+            data = new JSONObject();
+//            String token = JwtUtil.generate(username);
+//            data.put("token",token);
+        }
         String username =  httpServletRequest.getHeader("UserName");
         Account account1 = (Account) accountService.getAccount(username);
         account1.setFirstName(order.getBillToFirstName());
@@ -151,20 +168,22 @@ public class OrderService {
         Order order1 = new Order();
         order1.initOrder(account1,cartItemList,payment);
         order1.setStatus("0");
-        String token = JwtUtil.generate(username);
-        data.put("token",token);
         data.put("order",order1);
         return ReturnPack.success(data);
     }
 
     public ReturnPack confirmOrder(HttpServletRequest httpServletRequest,Order order){
         System.out.println("确认订单:"+order);
-        JSONObject data = new JSONObject();
+        JSONObject data;
+        if(httpServletRequest.getAttribute("data")!=null) data = (JSONObject) httpServletRequest.getAttribute("data");
+        else  {
+            data = new JSONObject();
+//            String token = JwtUtil.generate(username);
+//            data.put("token",token);
+        }
         String username =  httpServletRequest.getHeader("UserName");
         //todo 加入判断，库存是否够，购物车中不够的商品数量改成库存上限
         int orderId = insertOrder(order);
-        String token = JwtUtil.generate(username);
-        data.put("token",token);
         data.put("orderId",orderId);
 //        session.removeAttribute("order");//移出订单
         cartService.clear(username);//清空购物车

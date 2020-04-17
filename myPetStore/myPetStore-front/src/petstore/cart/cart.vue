@@ -5,24 +5,23 @@
 <!--      <form action="/cart/updateCartQuantities" method="post">-->
         <table id="table-4">
           <tr>
-            <th><b>Item ID</b></th>
-            <th><b>Product ID</b></th>
-            <th><b>Description</b></th>
-            <th><b>In Stock?</b></th>
-            <th><b>Quantity</b></th>
-            <th><b>List Price</b></th>
-            <th><b>Total Cost</b></th>
-            <th>&nbsp;</th>
+              <th><b>Item ID</b></th>
+              <th><b>Product ID</b></th>
+              <th><b>Description</b></th>
+              <th><b>In Stock?</b></th>
+              <th><b>Quantity</b></th>
+              <th><b>List Price</b></th>
+              <th><b>Total Cost</b></th>
+              <th>&nbsp;</th>
           </tr>
           <tr v-if="cart != null && cart.length <= 0">
             <td colspan="8"><b>Your cart is empty.</b></td>
           </tr>
-          <div v-if="cart != null && cart.length > 0">
-            <tr v-for="cart_item in cart">
+            <tr v-if="cart != null && cart.length > 0" v-for="cart_item in cart">
               <td>
                 <router-link v-if="cart_item !=null" v-bind:to="'viewItem?itemId='+cart_item.item.itemId">{{cart_item.item.itemId}}</router-link>
               </td>
-              <td v-if="cart_item !=null">cart_item.item.productId</td>
+              <td v-if="cart_item !=null">{{cart_item.item.productId}}</td>
 
               <td>
                 <nobr v-if="cart_item.item.attribute1 != null">{{cart_item.item.attribute1}}</nobr>
@@ -31,7 +30,6 @@
                 <nobr v-if="cart_item.item.attribute4 != null">{{cart_item.item.attribute4}}</nobr>
                 <nobr v-if="cart_item.item.attribute5 != null">{{cart_item.item.attribute5}}</nobr>
               </td>
-              <!--            <td th:text="${cart_item.inStock}">-->
               <td v-if="cart_item !=null">{{cart_item.inStock}}</td>
               <td>
 <!--                <input type="text" ref="" v-bind:value="cart_item.quantity"-->
@@ -44,10 +42,11 @@
               <td id="listPrice" v-if="cart_item !=null">{{cart_item.item.listPrice}}</td>
               <td id="totalcost" v-if="cart_item !=null">{{cart_item.total}}</td>
               <td>
-                <a href="javascript:void(0);" v-if="cart_item !=null" v-bind:id="cart_item.item.itemId" v-on:click="removeFromCart($event)" class="Button">Remove</a>
+                <a href="javascript:void(0);" v-if="cart_item !=null"
+                   v-bind:id="cart_item.item.itemId" v-on:click="removeFromCart($event)"
+                   class="Button">Remove</a>
               </td>
             </tr>
-          </div>
             <tr>
               <td colspan="7"v-if="cart !=null">{{cart.subTotal}}</td>
               <td>&nbsp;</td>
@@ -119,7 +118,13 @@
             //库存不足
            alert(res.data.result.msg)
           }
-          this.$store.commit('changeLogin',{ Authorization: res.data.result.token })//token存入全局变量
+            //更新token
+            if(typeof(res.data.result.token) !== "undefined"){
+                // console.log("更新了token:         "+res.data.result.token);
+                // console.log("更新了failToken:     "+res.data.result.failToken)
+                this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
+                this.$store.commit('changeFail', { failToken: res.data.result.failToken})
+            }
           this.cart = res.data.result.cart
           this.reload();//router路由到当前页面是不会刷新的，用该方法可以刷新
         })
@@ -129,14 +134,26 @@
           username: this.account.username,
           cartItemId: e.currentTarget.id,
         })
-        this.axios({
-          method: 'delete',
-          url: '/carts',
-          data: postData,
+        // this.axios({
+        //   method: 'delete',
+        //   url: '/carts',
+        //   data: postData,
+        // })
+        this.axios.delete("/carts",{
+            params: {
+                username: this.account.username,
+                cartItemId: e.currentTarget.id,
+            }
         }).then(res => {
           this.cart = res.data.result.cart
           //更新token
-          this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
+            //更新token
+            if(typeof(res.data.result.token) !== "undefined"){
+                // console.log("更新了token:         "+res.data.result.token);
+                // console.log("更新了failToken:     "+res.data.result.failToken)
+                this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
+                this.$store.commit('changeFail', { failToken: res.data.result.failToken})
+            }
           this.reload();//router路由到当前页面是不会刷新的，用该方法可以刷新
         })
       }
@@ -153,8 +170,13 @@
             }).then(res => {
                 this.cart = res.data.result.cart
                 // console.log("查看购物车而产生的新token:"+res.data.result.token)
-                //  更新token
-                this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
+                //更新token
+                if(typeof(res.data.result.token) !== "undefined"){
+                    // console.log("更新了token:         "+res.data.result.token);
+                    // console.log("更新了failToken:     "+res.data.result.failToken)
+                    this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
+                    this.$store.commit('changeFail', { failToken: res.data.result.failToken})
+                }
             })
         }
 

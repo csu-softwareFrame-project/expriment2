@@ -120,6 +120,7 @@ export default {
           // 登录成功
           this.$store.commit('updateAccount', res.data.result.account) // account存入全局变量
           this.$store.commit('changeLogin', { Authorization: res.data.result.token })// token存入全局变量
+          this.$store.commit('changeFail', { failToken: res.data.result.failToken})
           this.$router.push('/main/view-main')
         } else {
           // 登录失败，返回失败消息

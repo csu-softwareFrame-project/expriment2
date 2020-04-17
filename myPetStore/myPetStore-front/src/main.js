@@ -32,6 +32,7 @@ import 'jquery'
 
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import fa from "element-ui/src/locale/lang/fa";
 
 Vue.use(ElementUI)
 // Vue.use(jquery142)
@@ -68,13 +69,14 @@ router.beforeEach((to, from, next) => {
     store.state.account === null) { // 不用验证的路由范围
     // 如果token不为空，更新token
     // 是登录，继续路由
+    console.log("访问首页")
     next()
   } else {
     // 其他地址则要判断token有效性
     let token = localStorage.getItem('Authorization')
     console.log('router.beforeEach.toke:' + token)
     if (token === null || token === '' || token === 'undefined') {
-      alert('你还没登录')
+      alert('你还没登录');
       next('/account/view-sign-in')
     } else {
       next()
@@ -107,6 +109,9 @@ axios.interceptors.request.use(
       if (store.state.account != null) {
         config.headers.UserName = store.state.account.username
       }
+      if(localStorage.getItem('failToken')){
+        config.headers.failToken = localStorage.getItem('failToken')
+      }
     }
     return config
   },
@@ -118,19 +123,35 @@ axios.interceptors.response.use(function (response) {
 // 对响应数据做点什么
   return response
 }, function (err) {
-  console.log(err.response)
+  console.log(err.response);
   if (err && err.response) {
     switch (err.response.status) {
-      case 400: err.message = '请求错误(400)'; break
+      case 400: err.message = '请求错误(400)'; break;
       case 401: {
         // err.message = '未授权，请重新登录(401)';
-        store.commit('removeAccount')
-        store.commit('changeLogin', 'undefined')
-        console.log(store.state.Authorization)
-        alert('后台：登录认证已过期')
-        router.push('/account/view-sign-in')
-        break
+        store.commit('removeAccount');
+        store.commit('changeLogin', 'undefined');
+        console.log("旧token:"+store.state.Authorization);
+        alert('后台：登录认证已过期');
+        router.push('/account/view-sign-in');
+        break;
       }
+      // case 402:{
+      //   //原token失效，验证failToken
+      //   let failtoken = localStorage.getItem('failToken');
+      //   httpRequest.get("/newTokens",{
+      //     params:{
+      //       failToken : failtoken,
+      //     }
+      //   }).then(res => {
+      //     if(res.data.status){
+      //       //更新token
+      //       store.commit('changeLogin', { Authorization: res.data.result.token })
+      //     }else {
+      //     }
+      //   })
+      //   break;
+      // }
       case 403: err.message = '拒绝访问(403)'; break
       case 404: err.message = '请求出错(404)'; break
       case 408: err.message = '请求超时(408)'; break

@@ -35,7 +35,8 @@ public class webConfig extends WebMvcConfigurerAdapter {
             @Override
             public void addInterceptors(InterceptorRegistry registry){
                 //拦截所有数据请求，检查token有效性
-                registry.addInterceptor(new AuthenticationInterceptor()).addPathPatterns("/**").excludePathPatterns("/users","/categories","/products","/items","/results");
+                registry.addInterceptor(new AuthenticationInterceptor()).addPathPatterns("/**")
+                        .excludePathPatterns("/users","/categories","/products","/items","/results","/newTokens");
             }
         };
         return adapter;

@@ -103,6 +103,7 @@
   export default {
     data(){
       return{
+          account: this.$store.state.account,
         order: this.$store.state.order
       }
     },
@@ -144,7 +145,7 @@
                   locale: this.order.locale,
                   status: this.order.status,
                   lineItems: this.order.lineItems
-              }
+              };
               this.axios.post('/finalOrders',order)
                   .then(res => {
                       if(res.status){
@@ -157,7 +158,12 @@
                           //提交订单失败，库存不足
                           alert("提交订单失败，库存不足");
                           //更新token
-                          this.$store.commit('changeLogin',{ Authorization: res.data.result.token });
+                          if(typeof(res.data.result.token) !== "undefined"){
+                              // console.log("更新了token:         "+res.data.result.token);
+                              // console.log("更新了failToken:     "+res.data.result.failToken)
+                              this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
+                              this.$store.commit('changeFail', { failToken: res.data.result.failToken})
+                          }
                           //跳转到购物车
                           this.$router.push('/viewCart')
                       }
@@ -165,7 +171,15 @@
                   })
           }
       // }
-    }
+    },
+      created() {
+          if(this.account === null){
+              alert("身份验证已过期")
+              this.$router.push('/account/view-sign-in')
+          }else {
+
+          }
+      }
   }
 </script>
 
