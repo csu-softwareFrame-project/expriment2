@@ -468,4 +468,44 @@ class DemoApplicationTests {
         String oldId = "EST-99";
         catalogService.updateItem(item,oldId);
     }
+
+    @Test
+    void testOrderUpdate(){
+        Order order = new Order();
+
+        order.setShipCountry("America");
+        order.setShipZip("FJ");
+        order.setShipState("FZ");
+        order.setShipCity("FZYZ");
+        order.setShipAddress1("FZYZ");
+        order.setShipAddress2("CSU");
+        order.setShipToFirstName("Z");
+        order.setShipToLastName("J");
+        order.setTotalPrice(new BigDecimal("998"));
+        order.setUsername("5545");
+        order.setOrderDate(new Date());
+        order.setBillCountry("China");
+        order.setBillZip("FJ");
+        order.setBillState("FZ");
+        order.setBillCity("FZYZ");
+        order.setBillAddress1("FZYZ");
+        order.setBillAddress2("555");
+        order.setBillToFirstName("Z");
+        order.setBillToLastName("J");
+        order.setExpiryDate("unknown");
+        order.setCreditCard("IKEA");
+        order.setCardType("CSA");
+        order.setStatus("1");
+        order.setLocale("lalalal");
+        order.setCourier("Bob");
+        order.setOrderId(1021);
+
+        orderService.updateOrder(order);
+    }
+
+    @Test
+    void testOrderRemove(){
+        int orderId = 1021;
+        orderService.removeOrder(orderId);
+    }
 }

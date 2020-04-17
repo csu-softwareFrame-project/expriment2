@@ -145,4 +145,22 @@ public class OrderService {
         cartService.clear(account.getUsername());//清空购物车
         return orderid;
     }
+
+    /**
+     * @更新订单信息
+     * @参数：Order对象
+     */
+    public void updateOrder(Order order) {
+        orderMapper.updateOrder(order);
+        orderMapper.updateOrderStatus(order);
+    }
+
+    /**
+     * @删除订单
+     * @参数：订单id
+     */
+    public void removeOrder(int orderId){
+        orderMapper.removeOrder(orderId);
+        orderMapper.removeOrderStatus(orderId);
+    }
 }
