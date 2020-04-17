@@ -17,7 +17,7 @@
         </div>
       </div>
 <!--      <div class="col one_third" th:if="${account}!=null and ${account.bannerOption}">-->
-      <div class="col one_third">
+      <div class="col one_third" >
         <h4><span></span>banner</h4>
         <div class="bottom_box">
           <ul class="footer_list">

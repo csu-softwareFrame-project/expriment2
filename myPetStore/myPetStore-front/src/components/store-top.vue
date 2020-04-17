@@ -31,7 +31,7 @@
             </div>
             <div class="col-sm-1">
               <div class="admin5">
-                <router-link v-bind:to="'/result?keyword='+keyword"><input class="btn" alt="Search" type="image" name="searchsubmit" title="Search" src="../../static/images/search.png" /></router-link>
+                <img class="btn" alt="Search" type="image" name="searchsubmit" title="Search" src="../../static/images/search.png" @click="search"/>
               </div>
             </div>
             <br/>
@@ -49,6 +49,7 @@
 <script>
 
 export default {
+  inject: ['reload'],
   data () {
     return {
       keyword: '',
@@ -65,6 +66,7 @@ export default {
       this.$router.go(0)// 全局刷新，清空store
     },
     search () {
+      this.reload()
       this.$router.push({path: '/result', query: {keyword: this.keyword}})
     }
   }

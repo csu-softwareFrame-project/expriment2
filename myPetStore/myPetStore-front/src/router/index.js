@@ -15,7 +15,48 @@ export default new Router({
         title: 'myPetStore'
       },
       component: () => import('../components/Hello')
-    }, {
+    },
+    {
+      path: '/management/account',
+      name: '管理用户',
+      // 渲染是否可见
+      hidden: true,
+      meta: {
+        title: 'myPetStore - 管理用户'
+      },
+      component: () => import('../petstore/management/account')
+    },
+    {
+      path: '/management/main',
+      name: '首页',
+      // 渲染是否可见
+      hidden: true,
+      meta: {
+        title: 'myPetStore - 后台管理'
+      },
+      component: () => import('../petstore/management/main')
+    },
+    {
+      path: '/management/order',
+      name: '管理订单',
+      // 渲染是否可见
+      hidden: true,
+      meta: {
+        title: 'myPetStore - 管理订单'
+      },
+      component: () => import('../petstore/management/order')
+    },
+    {
+      path: '/management/product',
+      name: '管理产品',
+      // 渲染是否可见
+      hidden: true,
+      meta: {
+        title: 'myPetStore - 管理产品'
+      },
+      component: () => import('../petstore/management/product')
+    },
+    {
       path: '/account/edit',
       name: '修改用户信息',
       // 渲染是否可见

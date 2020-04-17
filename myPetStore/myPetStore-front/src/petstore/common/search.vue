@@ -61,26 +61,26 @@
 </template>
 
 <script>
-  import pageFrame from '../../components/pageframe'
-  export default {
-      data(){
-          return{
-              productList: null
-          }
-      },
-    components:{
-      pageFrame,
-    },
-      created() {
-        this.axios.get('/results',{
-            params:{
-               keyword : this.$route.query.keyword
-            }
-        }).then(res => {
-            this.productList = res.data.result.productList
-        })
+import pageFrame from '../../components/pageframe'
+export default {
+  data () {
+    return {
+      productList: null
+    }
+  },
+  components: {
+    pageFrame
+  },
+  created () {
+    this.axios.get('/results', {
+      params: {
+        keyword: this.$route.query.keyword
       }
+    }).then(res => {
+      this.productList = res.data.result.productList
+    })
   }
+}
 </script>
 
 <style>
