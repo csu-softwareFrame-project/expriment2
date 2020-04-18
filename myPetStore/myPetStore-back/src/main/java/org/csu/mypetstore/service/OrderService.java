@@ -59,13 +59,14 @@ public class OrderService {
     public Order getOrder(int orderId) {
         Order order = orderMapper.getOrder(orderId);  //获取订单基本信息
         order.setLineItems(lineItemMapper.getLineItemsByOrderId(orderId));  //获取订单的产品信息
-        BigDecimal bd = new BigDecimal(0);
+        BigDecimal bd = new BigDecimal("0");
         for (int i = 0; i < order.getLineItems().size(); i++) {  //获取订单内产品详情（一般用不到）
             LineItem lineItem = (LineItem) order.getLineItems().get(i);
             Item item = itemMapper.getItem(lineItem.getItemId());
-            item.setQuantity(orderMapper.getOrderItemQuantity(orderId,item.getItemId()));
+            int quantity  = orderMapper.getOrderItemQuantity(orderId,item.getItemId());
+            item.setQuantity(quantity);
             //todo 总额
-
+            bd = bd.add(item.getListPrice().multiply(new BigDecimal(quantity+"")));
             lineItem.setItem(item);
         }
         order.setTotalPrice(bd);
@@ -165,7 +166,7 @@ public class OrderService {
         account1.setZip(order.getBillZip());
         account1.setCountry(order.getBillCountry());
         List<CartItem> cartItemList = cartService.getCartItemListByUsername(account1.getUsername());
-        Order order1 = new Order();
+        Order order1 = order;
         order1.initOrder(account1,cartItemList,payment);
         order1.setStatus("0");
         data.put("order",order1);

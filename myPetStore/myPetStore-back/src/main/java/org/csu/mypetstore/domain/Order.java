@@ -260,23 +260,23 @@ public class Order implements Serializable {
         username = account.getUsername();
         orderDate = new Date();
 
-        shipToFirstName = account.getFirstName();
-        shipToLastName = account.getLastName();
-        shipAddress1 = account.getAddress1();
-        shipAddress2 = account.getAddress2();
-        shipCity = account.getCity();
-        shipState = account.getState();
-        shipZip = account.getZip();
-        shipCountry = account.getCountry();
-
-        billToFirstName = account.getFirstName();
-        billToLastName = account.getLastName();
-        billAddress1 = account.getAddress1();
-        billAddress2 = account.getAddress2();
-        billCity = account.getCity();
-        billState = account.getState();
-        billZip = account.getZip();
-        billCountry = account.getCountry();
+//        shipToFirstName = account.getFirstName();
+//        shipToLastName = account.getLastName();
+//        shipAddress1 = account.getAddress1();
+//        shipAddress2 = account.getAddress2();
+//        shipCity = account.getCity();
+//        shipState = account.getState();
+//        shipZip = account.getZip();
+//        shipCountry = account.getCountry();
+//
+//        billToFirstName = account.getFirstName();
+//        billToLastName = account.getLastName();
+//        billAddress1 = account.getAddress1();
+//        billAddress2 = account.getAddress2();
+//        billCity = account.getCity();
+//        billState = account.getState();
+//        billZip = account.getZip();
+//        billCountry = account.getCountry();
 
         creditCard = payment.getCreditCard();
         expiryDate = payment.getExpiryDate();
@@ -325,7 +325,7 @@ public class Order implements Serializable {
         info = info + '\n' + getBillToFirstName();
         info = info + '\n' + getBillToLastName();
         info = info + '\n' + getCourier();
-        info = info + '\n' + getTotalPrice();
+        info = info + '\n'+"totalPrice:" + getTotalPrice();
         info = info + '\n' + getCreditCard();
         info = info + '\n' + getCardType();
         info = info + '\n' + getExpiryDate();

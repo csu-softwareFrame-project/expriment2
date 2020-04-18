@@ -12,13 +12,16 @@
       <label id="usernameMsg"></label>
       <div class="cleaner h10"></div>
 
-      <div id="changePasswordButton"><label>password: &nbsp;</label>
-<!--        <a href="#" onclick="changePassword()">change password</a>-->
-        <a href="#">change password</a>
+      <div id="changePassword">
+        <label>password: &nbsp;</label>
+        <input v-model="password"/><br>
+        <label>repeatedPassword: &nbsp;</label>
+        <input v-model="repeatedPassword"/><p>{{msg}}</p><br>
+        <p v-if="resultMsg !== ''">{{resultMsg}}</p>
       </div>
 
-      <div id="changePassword">
-
+      <div id="changePasswordButton">
+        <a href="javascript:void(0);" v-on:click="changePassword()" class="Button">change password</a>
       </div>
 
 <!--      <div th:replace="account/includeAccountFields">-->
@@ -40,12 +43,39 @@
   export default {
       data(){
           return {
+              msg: '',
+              resultMsg: '',
+              password: '',
+              repeatedPassword: '',
               account: this.$store.state.account,
           }
       },
     components:{
       pageFrame,
-    }
+    },methods:{
+          changePassword(){
+              if(this.password.trim() !== this.repeatedPassword.trim())
+                  this.msg = "前后两次密码不一致";
+              else{
+                  if(this.account === null){
+                      alert("请先登录");
+                      this.$router.push('/account/view-sign-in')
+                  }else {
+                      let account = {
+                          password: this.password
+                      };
+                      this.axios.put('/passwords',account)
+                          .then(res => {
+                              if(res.data.status){
+                                 this.resultMsg = "修改成功"
+                              }else {
+                                  this.resultMsg = "服务器错误"
+                              }
+                          })
+                  }
+              }
+          }
+      }
   }
 </script>
 

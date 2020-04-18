@@ -1,5 +1,6 @@
 package org.csu.mypetstore.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import org.csu.mypetstore.domain.Account;
 import org.csu.mypetstore.service.AccountService;
 import org.csu.mypetstore.util.ReturnPack;
@@ -22,6 +23,22 @@ public class AccountController {
     public ReturnPack editAccount(HttpServletRequest httpServletRequest, @RequestBody Account account){
         System.out.println(account);
         return accountService.editAccountService(httpServletRequest,account);
+    }
+
+    @PutMapping("/passwords")
+    public ReturnPack changePassword(HttpServletRequest httpServletRequest,@RequestBody Account account){
+        System.out.println(account.getPassword());
+        JSONObject data;
+        if(httpServletRequest.getAttribute("data")!=null) data = (JSONObject) httpServletRequest.getAttribute("data");
+        else  {
+            data = new JSONObject();
+//            String token = JwtUtil.generate(username);
+//            data.put("token",token);
+        }
+        //加密
+//        String newPassword = passwordEncoder.encode(account.getPassword());
+//            account.setPassword(newPassword);
+        return ReturnPack.success(data);
     }
 
     //注册功能跳转

@@ -2,7 +2,7 @@
   <page-frame>
     <div id="templatemo_main">
       <div align="left">
-        <a href="/main/view-main">Return to Main Menu</a>
+        <router-link to="/main/view-main">Return to Main Menu</router-link>
       </div>
       <br>
 
@@ -14,7 +14,7 @@
         </tr>
         <tr v-for="product in productList">
           <td>
-            <router-link v-bind:to="'/catalog/viewProduct?productId='+product.productId">{{product.description}}</router-link>
+            <router-link v-bind:to="'/catalog/viewProduct?productId='+product.productId" v-html="product.description"></router-link>
           </td>
           <td>
             <b>

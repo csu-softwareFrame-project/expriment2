@@ -120,8 +120,8 @@
           }
             //更新token
             if(typeof(res.data.result.token) !== "undefined"){
-                // console.log("更新了token:         "+res.data.result.token);
-                // console.log("更新了failToken:     "+res.data.result.failToken)
+                console.log("更新了token:         "+res.data.result.token);
+                console.log("更新了failToken:     "+res.data.result.failToken)
                 this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
                 this.$store.commit('changeFail', { failToken: res.data.result.failToken})
             }

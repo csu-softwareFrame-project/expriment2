@@ -67,10 +67,47 @@
               <td><input type="text" size="15" name="billCountry" v-model="OrderForm.billCountry" /></td>
             </tr>
             <tr>
-              <td colspan=2><input type="checkbox" name="shippingAddressRequired" value="shippingAddressRequired" />
+              <td colspan=2><input type="checkbox" name="shippingAddressRequired" v-model="shippingAddressRequired" />
                 Ship to different address...</td>
             </tr>
-
+          </table>
+          <table v-if="shippingAddressRequired">
+            <tr>
+              <th colspan=2>Ship Form</th>
+              <th></th>
+            </tr>
+            <tr>
+              <td>First name:</td>
+              <td><input type="text" name="billToFirstName" v-model="OrderForm.shipToFirstName" /></td>
+            </tr>
+            <tr>
+              <td>Last name:</td>
+              <td><input type="text" name="billToLastName"  v-model="OrderForm.shipToLastName" /></td>
+            </tr>
+            <tr>
+              <td>Address 1:</td>
+              <td><input type="text" size="40" name="billAddress1" v-model="OrderForm.shipAddress1" /></td>
+            </tr>
+            <tr>
+              <td>Address 2:</td>
+              <td><input type="text" size="40" name="billAddress2" v-model="OrderForm.shipAddress2"/></td>
+            </tr>
+            <tr>
+              <td>City:</td>
+              <td><input type="text" name="billCity" v-model="OrderForm.shipCity" /></td>
+            </tr>
+            <tr>
+              <td>State:</td>
+              <td><input type="text" size="4" name="billState" v-model="OrderForm.shipState" /></td>
+            </tr>
+            <tr>
+              <td>Zip:</td>
+              <td><input type="text" size="10" name="billZip" v-model="OrderForm.shipZip" /></td>
+            </tr>
+            <tr>
+              <td>Country:</td>
+              <td><input type="text" size="15" name="billCountry" v-model="OrderForm.shipCountry" /></td>
+            </tr>
           </table>
           <div class="cleaner h10"></div>
           <div class="admin5">
@@ -89,6 +126,7 @@
     data(){
       return {
         account: this.$store.state.account,
+          shippingAddressRequired: false,
         OrderForm:{
           cartType: '',
           creditCard: '',
@@ -101,6 +139,14 @@
           billState: this.$store.state.account.state,
           billZip: this.$store.state.account.zip,
           billCountry: this.$store.state.account.country,
+          shipToFirstName: '',
+          shipToLastName: '',
+          shipAddress1: '',
+          shipAddress2: '',
+          shipCity: '',
+          shipState: '',
+          shipZip: '',
+          shipCountry: '',
         }
       }
     },
@@ -125,7 +171,15 @@
                   billCity: this.OrderForm.billCity,
                   billState: this.OrderForm.billState,
                   billZip: this.OrderForm.billZip,
-                  billCountry: this.OrderForm.billCountry
+                  billCountry: this.OrderForm.billCountry,
+                  shipToFirstName: this.OrderForm.shipToFirstName,
+                  shipToLastName: this.OrderForm.shipToLastName,
+                  shipAddress1: this.OrderForm.shipAddress1,
+                  shipAddress2: this.OrderForm.shipAddress2,
+                  shipCity: this.OrderForm.shipCity,
+                  shipState: this.OrderForm.shipState,
+                  shipZip: this.OrderForm.shipZip,
+                  shipCountry: this.OrderForm.shipCountry
               }).then(res =>{
                   if(res.data.status){
                       //更新token

@@ -38,12 +38,13 @@
       </div>
       <div class="col one_third fp_services">
         <map name="estoremap">
-          <area alt="Birds" coords="72,2,280,250" href="/viewCategory?categoryId=BIRDS" shape="rect" />
-          <area alt="Fish" coords="2,180,72,250" href="/viewCategory?categoryId=FISH" shape="rect" />
-          <area alt="Dogs" coords="60,250,130,320" href="/viewCategory?categoryId=DOGS" shape="rect" />
-          <area alt="Reptiles" coords="140,270,210,340" href="/viewCategory?categoryId=REPTILES" shape="rect" />
-          <area alt="Cats" coords="225,240,295,310" href="/viewCategory?categoryId=CATS" shape="rect" />
-          <area alt="Birds" coords="280,180,350,250" href="/viewCategory?categoryId=BIRDS" shape="rect" />
+
+          <router-link to="/viewCategory?categoryId=BIRDS"><area alt="Birds" coords="72,2,280,250" shape="rect" /></router-link>
+          <router-link to="/viewCategory?categoryId=FISH"><area alt="Fish" coords="2,180,72,250" shape="rect" /></router-link>
+          <router-link to="/viewCategory?categoryId=DOGS"><area alt="Dogs" coords="60,250,130,320" shape="rect" /></router-link>
+          <router-link to="/viewCategory?categoryId=REPTILES"><area alt="Reptiles" coords="140,270,210,340"hape="rect" /></router-link>
+          <router-link to="/viewCategory?categoryId=CATS"><area alt="Cats" coords="225,240,295,310" shape="rect" /></router-link>
+          <router-link to="/viewCategory?categoryId=BIRDS"><area alt="Birds" coords="280,180,350,250" shape="rect" /></router-link>
         </map>
         <img height="355" src="../../assets/static/images/splash.gif" align="middle" usemap="#estoremap" width="350" />
       </div>

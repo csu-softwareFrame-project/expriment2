@@ -115,8 +115,7 @@
                   <th>Price</th>
                   <th>Total Cost</th>
                 </tr>
-                <div v-if="order != null">
-                  <tr v-for="lineItem in order.lineItems">
+                  <tr  v-if="order != null" v-for="lineItem in order.lineItems">
                     <td>
                       <router-link v-bind:to="'/viewItem?itemId='+lineItem.item.itemId" >{{lineItem.item.itemId}}</router-link>
                     </td>
@@ -136,8 +135,11 @@
                     <td>{{lineItem.unitPrice}}</td>
                     <td>{{lineItem.total}}</td>
                   </tr>
-                </div>
                 <tr>
+                  <th>Sum</th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
                   <th colspan="5" v-if="order != null">{{order.totalPrice}}</th>
                 </tr>
               </table>

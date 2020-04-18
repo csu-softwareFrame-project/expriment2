@@ -69,36 +69,24 @@ router.beforeEach((to, from, next) => {
     store.state.account === null) { // 不用验证的路由范围
     // 如果token不为空，更新token
     // 是登录，继续路由
-    console.log("访问首页")
+    // console.log("访问首页");
     next()
   } else {
     // 其他地址则要判断token有效性
-    let token = localStorage.getItem('Authorization')
-    console.log('router.beforeEach.toke:' + token)
+    let token = localStorage.getItem('Authorization');
+    // console.log('router.beforeEach.toke:' + token);
     if (token === null || token === '' || token === 'undefined') {
       alert('你还没登录');
       next('/account/view-sign-in')
     } else {
       next()
     }
-  // else{
-  //     let strToken = qs.stringify({
-  //       token : token.toString(),
-  //     })
-  //     axios({
-  //       method: 'post',
-  //       url: '/tokens',
-  //       data: strToken
-  //     }).then(res => {
-  //       next();
-  //     })
-  //   }
   }
   // 到达前修改title
   if (to.meta.title) {
     document.title = to.meta.title
   }
-})
+});
 
 // token插入请求头
 axios.interceptors.request.use(
@@ -136,22 +124,6 @@ axios.interceptors.response.use(function (response) {
         router.push('/account/view-sign-in');
         break;
       }
-      // case 402:{
-      //   //原token失效，验证failToken
-      //   let failtoken = localStorage.getItem('failToken');
-      //   httpRequest.get("/newTokens",{
-      //     params:{
-      //       failToken : failtoken,
-      //     }
-      //   }).then(res => {
-      //     if(res.data.status){
-      //       //更新token
-      //       store.commit('changeLogin', { Authorization: res.data.result.token })
-      //     }else {
-      //     }
-      //   })
-      //   break;
-      // }
       case 403: err.message = '拒绝访问(403)'; break
       case 404: err.message = '请求出错(404)'; break
       case 408: err.message = '请求超时(408)'; break
