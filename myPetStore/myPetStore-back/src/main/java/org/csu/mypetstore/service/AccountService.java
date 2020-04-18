@@ -277,4 +277,15 @@ public class AccountService {
         }
         return ReturnPack.success(data);
     }
+
+    /**
+     *
+     * @更新密码
+     * @参数1：用户名
+     * @参数2：密码
+     */
+    public void updatePassword(String username,String password){
+        String passwordEnc = passwordEncoder.encode(password);
+        accountMapper.updatePassword(username,passwordEnc);
+    }
 }

@@ -370,4 +370,11 @@ class DemoApplicationTests {
         System.out.println(enc);
         System.out.println(passwordEncoder.matches(password,enc));
     }
+
+    @Test
+    void testPasswordUpdate(){
+        String username = "abc";
+        String password = "666";
+        accountService.updatePassword(username,password);
+    }
 }
