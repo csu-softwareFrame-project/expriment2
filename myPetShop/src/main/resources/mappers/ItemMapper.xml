@@ -25,7 +25,7 @@
     AND I.PRODUCTID = #{value}
   </select>
 
-  <select id="getOrderQuantity" parameterType="string" resultType="int">
+  <select id="getOrderQuantity" parameterType="string" resultType="Integer">
     SELECT QUANTITY
     FROM LINEITEM
     WHERE
@@ -60,7 +60,7 @@
     WHERE ITEMID = #{itemId}
   </update>
 
-  <select id="getInventoryQuantity" parameterType="string" resultType="int">
+  <select id="getInventoryQuantity" parameterType="string" resultType="Integer">
     SELECT QTY AS value
     FROM INVENTORY
     WHERE ITEMID = #{itemId}

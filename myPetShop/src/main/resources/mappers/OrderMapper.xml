@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.csu.mypetstore.persistence.OrderMapper">
-    <select id="getOrder" resultType="Order" parameterType="int">
+    <select id="getOrder" resultType="Order" parameterType="Integer">
     select
       BILLADDR1 AS billAddress1,
       BILLADDR2 AS billAddress2,
@@ -69,7 +69,7 @@
     ORDER BY ORDERDATE
   </select>
 
-  <select id="getOrderItemQuantity" resultType="int">
+  <select id="getOrderItemQuantity" resultType="Integer">
     SELECT QUANTITY
     FROM LINEITEM
     WHERE ORDERID = #{orderId} AND ITEMID = #{itemId}
@@ -126,13 +126,53 @@
     WHERE ORDERID = #{orderId,jdbcType=NUMERIC}
   </update>
 
-  <delete id="removeOrder" parameterType="int">
+  <delete id="removeOrder" parameterType="Integer">
     DELETE FROM ORDERS
     WHERE ORDERID = #{orderId}
   </delete>
 
-  <delete id="removeOrderStatus" parameterType="int">
+  <delete id="removeOrderStatus" parameterType="Integer">
     DELETE FROM ORDERSTATUS
     WHERE ORDERID = #{orderId}
   </delete>
+
+    <update id="sendOrder" parameterType="Integer">
+        UPDATE ORDERSTATUS SET
+            STATUS = #{status}
+        WHERE ORDERID = #{orderId}
+    </update>
+
+    <select id="getOrdersByStatus" parameterType="Integer" resultType="Order">
+    SELECT
+      BILLADDR1 AS billAddress1,
+      BILLADDR2 AS billAddress2,
+      BILLCITY,
+      BILLCOUNTRY,
+      BILLSTATE,
+      BILLTOFIRSTNAME,
+      BILLTOLASTNAME,
+      BILLZIP,
+      SHIPADDR1 AS shipAddress1,
+      SHIPADDR2 AS shipAddress2,
+      SHIPCITY,
+      SHIPCOUNTRY,
+      SHIPSTATE,
+      SHIPTOFIRSTNAME,
+      SHIPTOLASTNAME,
+      SHIPZIP,
+      CARDTYPE,
+      COURIER,
+      CREDITCARD,
+      EXPRDATE AS expiryDate,
+      LOCALE,
+      ORDERDATE,
+      ORDERS.ORDERID,
+      TOTALPRICE,
+      USERID AS username,
+      STATUS
+    FROM ORDERS, ORDERSTATUS
+    WHERE STATUS = #{status}
+      AND ORDERS.ORDERID = ORDERSTATUS.ORDERID
+    ORDER BY ORDERDATE
+  </select>
 </mapper>

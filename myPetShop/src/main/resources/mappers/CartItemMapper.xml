@@ -34,7 +34,7 @@
         AND ITEMID = #{itemId}
     </update>
 
-    <select id="getQuantity" resultType="int">
+    <select id="getQuantity" resultType="Integer">
         SELECT QUANTITY
         FROM CARTITEM
         WHERE USERNAME = #{username}

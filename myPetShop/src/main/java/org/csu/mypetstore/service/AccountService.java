@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -215,5 +216,13 @@ public class AccountService {
             updateAccount(account);
         }
         return success;
+    }
+
+    /**
+     * @获取所有用户列表
+     * @返回所有用户的Account列表
+     */
+    public List<Account> getAccountList(){
+        return accountMapper.getAccountList();
     }
 }

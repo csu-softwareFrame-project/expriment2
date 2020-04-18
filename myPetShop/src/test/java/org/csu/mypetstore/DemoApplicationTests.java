@@ -277,37 +277,37 @@ class DemoApplicationTests {
     void testOrderGetByUsername()  //测试通过
     {
         List<Order> orderList = orderService.getOrdersByUsername("5545");
-        System.out.println(orderList.get(0).getLineItems().get(0).getItem().getQuantity());
+        System.out.println(orderList.get(0).getLineItems().get(0).getItem().getProduct().getProductId());
         System.out.println(orderList.size());
 
-        System.out.println(orderList.get(0).getBillCountry());
-        System.out.println(orderList.get(0).getBillZip());
-        System.out.println(orderList.get(0).getBillState());
-        System.out.println(orderList.get(0).getBillCity());
-        System.out.println(orderList.get(0).getBillToFirstName());
-        System.out.println(orderList.get(0).getBillToLastName());
-        System.out.println(orderList.get(0).getBillAddress1());
-        System.out.println(orderList.get(0).getBillAddress2());
-
-        System.out.println(orderList.get(0).getShipCountry());
-        System.out.println(orderList.get(0).getShipZip());
-        System.out.println(orderList.get(0).getShipState());
-        System.out.println(orderList.get(0).getShipCity());
-        System.out.println(orderList.get(0).getShipToFirstName());
-        System.out.println(orderList.get(0).getShipToLastName());
-        System.out.println(orderList.get(0).getShipAddress1());
-        System.out.println(orderList.get(0).getShipAddress2());
-
-        System.out.println(orderList.get(0).getUsername());
-        System.out.println(orderList.get(0).getOrderDate());
-        System.out.println(orderList.get(0).getCourier());
-        System.out.println(orderList.get(0).getTotalPrice());
-        System.out.println(orderList.get(0).getCreditCard());
-        System.out.println(orderList.get(0).getCardType());
-        System.out.println(orderList.get(0).getLocale());
-        System.out.println(orderList.get(0).getExpiryDate());
-        System.out.println(orderList.get(0).getOrderId());
-        System.out.println(orderList.get(0).getStatus());
+//        System.out.println(orderList.get(0).getBillCountry());
+//        System.out.println(orderList.get(0).getBillZip());
+//        System.out.println(orderList.get(0).getBillState());
+//        System.out.println(orderList.get(0).getBillCity());
+//        System.out.println(orderList.get(0).getBillToFirstName());
+//        System.out.println(orderList.get(0).getBillToLastName());
+//        System.out.println(orderList.get(0).getBillAddress1());
+//        System.out.println(orderList.get(0).getBillAddress2());
+//
+//        System.out.println(orderList.get(0).getShipCountry());
+//        System.out.println(orderList.get(0).getShipZip());
+//        System.out.println(orderList.get(0).getShipState());
+//        System.out.println(orderList.get(0).getShipCity());
+//        System.out.println(orderList.get(0).getShipToFirstName());
+//        System.out.println(orderList.get(0).getShipToLastName());
+//        System.out.println(orderList.get(0).getShipAddress1());
+//        System.out.println(orderList.get(0).getShipAddress2());
+//
+//        System.out.println(orderList.get(0).getUsername());
+//        System.out.println(orderList.get(0).getOrderDate());
+//        System.out.println(orderList.get(0).getCourier());
+//        System.out.println(orderList.get(0).getTotalPrice());
+//        System.out.println(orderList.get(0).getCreditCard());
+//        System.out.println(orderList.get(0).getCardType());
+//        System.out.println(orderList.get(0).getLocale());
+//        System.out.println(orderList.get(0).getExpiryDate());
+//        System.out.println(orderList.get(0).getOrderId());
+//        System.out.println(orderList.get(0).getStatus());
     }
 
     @Test
@@ -339,7 +339,7 @@ class DemoApplicationTests {
     @Test
     void testCartItemQuantityGet()  //测试通过
     {
-        int quantity = cartService.getQuantity("233","EST-1");
+        int quantity = cartService.getQuantity("abc","EST-18");
         System.out.println(quantity);
     }
 
@@ -508,4 +508,24 @@ class DemoApplicationTests {
         int orderId = 1021;
         orderService.removeOrder(orderId);
     }
+
+    @Test
+    void testOrderSend(){
+        int orderId = 1001;
+        orderService.sendOrder(orderId);
+    }
+
+    @Test
+    void testOrderGetByStatus(){
+        List<Order> orderList = orderService.getOrdersByStatus(0);
+        System.out.println(orderList.size());
+        System.out.println(orderList.get(0).getLineItems().get(0).getItem().getProduct().getProductId());
+    }
+
+    @Test
+    void testAccountListGet(){
+        List<Account> accountList = accountService.getAccountList();
+        System.out.println(accountList.get(0).getPhone());
+    }
+
 }
