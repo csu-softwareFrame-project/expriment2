@@ -46,6 +46,16 @@
 </template>
 
 <script>
+// import '../../static/css/style.css'
+// import '../../static/css/bootstrap.min.css'
+// import '../../static/css/font-awesome.min.css'
+// import '../../static/css/zzsc.css'
+// import '../../static/css/ddsmoothmenu.css'
+// import '../../static/css/table.css'
+// import '../../static/css/press.css'
+// import '../../static/css/hover.css'
+// import '../../static/css/templatemo_style.css'
+// import '../../static/css/login.css'
 
 export default {
   inject: ['reload'],
@@ -58,10 +68,10 @@ export default {
   },
   methods: {
     signOut () {
-      console.log('登出');
-      this.$store.commit('removeAccount');
-      this.$store.commit('changeLogin', 'undefined');
-      this.$store.commit('changeFail', 'undefined');
+      console.log('登出')
+      this.$store.commit('removeAccount')
+      this.$store.commit('changeLogin', 'undefined')
+      this.$store.commit('changeFail', 'undefined')
       // this.$router.push("/account/view-sign-in")
       this.$router.go(0)// 全局刷新，清空store
     },

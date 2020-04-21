@@ -27,14 +27,14 @@ export default new Router({
       component: () => import('../petstore/management/account')
     },
     {
-      path: '/management/main',
+      path: '/management/mainPage',
       name: '首页',
       // 渲染是否可见
       hidden: true,
       meta: {
         title: 'myPetStore - 后台管理'
       },
-      component: () => import('../petstore/management/main')
+      component: () => import('../petstore/management/mainPage')
     },
     {
       path: '/management/order',

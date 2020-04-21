@@ -15,8 +15,6 @@ export default {
   components: {
     managetop,
     managebottom
-  },
-  methods: {
   }
 }
 </script>

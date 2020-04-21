@@ -1,16 +1,213 @@
 <template>
   <manageframe>
-    <div id="account">
-      <font color="#8fbc8f" size="3px">account</font>
-    </div>
+    <div class="page-container">
+      <!-- MAIN CONTENT-->
+      <div class="main-content">
+        <div class="section__content section__content--p30">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="overview-wrap">
+                  <h2 class="title-1">Search</h2>
+                  <!--搜索account-->
+                  <form class="form-header" action="" method="POST">
+                    <input class="au-input au-input--xl" type="text" name="search" placeholder="Search for accounts" />
+                    <button class="au-btn--submit" type="submit">
+                      <i class="zmdi zmdi-search"></i>
+                    </button>
+                  </form>
+                  <button class="au-btn au-btn-icon au-btn--blue">
+                    <i class="zmdi zmdi-plus"></i>add account</button>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-lg-9">
+                <h2 class="title-1 m-b-25">Accounts</h2>
+                <div class="table-responsive table--no-card m-b-55">
+                  <table class="table table-borderless table-striped table-earning" id="account_table">
+                    <thead>
+                    <tr>
+                      <th>username</th>
+                      <th>email</th>
+                      <th>first name</th>
+                      <th>last name</th>
+                      <th class="text-right">city</th>
+                      <th class="text-right">country</th>
+                      <th class="text-right">phone</th>
+                      <th class="text-right">details</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                      <td>{{username}}}</td>
+                      <td>Software1801@csu.cn</td>
+                      <td>a</td>
+                      <td>a</td>
+                      <td class="text-right">CS</td>
+                      <td class="text-right">CN</td>
+                      <td class="text-right">211241231</td>
+                      <td class="text-right"><a @click="openMask">...</a></td>
+                      <td class="text-right" v-if="isEdit"><input type="checkbox" v-bind:value="username" name="listOption" v-model="checkVal"/></td>
+                    </tr>
+                    <tr>
+                      <td>master</td>
+                      <td>Software1801@csu.cn</td>
+                      <td>a</td>
+                      <td>a</td>
+                      <td class="text-right">CS</td>
+                      <td class="text-right">CN</td>
+                      <td class="text-right">211241231</td>
+                      <td class="text-right"><a @click="openMask">...</a></td>
+                      <td class="text-right" v-if="isEdit"><input type="checkbox" value="2" name="listOption" v-model="checkVal"/></td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <button class="au-btn au-btn-icon au-btn--blue" id="delete_button" @click="deleteAccount" v-if="isEdit">
+                  <i class="zmdi zmdi-delete"></i>delete</button>
+                <button @click="editAccounts" class="au-btn au-btn-icon au-btn--blue" id="edit_button">
+                  <i class="zmdi zmdi-edit"></i>edit account</button>
+                <!--弹窗-->
+                <Modal :show="show" :title2="title2" @hideModal="hideModal" @submit="submit">
+                  <label for="firstName">First name: &nbsp;
+                    <input type="text" size="40" name="firstName" v-model="editForm.firstName" class="required input_field" id="firstName" /></label>
+                  <div class="cleaner h10"></div>
+                  <label for="lastName">Last name: &nbsp;
+                    <input type="text" size="40" name="lastName" v-model="editForm.lastName" class="required input_field" id="lastName"/></label>
+                  <div class="cleaner h10"></div>
+                  <label for="email">Email: &nbsp;
+                    <input type="text" size="40" name="email" v-model="editForm.email" class="required input_field" id="email"/></label>
+                  <div class="cleaner h10"></div>
+                  <label for="phone">Phone: &nbsp;
+                    <input type="text" size="40" name="phone" v-model="editForm.phone" class="required input_field" id="phone"/></label>
+                  <div class="cleaner h10"></div>
+                  <label for="address1">Address 1: &nbsp;
+                    <input type="text" size="40" name="address1" v-model="editForm.address1" class="required input_field" id="address1"/></label>
+                  <div class="cleaner h10"></div>
+                  <label for="address2">Address 2: &nbsp;
+                    <input type="text" size="40" name="address2" v-model="editForm.address2" class="required input_field" id="address2"/></label>
+                  <div class="cleaner h10"></div>
+                  <label for="city">City: &nbsp;
+                    <input type="text" size="40" name="city" v-model="editForm.city" class="required input_field" id="city"/></label>
+                  <div class="cleaner h10"></div>
+                  <label for="state">State: &nbsp;
+                    <input type="text" size="40"  name="state" v-model="editForm.state" class="required input_field" id="state"/></label>
+                  <div class="cleaner h10"></div>
+                  <label for="zip">Zip: &nbsp;
+                    <input type="text" size="40"  name="zip" v-model="editForm.zip" class="required input_field" id="zip"/></label>
+                  <div class="cleaner h10"></div>
+                  <label for="country">Country: &nbsp;
+                    <input type="text" size="40"  name="country" v-model="editForm.country" class="required input_field" id="country"/></label>
+                  <div class="cleaner h10"></div>
+                  <hr>
+                  <h4>Profile Information</h4><br>
+                  <label>Language Preference: &nbsp;
+                    <select name="languagePreference" id="languagePreference" v-model="editForm.languagePreference">
+                      <option>English</option>
+                    </select>
+                  </label>
+                  <div class="cleaner h10"></div>
+                  <label>Favourite Category: &nbsp;
+                    <select name="favouriteCategoryId" id="favouriteCategoryId" v-model="editForm.favouriteCategoryId">
+                      <option >NOBANNER</option>
+                    </select>
+                  </label>
+                  <div class="cleaner h10"></div>
+                  <label>Enable MyList &nbsp;<input type="checkbox" id="listOption" v-model="editForm.listOption" name="listOption" /></label>
+                  <div class="cleaner h10"></div>
+                  <label>Enable MyBanner &nbsp;<input type="checkbox" id="bannerOption" v-model="editForm.bannerOption" name="bannerOption" /></label>
+                </Modal>
+              </div>
+            </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <!-- END MAIN CONTENT-->
+      <!-- END PAGE CONTAINER-->
   </manageframe>
 </template>
 
 <script>
 import Manageframe from '../../components/manageframe'
+import Modal from './account_view.vue'
 export default {
   name: 'account',
-  components: {Manageframe}
+  props: {
+    value: {},
+    content: {
+      type: String,
+      default: ''
+    },
+    title: {
+      type: String,
+      default: ''
+    }
+  },
+  data () {
+    return {
+      username: 'master',
+      checkVal: [],
+      isEdit: false,
+      title2: 'user details',
+      show: false,
+      editForm: {
+        account: '#',
+        languagePreference: 'English',
+        favouriteCategoryId: 'NOBANNER',
+        listOption: '#',
+        bannerOption: '#',
+        firstName: '#',
+        lastName: '#',
+        email: '#',
+        phone: '#',
+        address1: '#',
+        address2: '#',
+        city: '#',
+        state: '#',
+        zip: '#',
+        country: '#'
+      }
+    }
+  },
+  components: {
+    Manageframe,
+    Modal},
+  methods: {
+    hideModal () {
+      // 取消弹窗回调
+      this.show = false
+    },
+
+    submit () {
+      // 确认弹窗回调
+      this.show = false
+    },
+    openMask () {
+      this.show = true
+    },
+    deleteAccount () {
+      alert(this.checkVal)
+    },
+    editAccounts () {
+      var button = document.getElementById('edit_button')
+      var table = document.getElementById('account_table')
+      var editRow = table.childNodes.item(0).childNodes.item(0)
+      // var children = table.childNodes.item(2).childNodes
+      var html1 = '<th class="text-right">delete</th>'
+      if (!this.isEdit) {
+        editRow.innerHTML += html1
+        button.innerHTML = '<i class="zmdi zmdi-check"></i>complete'
+      } else {
+        editRow.innerHTML = editRow.innerHTML.replace(html1, '')
+        button.innerHTML = '<i class="zmdi zmdi-edit"></i>edit account'
+      }
+      this.isEdit = !this.isEdit
+    }
+  }
 }
 </script>
 

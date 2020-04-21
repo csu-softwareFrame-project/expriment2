@@ -8,7 +8,7 @@ import VueAxios from 'vue-axios'
 import axios from 'axios'
 import store from './store/index'
 import qs from 'qs'
-// import '../static/css/jquery-ui.css'
+
 import '../static/css/style.css'
 import '../static/css/style2.css'
 import '../static/css/bootstrap.min.css'
@@ -21,21 +21,11 @@ import '../static/css/hover.css'
 import '../static/css/templatemo_style.css'
 import '../static/css/login.css'
 
-import 'jquery'
-// import jquery142 from '../static/js/jquery-1-4-2.min'
-// import '../static/js/jquery-ui.min'
-// import '../static/js/showhide'
-// import '../static/js/jquery.mousewheel'
-// import '../static/js/jquery.min'
-// import '../static/js/ddsmoothmenu'
-// import '../static/js/cloud-carousel.1.0.5'
-
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-import fa from "element-ui/src/locale/lang/fa";
+import fa from 'element-ui/src/locale/lang/fa'
 
 Vue.use(ElementUI)
-// Vue.use(jquery142)
 
 // // 1、引入组件
 // import Users from './components/Users'
@@ -49,6 +39,7 @@ Vue.prototype.$http = axios
 Vue.prototype.axios = axios
 Vue.prototype.$cookies = VueCookies
 Vue.prototype.$store = store
+
 // 下面这个配置貌似前端没有highlight
 Vue.use(VueAxios, axios)
 Vue.use(VueCookies)
@@ -73,10 +64,10 @@ router.beforeEach((to, from, next) => {
     next()
   } else {
     // 其他地址则要判断token有效性
-    let token = localStorage.getItem('Authorization');
+    let token = localStorage.getItem('Authorization')
     // console.log('router.beforeEach.toke:' + token);
     if (token === null || token === '' || token === 'undefined') {
-      alert('你还没登录');
+      alert('你还没登录')
       next('/account/view-sign-in')
     } else {
       next()
@@ -86,7 +77,7 @@ router.beforeEach((to, from, next) => {
   if (to.meta.title) {
     document.title = to.meta.title
   }
-});
+})
 
 // token插入请求头
 axios.interceptors.request.use(
@@ -97,7 +88,7 @@ axios.interceptors.request.use(
       if (store.state.account != null) {
         config.headers.UserName = store.state.account.username
       }
-      if(localStorage.getItem('failToken')){
+      if (localStorage.getItem('failToken')) {
         config.headers.failToken = localStorage.getItem('failToken')
       }
     }
@@ -111,18 +102,18 @@ axios.interceptors.response.use(function (response) {
 // 对响应数据做点什么
   return response
 }, function (err) {
-  console.log(err.response);
+  console.log(err.response)
   if (err && err.response) {
     switch (err.response.status) {
-      case 400: err.message = '请求错误(400)'; break;
+      case 400: err.message = '请求错误(400)'; break
       case 401: {
         // err.message = '未授权，请重新登录(401)';
-        store.commit('removeAccount');
-        store.commit('changeLogin', 'undefined');
-        console.log("旧token:"+store.state.Authorization);
-        alert('后台：登录认证已过期');
-        router.push('/account/view-sign-in');
-        break;
+        store.commit('removeAccount')
+        store.commit('changeLogin', 'undefined')
+        console.log('旧token:' + store.state.Authorization)
+        alert('后台：登录认证已过期')
+        router.push('/account/view-sign-in')
+        break
       }
       case 403: err.message = '拒绝访问(403)'; break
       case 404: err.message = '请求出错(404)'; break

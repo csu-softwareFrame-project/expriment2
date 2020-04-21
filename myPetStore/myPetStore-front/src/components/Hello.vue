@@ -51,22 +51,25 @@
       </div>
     </div>
     <br><br><br><br><br><br><br><br>
-     <div class="bottom">
-       <div>
-         <div class="admin5"><router-link to="/main/view-main"><font color="aqua" size="5px">click here</font></router-link></div>
-       </div>
-       <div>
-         <font color="#8fbc8f" size="3px">or the dice to enter mypetstore</font>
+     <div class="btn-group">
+       <div class="bottom">
+         <div>
+           <div class="admin5"><router-link to="/main/view-main"><b><font color="aqua" size="5px">click here</font></b></router-link></div>
+         </div>
+         <div>
+           <font color="#8fbc8f" size="3px">or the dice to enter mypetstore</font>
+         </div>
        </div>
      </div>
     <br><br><br><br>
     <div>
-      <router-link to="/management/main"><font color="#dc143c" size="5px">test</font></router-link>
+      <router-link to="/management/mainPage"><font color="#dc143c" size="5px">test</font></router-link>
     </div>
   </div>
 </template>
 
 <script>
+
 </script>
 
 <style>
