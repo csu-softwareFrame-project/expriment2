@@ -25,7 +25,7 @@
             <div class="row">
               <div class="col-lg-9">
                 <!--待完善路径-->
-                <div align="left"><router-link v-bind:to="'/management/product'"><i class="zmdi zmdi-arrow-back"></i>&nbsp;return</router-link></div>
+                <div align="left"><router-link v-bind:to="'/management/product?categoryId='+product.categoryId"><i class="zmdi zmdi-arrow-back"></i>&nbsp;return</router-link></div>
                 <!--{{product.name}}-->
                 <h2 class="title-1 m-b-25">test-a</h2>
                 <div class="table-responsive table--no-card m-b-55">
@@ -40,19 +40,24 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                      <td class="text-left">test-a</td>
-                      <td class="text-left">test-b</td>
-                      <td class="text-left">test-c</td>
-                      <td class="text-left">test-d</td>
+                    <tr v-for="item in itemList">
+                      <td class="text-left">
+                        {{item.itemId}}
+                      </td>
+                      <td v-if="item != null" class="text-left">
+                        {{item.product.productId}}
+                      </td>
+                      <td class="text-left">
+                        <nobr v-if="item != null && item.attribute1 != null">{{item.attribute1}}</nobr>
+                        <nobr v-if="item != null && item.attribute2 != null">{{item.attribute2}}</nobr>
+                        <nobr v-if="item != null && item.attribute3 != null">{{item.attribute3}}</nobr>
+                        <nobr v-if="item != null && item.attribute4 != null">{{item.attribute4}}</nobr>
+                        <nobr v-if="item != null && item.attribute5 != null">{{item.attribute5}}</nobr>
+                        <nobr v-if="product != null && product.name != null">{{product.name}}</nobr>
+                      </td>
+                      <td v-if="item != null" class="text-left">{{item.listPrice}}</td>
                       <td class="text-left" @click="openMask">...</td>
-                      <td v-if="isEdit" class="text-right"><input type="checkbox" value="test-a" name="listOption" v-model="checkVal"/></td>
-                    </tr>
-                    <tr v-for="category in categoryList" v-if="categoryList != null">
-                      <td><router-link v-bind:to="'/catalog/viewCategory?categoryId='+category.name"></router-link>{{category.categoryId}}</td>
-                      <td><router-link v-bind:to="'/catalog/viewCategory?categoryId='+category.name"></router-link>{{category.name}}</td>
-                      <td class="text-left" @click="openMask">...</td>
-                      <td v-if="isEdit" class="text-right"><input type="checkbox" v-bind:value="category.categoryId" name="listOption" v-model="checkVal"/></td>
+                      <td v-if="isEdit" class="text-right"><input type="checkbox" v-bind:value="item.itemId" name="listOption" v-model="checkVal"/></td>
                     </tr>
                     </tbody>
                   </table>
@@ -83,9 +88,11 @@ export default {
   name: 'item',
   data () {
     return {
-      item: null,
+      itemList: null,
+      product: null,
       checkVal: [],
       isEdit: false,
+      keyword: '',
       title: 'edit',
       show: false
     }
@@ -108,13 +115,23 @@ export default {
       this.show = true
     },
     getData () {
-      this.axios.get('/items', {
+      this.axios.get('/products', {
         params: {
-          itemId: this.$route.query.itemId
+          productId: this.$route.query.productId
         }
       }).then(res => {
-        this.item = res.data.result.item
-        // console.log("搜到了品种")
+        this.itemList = res.data.result.itemList
+        this.product = res.data.result.product
+        if (res.data.result.token != null) {
+          // 更新token
+          if (typeof (res.data.result.token) !== 'undefined') {
+            // console.log("更新了token:         "+res.data.result.token);
+            // console.log("更新了failToken:     "+res.data.result.failToken)
+            this.$store.commit('changeLogin', { Authorization: res.data.result.token })
+            this.$store.commit('changeFail', { failToken: res.data.result.failToken})
+          }
+        }
+        // console.log("搜到了产品")
       }).catch(err => {
         window.console.error(err)
       })
@@ -147,7 +164,7 @@ export default {
     }
   },
   created () {
-    // this.getData()
+    this.getData()
   }
 }
 </script>

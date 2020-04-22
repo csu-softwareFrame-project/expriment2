@@ -38,17 +38,11 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                      <td class="text-left"><router-link v-bind:to="'/management/item'">test-a</router-link></td>
-                      <td class="text-left">test-b</td>
+                    <tr v-for="product in productList" v-if="productList != null">
+                      <td class="text-left"><router-link v-bind:to="'/management/item?productId='+product.productId" >{{product.productId}}</router-link></td>
+                      <td class="text-left">{{product.name}}</td>
                       <td class="text-left" @click="openMask">...</td>
-                      <td v-if="isEdit" class="text-right"><input type="checkbox" value="test-a" name="listOption" v-model="checkVal"/></td>
-                    </tr>
-                    <tr v-for="product in productList" v-if="categoryList != null">
-                      <td><router-link v-bind:to="'/viewProduct?productId='+product.productId" >{{product.productId}}</router-link></td>
-                      <td>{{product.name}}</td>
-                      <td class="text-left" @click="openMask">...</td>
-                      <td v-if="isEdit" class="text-right"><input type="checkbox" v-bind:value="product.categoryId" name="listOption" v-model="checkVal"/></td>
+                      <td v-if="isEdit" class="text-right"><input type="checkbox" v-bind:value="product.productId" name="listOption" v-model="checkVal"/></td>
                     </tr>
                     </tbody>
                   </table>
@@ -82,6 +76,7 @@ export default {
       account: this.$store.state.account,
       productList: null,
       checkVal: [],
+      keyword: '',
       isEdit: false,
       title: 'edit',
       show: false
@@ -154,7 +149,7 @@ export default {
     }
   },
   created () {
-    // this.getData()
+    this.getData()
   }
 }
 </script>

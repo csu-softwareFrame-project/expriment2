@@ -81,7 +81,7 @@ public class CatalogService {
     public ReturnPack viewCategoryService(HttpServletRequest httpServletRequest,String categoryId, JSONObject data ){
 //        String username =  httpServletRequest.getHeader("UserName");
         //如果有选定宠物类型，展示该类型的菜单；否则展示宠物类型菜单
-        if (categoryId != null){
+        if (categoryId != ""){
             Category category = getCategory(categoryId);
             List<Product> productList = getProductListByCategory(categoryId);
 //            if(username != null && username != "") {

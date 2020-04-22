@@ -39,15 +39,9 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                      <td class="text-left"><router-link v-bind:to="'/management/product'">test-a</router-link></td>
-                      <td class="text-left">test-b</td>
-                      <td class="text-left" @click="openMask">...</td>
-                      <td v-if="isEdit" class="text-right"><input type="checkbox" value="test-a" name="listOption" v-model="checkVal"/></td>
-                    </tr>
                     <tr v-for="category in categoryList" v-if="categoryList != null">
-                      <td><router-link v-bind:to="'/catalog/viewCategory?categoryId='+category.name"></router-link>{{category.categoryId}}</td>
-                      <td><router-link v-bind:to="'/catalog/viewCategory?categoryId='+category.name"></router-link>{{category.name}}</td>
+                      <td class="text-left"><router-link v-bind:to="'/management/product?categoryId='+category.name">{{category.categoryId}}</router-link></td>
+                      <td class="text-left"><router-link v-bind:to="'/management/product?categoryId='+category.name">{{category.name}}</router-link></td>
                       <td class="text-left" @click="openMask">...</td>
                       <td v-if="isEdit" class="text-right"><input type="checkbox" v-bind:value="category.categoryId" name="listOption" v-model="checkVal"/></td>
                     </tr>
@@ -85,6 +79,7 @@ export default {
       categoryList: null,
       productList: null,
       checkVal: [],
+      keyword: '',
       isEdit: false,
       title: 'edit',
       show: false
@@ -110,7 +105,7 @@ export default {
     getData () {
       this.axios.get('/categories', {
         params: {
-          categoryId: this.$route.query.categoryId
+          categoryId: ''
         }
       }).then(res => {
         this.category = res.data.result.category
@@ -142,7 +137,7 @@ export default {
     deleteAccount () {
       alert(this.checkVal)// 待添加方法
     },
-    edit() {
+    edit () {
       var button = document.getElementById('edit_button')
       var table = document.getElementById('account_table')
       var editRow = table.childNodes.item(0).childNodes.item(0)
@@ -159,7 +154,7 @@ export default {
     }
   },
   created () {
-    // this.getData()
+    this.getData()
   }
 }
 </script>
