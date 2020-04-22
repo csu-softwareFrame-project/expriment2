@@ -21,8 +21,9 @@
 /*}*/
 
 div.wrap{
-    margin-top: 300px;    /*上外边距设置*/
-    width: 200px;         /*给他一个宽度*/
+    margin-top: 100px;    /*上外边距设置*/
+    width: 500px;         /*给他一个宽度*/
+    height: 300px;
     perspective: 1000px;  /*景深设置，视图距元素的距离  相当于摄像机*/
 }
 
@@ -44,7 +45,7 @@ div.wrap{
 .cube>div{
     width: 100%;                              /*设置的宽度和父级一样*/
     height: 100%;                             /*设置的高度一样*/
-    border: 10px solid #66daff;               /*边框设置*/
+    border: 10px solid #d1fff8;               /*边框设置*/
     border-radius: 20px;                      /*设置一下圆角*/
     position: absolute;                       /*开启绝对定位，这样就全部叠在一起了*/
     background-color: rgba(51,51,51,.3);      /*来个背景色，30%的透明度*/
