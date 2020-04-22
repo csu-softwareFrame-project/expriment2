@@ -51,69 +51,68 @@
 </template>
 
 <script>
-  import pageFrame from '../../components/pageframe'
-  export default {
-    inject:['reload'],    //注入App里的reload方法
-    data(){
-      return{
-          account: this.$store.state.account,
-        item: null
-      }
-    },
-    components:{
-      pageFrame,
-    },
-    methods:{
-      getData(){
-        this.axios.get('/items',{
-          params:{
-            itemId: this.$route.query.itemId
-          }
-        }).then(res => {
-          this.item = res.data.result.item
-          // console.log("搜到了品种")
-        }).catch(err => {
-          window.console.error(err)
-        })
-      },
-      addToCart(){ //添加到购物
-          if(this.$store.state.account == null){
-              alert("请先登录")
-              this.$router.push('/account/view-sign-in')
-          }
-          else {
-              let id = this.item.itemId.toString()
-              let postData = this.$qs.stringify({
-                  itemId: id,
-                  username: this.$store.state.account.username,
-              })
-              this.axios({
-                  method: 'post',
-                  url: '/carts',
-                  data: postData,
-              }).then(res => {
-                  if(res.data.status){
-                      this.$router.push("/viewCart")
-                      console.log("item:"+res.data.result.token)
-                      //更新token
-                      if(typeof(res.data.result.token) !== "undefined"){
-                          // console.log("更新了token:         "+res.data.result.token);
-                          // console.log("更新了failToken:     "+res.data.result.failToken)
-                          this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
-                          this.$store.commit('changeFail', { failToken: res.data.result.failToken})
-                      }
-                  }else {
-                      //显示库存不足消息
-                      alert(res.data.msg)
-                  }
-              })
-          }
-      }
-    },
-    created(){
-      this.getData()
+import pageFrame from '../../components/pageframe'
+export default {
+  inject: ['reload'], // 注入App里的reload方法
+  data () {
+    return {
+      account: this.$store.state.account,
+      item: null
     }
+  },
+  components: {
+    pageFrame
+  },
+  methods: {
+    getData () {
+      this.axios.get('/items', {
+        params: {
+          itemId: this.$route.query.itemId
+        }
+      }).then(res => {
+        this.item = res.data.result.item
+        // console.log("搜到了品种")
+      }).catch(err => {
+        window.console.error(err)
+      })
+    },
+    addToCart () { // 添加到购物
+      if (this.$store.state.account == null) {
+        alert('请先登录')
+        this.$router.push('/account/view-sign-in')
+      } else {
+        let id = this.item.itemId.toString()
+        let postData = this.$qs.stringify({
+          itemId: id,
+          username: this.$store.state.account.username
+        })
+        this.axios({
+          method: 'post',
+          url: '/carts',
+          data: postData
+        }).then(res => {
+          if (res.data.status) {
+            this.$router.push('/viewCart')
+            console.log('item:' + res.data.result.token)
+            // 更新token
+            if (typeof (res.data.result.token) !== 'undefined') {
+              // console.log("更新了token:         "+res.data.result.token);
+              // console.log("更新了failToken:     "+res.data.result.failToken)
+              this.$store.commit('changeLogin', { Authorization: res.data.result.token })
+              this.$store.commit('changeFail', { failToken: res.data.result.failToken})
+            }
+          } else {
+            // 显示库存不足消息
+            alert(res.data.msg)
+          }
+        })
+      }
+    }
+  },
+  created () {
+    this.getData()
   }
+}
 </script>
 
 <style>

@@ -2,7 +2,7 @@
   <div class="modal-bg" v-show="show">
     <div class="modal-container">
       <div class="modal-header">
-        {{ title2 }}
+        {{ title }}
       </div>
       <div class="modal-main">
         <slot></slot>
@@ -23,7 +23,7 @@ export default {
       type: Boolean,
       default: false
     },
-    title2: {
+    title: {
       type: String,
       default: ''
     }
@@ -80,6 +80,5 @@ export default {
   }
   .modal-main {
     padding: 15px 40px;
-    font-family: 'Roboto', 'Avenir Next', sans-serif;
   }
 </style>

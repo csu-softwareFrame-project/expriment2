@@ -11,44 +11,45 @@
                   <h2 class="title-1">Search</h2>
                   <!--搜索account-->
                   <form class="form-header">
-                    <input class="au-input au-input--xl" type="search" name="search" placeholder="Search for product" v-model="keyword"/>
+                    <input class="au-input au-input--xl" type="search" name="search" placeholder="Search for category" v-model="keyword"/>
                     <button class="au-btn--submit"  @click="search">
                       <i class="zmdi zmdi-search"></i>
                     </button>
                   </form>
                   <button class="au-btn au-btn-icon au-btn--blue" @click="addCategory">
-                    <i class="zmdi zmdi-plus"></i>add to product</button>
+                    <i class="zmdi zmdi-plus"></i>add to category</button>
                 </div>
               </div>
             </div>
             <hr>
             <div class="row">
               <div class="col-lg-9">
-                <!--待完善路径-->
-                <div align="left"><router-link v-bind:to="'/management/category'"><i class="zmdi zmdi-arrow-back"></i>&nbsp;return</router-link></div>
-                <!--{{product.name}}-->
-                <h2 class="title-1 m-b-25">test-a</h2>
+                <h2 class="title-1 m-b-25">Category</h2>
                 <div class="table-responsive table--no-card m-b-55">
+                  <!--<tr v-if="productList != null">-->
+                    <!--<th>Product ID</th>-->
+                    <!--<th>Name</th>-->
+                  <!--</tr>-->
                   <table class="table table-borderless table-striped table-earning" id="account_table">
                     <thead>
                     <tr>
-                      <th>Product ID</th>
+                      <th>ID</th>
                       <th>Name</th>
                       <th>edit</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
-                      <td class="text-left"><router-link v-bind:to="'/management/item'">test-a</router-link></td>
+                      <td class="text-left"><router-link v-bind:to="'/management/product'">test-a</router-link></td>
                       <td class="text-left">test-b</td>
                       <td class="text-left" @click="openMask">...</td>
                       <td v-if="isEdit" class="text-right"><input type="checkbox" value="test-a" name="listOption" v-model="checkVal"/></td>
                     </tr>
-                    <tr v-for="product in productList" v-if="categoryList != null">
-                      <td><router-link v-bind:to="'/viewProduct?productId='+product.productId" >{{product.productId}}</router-link></td>
-                      <td>{{product.name}}</td>
+                    <tr v-for="category in categoryList" v-if="categoryList != null">
+                      <td><router-link v-bind:to="'/catalog/viewCategory?categoryId='+category.name"></router-link>{{category.categoryId}}</td>
+                      <td><router-link v-bind:to="'/catalog/viewCategory?categoryId='+category.name"></router-link>{{category.name}}</td>
                       <td class="text-left" @click="openMask">...</td>
-                      <td v-if="isEdit" class="text-right"><input type="checkbox" v-bind:value="product.categoryId" name="listOption" v-model="checkVal"/></td>
+                      <td v-if="isEdit" class="text-right"><input type="checkbox" v-bind:value="category.categoryId" name="listOption" v-model="checkVal"/></td>
                     </tr>
                     </tbody>
                   </table>
@@ -76,10 +77,12 @@
 import Manageframe from '../../components/manageframe'
 import popupwin from '../../components/popupwin.vue'
 export default {
-  name: 'product',
+  name: 'catagory',
   data () {
     return {
       account: this.$store.state.account,
+      category: null,
+      categoryList: null,
       productList: null,
       checkVal: [],
       isEdit: false,
@@ -110,6 +113,8 @@ export default {
           categoryId: this.$route.query.categoryId
         }
       }).then(res => {
+        this.category = res.data.result.category
+        this.categoryList = res.data.result.categoryList
         this.productList = res.data.result.productList
         if (res.data.result.token != null) {
           // 更新token
@@ -137,7 +142,7 @@ export default {
     deleteAccount () {
       alert(this.checkVal)// 待添加方法
     },
-    edit () {
+    edit() {
       var button = document.getElementById('edit_button')
       var table = document.getElementById('account_table')
       var editRow = table.childNodes.item(0).childNodes.item(0)

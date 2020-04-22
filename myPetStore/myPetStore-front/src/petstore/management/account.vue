@@ -10,13 +10,13 @@
                 <div class="overview-wrap">
                   <h2 class="title-1">Search</h2>
                   <!--搜索account-->
-                  <form class="form-header" action="" method="POST">
-                    <input class="au-input au-input--xl" type="text" name="search" placeholder="Search for accounts" />
-                    <button class="au-btn--submit" type="submit">
+                  <form class="form-header">
+                    <input class="au-input au-input--xl" type="search" name="search" placeholder="Search for accounts" v-model="keyword"/>
+                    <button class="au-btn--submit"  @click="search">
                       <i class="zmdi zmdi-search"></i>
                     </button>
                   </form>
-                  <button class="au-btn au-btn-icon au-btn--blue">
+                  <button class="au-btn au-btn-icon au-btn--blue" @click="addAccount">
                     <i class="zmdi zmdi-plus"></i>add account</button>
                 </div>
               </div>
@@ -41,10 +41,10 @@
                     </thead>
                     <tbody>
                     <tr>
-                      <td>{{username}}}</td>
-                      <td>Software1801@csu.cn</td>
-                      <td>a</td>
-                      <td>a</td>
+                      <td class="text-left">{{username}}</td>
+                      <td class="text-left">Software1801@csu.cn</td>
+                      <td class="text-left">a</td>
+                      <td class="text-left">a</td>
                       <td class="text-right">CS</td>
                       <td class="text-right">CN</td>
                       <td class="text-right">211241231</td>
@@ -52,10 +52,10 @@
                       <td class="text-right" v-if="isEdit"><input type="checkbox" v-bind:value="username" name="listOption" v-model="checkVal"/></td>
                     </tr>
                     <tr>
-                      <td>master</td>
-                      <td>Software1801@csu.cn</td>
-                      <td>a</td>
-                      <td>a</td>
+                      <td class="text-left">master</td>
+                      <td class="text-left">Software1801@csu.cn</td>
+                      <td class="text-left">a</td>
+                      <td class="text-left">a</td>
                       <td class="text-right">CS</td>
                       <td class="text-right">CN</td>
                       <td class="text-right">211241231</td>
@@ -70,7 +70,7 @@
                 <button @click="editAccounts" class="au-btn au-btn-icon au-btn--blue" id="edit_button">
                   <i class="zmdi zmdi-edit"></i>edit account</button>
                 <!--弹窗-->
-                <Modal :show="show" :title2="title2" @hideModal="hideModal" @submit="submit">
+                <popupwin :show="show" :title="titlewin" @hideModal="hideModal" @submit="submit">
                   <label for="firstName">First name: &nbsp;
                     <input type="text" size="40" name="firstName" v-model="editForm.firstName" class="required input_field" id="firstName" /></label>
                   <div class="cleaner h10"></div>
@@ -118,7 +118,7 @@
                   <label>Enable MyList &nbsp;<input type="checkbox" id="listOption" v-model="editForm.listOption" name="listOption" /></label>
                   <div class="cleaner h10"></div>
                   <label>Enable MyBanner &nbsp;<input type="checkbox" id="bannerOption" v-model="editForm.bannerOption" name="bannerOption" /></label>
-                </Modal>
+                </popupwin>
               </div>
             </div>
             </div>
@@ -133,7 +133,7 @@
 
 <script>
 import Manageframe from '../../components/manageframe'
-import Modal from './account_view.vue'
+import popupwin from '../../components/popupwin.vue'
 export default {
   name: 'account',
   props: {
@@ -149,12 +149,13 @@ export default {
   },
   data () {
     return {
-      username: 'master',
+      keyword: '',
+      username: 'master', // 示例使用变量
       checkVal: [],
       isEdit: false,
-      title2: 'user details',
+      titlewin: 'user details', // 弹窗控制数据
       show: false,
-      editForm: {
+      editForm: { // 暂时用来显示弹窗内容的数据
         account: '#',
         languagePreference: 'English',
         favouriteCategoryId: 'NOBANNER',
@@ -175,29 +176,37 @@ export default {
   },
   components: {
     Manageframe,
-    Modal},
+    popupwin},
   methods: {
+    search () {
+      alert('关键词： ' + this.keyword)
+      // this.reload()
+      // this.$router.push({path: '/result', query: {keyword: this.keyword}})
+    },
     hideModal () {
       // 取消弹窗回调
       this.show = false
     },
-
     submit () {
       // 确认弹窗回调
       this.show = false
     },
     openMask () {
+      // 打开弹窗
       this.show = true
     },
+    addAccount () {
+      alert('add')// 待修改
+    },
     deleteAccount () {
-      alert(this.checkVal)
+      alert(this.checkVal)// 待添加方法
     },
     editAccounts () {
       var button = document.getElementById('edit_button')
       var table = document.getElementById('account_table')
       var editRow = table.childNodes.item(0).childNodes.item(0)
       // var children = table.childNodes.item(2).childNodes
-      var html1 = '<th class="text-right">delete</th>'
+      var html1 = '<th class="text-right">del</th>'
       if (!this.isEdit) {
         editRow.innerHTML += html1
         button.innerHTML = '<i class="zmdi zmdi-check"></i>complete'

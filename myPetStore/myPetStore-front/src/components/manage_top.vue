@@ -140,7 +140,7 @@
                 <i class="fas fa-table"></i>Order</router-link>
             </li>
             <li>
-              <router-link to="/management/product">
+              <router-link to="/management/category">
                 <i class="far fa-check-square"></i>Product</router-link>
             </li>
             <li>

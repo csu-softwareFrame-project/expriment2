@@ -31,56 +31,55 @@
         </table>
       </div>
 
-
     </div>
 
   </page-frame>
 </template>
 
 <script>
-  import pageFrame from '../../components/pageframe'
-  export default {
-    data(){
-      return{
-          account: this.$store.state.account,
-        category: null,
-        categoryList: null,
-        productList: null
-      }
-    },
-    components:{
-      pageFrame,
-    },
-    methods: {
-      getData() {
-        this.axios.get('/categories', {
-          params: {
-            categoryId: this.$route.query.categoryId
-          }
-        }).then(res => {
-          this.category = res.data.result.category
-          this.categoryList = res.data.result.categoryList
-          this.productList = res.data.result.productList
-          if(res.data.result.token != null){
-            //更新token
-              //更新token
-              if(typeof(res.data.result.token) !== "undefined"){
-                  // console.log("更新了token:         "+res.data.result.token);
-                  // console.log("更新了failToken:     "+res.data.result.failToken)
-                  this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
-                  this.$store.commit('changeFail', { failToken: res.data.result.failToken})
-              }
-          }
-          // console.log("搜到了列表")
-        }).catch(err => {
-          window.console.error(err);
-        })
-      }
-    },
-    created () {
-      this.getData()
+import pageFrame from '../../components/pageframe'
+export default {
+  data () {
+    return {
+      account: this.$store.state.account,
+      category: null,
+      categoryList: null,
+      productList: null
     }
+  },
+  components: {
+    pageFrame
+  },
+  methods: {
+    getData () {
+      this.axios.get('/categories', {
+        params: {
+          categoryId: this.$route.query.categoryId
+        }
+      }).then(res => {
+        this.category = res.data.result.category
+        this.categoryList = res.data.result.categoryList
+        this.productList = res.data.result.productList
+        if (res.data.result.token != null) {
+          // 更新token
+          // 更新token
+          if (typeof (res.data.result.token) !== 'undefined') {
+            // console.log("更新了token:         "+res.data.result.token);
+            // console.log("更新了failToken:     "+res.data.result.failToken)
+            this.$store.commit('changeLogin', { Authorization: res.data.result.token })
+            this.$store.commit('changeFail', { failToken: res.data.result.failToken})
+          }
+        }
+        // console.log("搜到了列表")
+      }).catch(err => {
+        window.console.error(err)
+      })
+    }
+  },
+  created () {
+    this.getData()
   }
+}
 </script>
 
 <style>

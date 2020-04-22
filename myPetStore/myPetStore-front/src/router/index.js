@@ -47,14 +47,34 @@ export default new Router({
       component: () => import('../petstore/management/order')
     },
     {
+      path: '/management/category',
+      name: '管理产品目录',
+      // 渲染是否可见
+      hidden: true,
+      meta: {
+        title: 'myPetStore - 管理产品'
+      },
+      component: () => import('../petstore/management/category')
+    },
+    {
       path: '/management/product',
-      name: '管理产品',
+      name: '产品种类',
       // 渲染是否可见
       hidden: true,
       meta: {
         title: 'myPetStore - 管理产品'
       },
       component: () => import('../petstore/management/product')
+    },
+    {
+      path: '/management/item',
+      name: '产品物件',
+      // 渲染是否可见
+      hidden: true,
+      meta: {
+        title: 'myPetStore - 管理产品'
+      },
+      component: () => import('../petstore/management/item')
     },
     {
       path: '/account/edit',
