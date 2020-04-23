@@ -30,6 +30,12 @@ public class MainPageController {
         return "catalog/main";
     }
 
+    //进入管理主页
+    @GetMapping("/view_managementPage")
+    public String viewManagementPage(){
+        return "management/mainPage";
+    }
+
     //登出跳转
     @GetMapping("/sign_out")
     public String signOut(HttpSession session){

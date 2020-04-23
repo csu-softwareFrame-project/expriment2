@@ -5,6 +5,10 @@
     <title>Management</title>
 </head>
 <body>
+<div th:replace="management/manage_top">
+
+</div>
+
 <div id="templatemo_slider">
     <!-- This is the container for the carousel. -->
     <div id = "carousel1">
@@ -16,6 +20,10 @@
         <a href="/management/itemManagement" rel="lightbox">商品管理</a>
         <a href="/management/orderManagement" rel="lightbox">订单管理</a>
     </div>
+</div>
+
+<div th:replace="management/manage_bottom">
+
 </div>
 </body>
 </html>

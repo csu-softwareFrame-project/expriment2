@@ -51,7 +51,7 @@ public class UserAccessController {
             session.removeAttribute("checkCode");
             System.out.println("登录成功");
 
-            return "management/mainPage";
+            return "redirect:/main/view_managementPage";
         }
         else {
             session.removeAttribute("checkCode");
