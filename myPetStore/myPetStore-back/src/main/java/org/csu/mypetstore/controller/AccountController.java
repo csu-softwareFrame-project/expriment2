@@ -41,7 +41,7 @@ public class AccountController {
         return ReturnPack.success(data);
     }
 
-    //注册功能跳转
+    //注册
     @PostMapping("/accounts/{id}")
     public ReturnPack signUp(@PathVariable("id") String username,@RequestParam Map<String, String> params){
         if (DEBUG){

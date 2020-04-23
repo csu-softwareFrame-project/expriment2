@@ -77,6 +77,7 @@
 
                 <!--弹窗-->
                 <popupwin :show="show" :title="titlewin" @hideModal="hideModal" @submit="submit">
+                  <input hidden v-model="editForm.username"/>
                   <label for="firstName">First name: &nbsp;
                     <input type="text" size="40" name="firstName" v-model="editForm.firstName" class="required input_field" id="firstName" /></label>
                   <div class="cleaner h10"></div>
@@ -107,6 +108,9 @@
                   <label for="country">Country: &nbsp;
                     <input type="text" size="40"  name="country" v-model="editForm.country" class="required input_field" id="country"/></label>
                   <div class="cleaner h10"></div>
+                  <popupwin :show="showNotice" title="通知">
+                    <label v-text="noticeMsg"></label>
+                  </popupwin>
                   <hr>
                   <h4>Profile Information</h4><br>
                   <label>Language Preference: &nbsp;
@@ -121,9 +125,11 @@
                     </select>
                   </label>
                   <div class="cleaner h10"></div>
-                  <label>Enable MyList &nbsp;<input type="checkbox" id="listOption" v-model="editForm.listOption" name="listOption" /></label>
+                  <label>Enable MyList &nbsp;
+                    <input type="checkbox" id="listOption" v-model="editForm.listOption" name="listOption" /></label>
                   <div class="cleaner h10"></div>
-                  <label>Enable MyBanner &nbsp;<input type="checkbox" id="bannerOption" v-model="editForm.bannerOption" name="bannerOption" /></label>
+                  <label>Enable MyBanner &nbsp;
+                    <input type="checkbox" id="bannerOption" v-model="editForm.bannerOption" name="bannerOption" /></label>
                 </popupwin>
               </div>
             </div>
@@ -155,11 +161,14 @@ export default {
   },
   data () {
     return {
+      time: 0,//计时器
+      showNotice: false,
+      noticeMsg: '',
       button1: '<i class="zmdi zmdi-edit"></i>edit account',
       accountList: null,
       keyword: '',
       username: 'master', // 示例使用变量
-      deleteAccount: [],
+      deleteAccountList: [],
       isEdit: false,
       titlewin: 'user details', // 弹窗控制数据
       show: false,
@@ -186,6 +195,10 @@ export default {
     Manageframe,
     popupwin},
   methods: {
+    hideNotice(){
+        this.showNotice = false;
+        clearInterval(this.time);//暂停计时器
+    },
     search () {
       alert('关键词： ' + this.keyword)
       // this.reload()
@@ -197,15 +210,45 @@ export default {
     },
     submit () {
       // 确认弹窗回调
-      this.show = false
+      this.show = false;
+      console.log(this.editForm.listOption);
+      let account = {
+            username: this.editForm.username,
+            languagePreference: this.editForm.languagePreference,
+            favouriteCategoryId: this.editForm.favouriteCategoryId,
+            listOption: this.editForm.listOption,
+            bannerOption: this.editForm.bannerOption,
+            firstName: this.editForm.firstName,
+            lastName: this.editForm.lastName,
+            email: this.editForm.email,
+            phone: this.editForm.phone,
+            address1: this.editForm.address1,
+            address2: this.editForm.address2,
+            city: this.editForm.city,
+            state: this.editForm.state,
+            zip: this.editForm.zip,
+            country: this.editForm.country,
+      };
+      this.axios.put('/management/accounts',account).then(res => {
+          if(res.data.status){
+              this.showNotice = true;
+              this.noticeMsg = "修改成功."
+              this.time=setInterval(this.hideNotice,1000);
+          }else {
+              this.showNotice = true;
+              this.noticeMsg = "服务器异常,修改失败"
+              this.time=setInterval(this.hideNotice,1000);
+          }
+      })
     },
     openMask (e) {
       let acc = e.currentTarget.name;
-      console.log(acc)
+      // console.log(acc)
       // 打开弹窗
       for(let i=0; i<this.accountList.length; i++){
           if(acc === this.accountList[i].username){
               this.editForm.account = this.accountList[i];
+              this.editForm.username = this.editForm.account.username;
               this.editForm.languagePreference = this.editForm.account.languagePreference;
               this.editForm.favouriteCategoryId = this.editForm.account.favouriteCategoryId;
               this.editForm.listOption = this.editForm.account.listOption;
@@ -229,18 +272,15 @@ export default {
       alert('add')// 待修改
     },
     deleteAccount () {
-      alert("本次删除账户:"+this.deleteAccount)// 待添加方法
+      alert("本次删除账户:"+this.deleteAccountList)// 待添加方法
     },
     selectDelete(e){
-        // console.log(e.target.checked)
         let username = e.currentTarget.id
         if (e.target.checked){
-            // console.log(e.currentTarget.id)
-            this.deleteAccount.push(username)
-            // console.log("添加后:"+this.deleteAccount)
+            this.deleteAccountList.push(username)
         }else{
-            for(let i=0;i<this.deleteAccount.length;i++){
-                if(this.deleteAccount[i] === username) this.deleteAccount.splice(i,1)
+            for(let i=0;i<this.deleteAccountList.length;i++){
+                if(this.deleteAccountList[i] === username) this.deleteAccountList.splice(i,1)
             }
             // console.log("移出后:"+this.deleteAccount)
         }

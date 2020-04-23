@@ -4,46 +4,47 @@
       <h3>Account Information</h3>
 
       <label for="firstName">First name: &nbsp;
-        <input type="text" name="firstName" v-model="editForm.firstName" class="required input_field" id="firstName" /></label>
+        <input type="text" name="firstName" v-model="editForm.firstName" class="required input_field" id="firstName" />*</label>
       <div class="cleaner h10"></div>
 
       <label for="lastName">Last name: &nbsp;
-        <input type="text" name="lastName" v-model="editForm.lastName" class="required input_field" id="lastName"/></label>
+        <input type="text" name="lastName" v-model="editForm.lastName" class="required input_field" id="lastName"/>*</label>
       <div class="cleaner h10"></div>
 
       <label for="email">Email: &nbsp;
-        <input type="text" size="40" name="email" v-model="editForm.email" class="required input_field" id="email"/></label>
+        <input type="text" size="40" name="email" v-model="editForm.email" class="required input_field" id="email"/>*</label>
       <div class="cleaner h10"></div>
 
       <label for="phone">Phone: &nbsp;
-        <input type="text" name="phone" v-model="editForm.phone" class="required input_field" id="phone"/></label>
+        <input type="text" name="phone" v-model="editForm.phone" class="required input_field" id="phone"/>*</label>
       <div class="cleaner h10"></div>
 
       <label for="address1">Address 1: &nbsp;
-        <input type="text" size="40" name="address1" v-model="editForm.address1" class="required input_field" id="address1"/></label>
+        <input type="text" size="40" name="address1" v-model="editForm.address1" class="required input_field" id="address1"/>*</label>
       <div class="cleaner h10"></div>
 
       <label for="address2">Address 2: &nbsp;
-        <input type="text" size="40" name="address2" v-model="editForm.address2" class="required input_field" id="address2"/></label>
+        <input type="text" size="40" name="address2" v-model="editForm.address2" class="required input_field" id="address2"/>*</label>
       <div class="cleaner h10"></div>
 
 <!--      <label for="city">City: &nbsp;<input type="text" name="city" th:value="${session.loginUser.city}"class="required input_field" id="city"/></label>-->
       <label for="city">City: &nbsp;
-        <input type="text" name="city" v-model="editForm.city" class="required input_field" id="city"/></label>
+        <input type="text" name="city" v-model="editForm.city" class="required input_field" id="city"/>*</label>
       <div class="cleaner h10"></div>
 
 <!--      <label for="state">State: &nbsp;<input type="text" size="4" name="state" th:value="${session.loginUser.state}"class="required input_field" id="state"/></label>-->
       <label for="state">State: &nbsp;
-        <input type="text" size="4" name="state" v-model="editForm.state" class="required input_field" id="state"/></label>
+        <input type="text" size="4" name="state" v-model="editForm.state" class="required input_field" id="state"/>*</label>
       <div class="cleaner h10"></div>
 
 <!--      <label for="zip">Zip: &nbsp;<input type="text" size="10" name="zip" th:value="${session.loginUser.zip}"class="required input_field" id="zip"/></label>-->
       <label for="zip">Zip: &nbsp;
-        <input type="text" size="10" name="zip" v-model="editForm.zip" class="required input_field" id="zip"/></label>
+        <input type="text" size="10" name="zip" v-model="editForm.zip" class="required input_field" id="zip"/>*</label>
       <div class="cleaner h10"></div>
 
 <!--      <label for="country">Country: &nbsp;<input type="text" size="15" name="country" th:value="${session.loginUser.country}"class="required input_field" id="country"/></label>-->
-      <label for="country">Country: &nbsp;<input type="text" size="15" name="country" v-model="editForm.country" class="required input_field" id="country"/></label>
+      <label for="country">Country: &nbsp;
+        <input type="text" size="15" name="country" v-model="editForm.country" class="required input_field" id="country"/>*</label>
       <div class="cleaner h10"></div>
 
       <h3>Profile Information</h3>
@@ -56,7 +57,7 @@
         <!--            <option th:text="${languages}">languages</option>-->
         <select name="languagePreference" id="languagePreference" v-model="editForm.languagePreference">
           <option>English</option>
-        </select>
+        </select>*
       </label>
 
       <div class="cleaner h10"></div>
@@ -65,53 +66,22 @@
         <!--                <option th:each="${categories}">categories</option>-->
         <select name="favouriteCategoryId" id="favouriteCategoryId" v-model="editForm.favouriteCategoryId">
           <option >NOBANNER</option>
-        </select>
+        </select>*
       </label>
       <div class="cleaner h10"></div>
 
-<!--      <label>Enable MyList &nbsp;<input type="checkbox" id="listOption" name="listOption" th:value="listOption" /></label>-->
-      <label>Enable MyList &nbsp;<input type="checkbox" id="listOption" v-model="editForm.listOption" name="listOption" /></label>
+      <label>Enable MyList &nbsp;
+        <input type="checkbox" id="listOption" v-model="editForm.listOption" name="listOption" />*
+      </label>
       <div class="cleaner h10"></div>
 
-<!--      <label>Enable MyBanner &nbsp;<input type="checkbox" id="bannerOption" name="bannerOption" th:value="bannerOption" /></label>-->
-      <label>Enable MyBanner &nbsp;<input type="checkbox" id="bannerOption" v-model="editForm.bannerOption" name="bannerOption" /></label>
+      <label>Enable MyBanner &nbsp;
+        <input type="checkbox" id="bannerOption" v-model="editForm.bannerOption" name="bannerOption" />*
+      </label>
       <div class="admin5">
-<!--        <input type="submit" class="btn btn-block btn btn-success" id="submit"/>-->
         <a href="javascript:void(0);" v-on:click="editAccount()" name="editAccountForm"  v-if="editForm.account != null">Save&nbsp;Account&nbsp;Information</a>
       </div>
 
-      <!--      <script>-->
-<!--        var a=$.cookie('box1');-->
-<!--        var b=$.cookie('box2');-->
-<!--        var aa=document.getElementById("listOption");-->
-<!--        var bb=document.getElementById("bannerOption");-->
-<!--        console.log(a);-->
-<!--        console.log(b);-->
-<!--        if (a=="true"){-->
-<!--          //console.log("!!!!!!!!!!!");-->
-<!--          //$("#listOption").prop({checked:true});-->
-<!--          //$("#listOption").attr("checked",true);-->
-<!--          aa.checked=true;-->
-<!--        }-->
-<!--        if (a=="false") {-->
-<!--          //console.log("Error");-->
-<!--          //$("#listOption").prop({checked:false});-->
-<!--          //$("#listOption").attr("checked",false);-->
-<!--          aa.checked=false;-->
-<!--        }-->
-<!--        if (b=="true"){-->
-<!--          //console.log("?????????");-->
-<!--          //$("#bannerOption").prop({checked:true});-->
-<!--          //$("#bannerOption").attr("checked",true);-->
-<!--          bb.checked=true;-->
-<!--        }-->
-<!--        if (b=="false") {-->
-<!--          //console.log("Error");-->
-<!--          //$("#bannerOption").prop({checked:false});-->
-<!--          //$("#bannerOption").attr("checked",false);-->
-<!--          bb.checked=false;-->
-<!--        }-->
-<!--      </script>-->
     </edit-account>
   </div>
 </template>
@@ -173,6 +143,7 @@
                       console.log("更新了token:"+res.data.result.token);
                       this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
                   }
+                  if(res.data.status) alert("修改成功!")
               })
       }
     },

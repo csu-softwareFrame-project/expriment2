@@ -17,7 +17,7 @@
                     </button>
                   </form>
                   <button class="au-btn au-btn-icon au-btn--blue" @click="addCategory">
-                    <i class="zmdi zmdi-plus"></i>add to category</button>
+                    <i class="zmdi zmdi-plus"></i>add category</button>
                 </div>
               </div>
             </div>
@@ -33,6 +33,7 @@
                   <table class="table table-borderless table-striped table-earning" id="account_table">
                     <thead>
                     <tr>
+                      <th v-if="isEdit" class="text-left">del</th>
                       <th>ID</th>
                       <th>Name</th>
                       <th>edit</th>
@@ -40,18 +41,19 @@
                     </thead>
                     <tbody>
                     <tr v-for="category in categoryList" v-if="categoryList != null">
-                      <td class="text-left"><router-link v-bind:to="'/management/product?categoryId='+category.name">{{category.categoryId}}</router-link></td>
-                      <td class="text-left"><router-link v-bind:to="'/management/product?categoryId='+category.name">{{category.name}}</router-link></td>
+                      <td v-if="isEdit" class="text-left"><input type="checkbox" v-bind:value="category.categoryId" name="listOption" v-model="checkVal"/></td>
+                      <td class="text-left"><router-link v-bind:to="'/management/product?categoryId='+category.categoryId">{{category.categoryId}}</router-link></td>
+                      <td class="text-left"><router-link v-bind:to="'/management/product?categoryId='+category.categoryId">{{category.name}}</router-link></td>
                       <td class="text-left" @click="openMask">...</td>
-                      <td v-if="isEdit" class="text-right"><input type="checkbox" v-bind:value="category.categoryId" name="listOption" v-model="checkVal"/></td>
                     </tr>
                     </tbody>
                   </table>
                 </div>
                 <button class="au-btn au-btn-icon au-btn--blue" id="delete_button" @click="deleteAccount" v-if="isEdit">
                   <i class="zmdi zmdi-delete"></i>delete</button>
-                <button @click="edit" class="au-btn au-btn-icon au-btn--blue" id="edit_button">
-                  <i class="zmdi zmdi-edit"></i>edit</button>
+                <button @click="edit" class="au-btn au-btn-icon au-btn--blue"
+                        id="edit_button"v-html="button1">
+                </button>
               </div>
               <popupwin :show="show" :title="title" @hideModal="hideModal" @submit="submit">
                 <p> test </p>
@@ -74,6 +76,7 @@ export default {
   name: 'catagory',
   data () {
     return {
+      button1: '<i class="zmdi zmdi-edit"></i>edit',
       account: this.$store.state.account,
       category: null,
       categoryList: null,
@@ -138,17 +141,16 @@ export default {
       alert(this.checkVal)// 待添加方法
     },
     edit () {
-      var button = document.getElementById('edit_button')
-      var table = document.getElementById('account_table')
-      var editRow = table.childNodes.item(0).childNodes.item(0)
+      // var table = document.getElementById('account_table')
+      // var editRow = table.childNodes.item(0).childNodes.item(0)
       // var children = table.childNodes.item(2).childNodes
-      var html1 = '<th class="text-right">del</th>'
+      // var html1 = '<th class="text-right">del</th>'
       if (!this.isEdit) {
-        editRow.innerHTML += html1
-        button.innerHTML = '<i class="zmdi zmdi-check"></i>complete'
+        // editRow.innerHTML += html1
+        this.button1 = '<i class="zmdi zmdi-check"></i>complete'
       } else {
-        editRow.innerHTML = editRow.innerHTML.replace(html1, '')
-        button.innerHTML = '<i class="zmdi zmdi-edit"></i>edit'
+        // editRow.innerHTML = editRow.innerHTML.replace(html1, '')
+        this.button1 = '<i class="zmdi zmdi-edit"></i>edit'
       }
       this.isEdit = !this.isEdit
     }
