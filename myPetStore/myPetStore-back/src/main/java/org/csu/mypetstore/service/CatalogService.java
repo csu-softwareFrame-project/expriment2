@@ -1,6 +1,5 @@
 package org.csu.mypetstore.service;
 
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
@@ -13,9 +12,9 @@ import org.csu.mypetstore.persistence.ItemMapper;
 import org.csu.mypetstore.persistence.ProductMapper;
 import org.csu.mypetstore.util.ReturnPack;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 import redis.clients.jedis.Jedis;
 
 
@@ -217,6 +216,7 @@ public class CatalogService {
             }
             jedis.close();
             return ReturnPack.success(data);
+
         }else{
             if (categoryId != ""){
                 Category category = getCategory(categoryId);
@@ -258,4 +258,5 @@ public class CatalogService {
         itemMapper.updateItem(item,oldId);
         itemMapper.updateQuantity(item,oldId);
     }
+
 }
