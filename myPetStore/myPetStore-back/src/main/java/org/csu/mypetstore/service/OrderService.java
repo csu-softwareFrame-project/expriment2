@@ -194,4 +194,53 @@ public class OrderService {
 
         return orderList;
     }
+
+    /**
+     * @更新订单信息
+     * @参数：Order对象
+     */
+    public void updateOrder(Order order) {
+        orderMapper.updateOrder(order);
+        orderMapper.updateOrderStatus(order);
+    }
+
+    /**
+     * @删除订单
+     * @参数：订单id
+     */
+    public void removeOrder(int orderId){
+        orderMapper.removeOrder(orderId);
+        orderMapper.removeOrderStatus(orderId);
+    }
+
+    /**
+     * @发送订单
+     * @参数：订单id
+     * @第二个参数1表示订单已发送，0表示未发送
+     */
+    public void sendOrder(int orderId){
+        orderMapper.sendOrder(orderId,1);
+    }
+
+    /**
+     * @获取特定状态的订单、
+     * @参数是订单状态，0表示未发送，1表示已发送
+     * @返回订单的列表
+     */
+    public List<Order> getOrdersByStatus(int status){
+        List<Order> orderList = orderMapper.getOrdersByStatus(status);
+        for(int i=0;i<orderList.size();i++)
+        {
+            orderList.get(i).setLineItems(lineItemMapper.getLineItemsByOrderId(orderList.get(i).getOrderId()));
+            for(int j=0;j<orderList.get(i).getLineItems().size();j++)
+            {
+                LineItem lineItem = (LineItem) orderList.get(i).getLineItems().get(j);
+                Item item = itemMapper.getItem(lineItem.getItemId());
+                item.setQuantity(orderMapper.getOrderItemQuantity(orderList.get(i).getOrderId(),item.getItemId()));
+                lineItem.setItem(item);
+            }
+        }
+
+        return orderList;
+    }
 }

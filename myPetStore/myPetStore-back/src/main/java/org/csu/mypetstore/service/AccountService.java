@@ -12,6 +12,10 @@ import org.springframework.ui.Model;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+<<<<<<< HEAD
+=======
+import javax.xml.stream.XMLStreamReader;
+>>>>>>> 修改错误，添加部分管理端逻辑
 import java.util.List;
 import java.util.Map;
 
@@ -234,6 +238,13 @@ public class AccountService {
         return accountMapper.getAccountList();
     }
 
+    /**
+     * @获取所有用户列表
+     * @返回所有用户的Account列表
+     */
+    public List<Account> getAccountList(){
+        return accountMapper.getAccountList();
+    }
     /**
      *
      * @更新密码

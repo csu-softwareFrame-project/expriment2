@@ -29,6 +29,7 @@
                   <table class="table table-borderless table-striped table-earning" id="account_table">
                     <thead>
                     <tr>
+                      <th class="text-right" v-if="isEdit">del</th>
                       <th>username</th>
                       <th>email</th>
                       <th>first name</th>
@@ -40,35 +41,40 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                      <td class="text-left">{{username}}</td>
-                      <td class="text-left">Software1801@csu.cn</td>
-                      <td class="text-left">a</td>
-                      <td class="text-left">a</td>
-                      <td class="text-right">CS</td>
-                      <td class="text-right">CN</td>
-                      <td class="text-right">211241231</td>
-                      <td class="text-right"><a @click="openMask">...</a></td>
-                      <td class="text-right" v-if="isEdit"><input type="checkbox" v-bind:value="username" name="listOption" v-model="checkVal"/></td>
+<!--                    <tr>-->
+<!--                      <td class="text-left">master</td>-->
+<!--                      <td class="text-left">Software1801@csu.cn</td>-->
+<!--                      <td class="text-left">a</td>-->
+<!--                      <td class="text-left">a</td>-->
+<!--                      <td class="text-right">CS</td>-->
+<!--                      <td class="text-right">CN</td>-->
+<!--                      <td class="text-right">211241231</td>-->
+<!--                      <td class="text-right"><a @click="openMask">...</a></td>-->
+<!--                      <td class="text-right" v-if="isEdit"><input type="checkbox" value="2" name="listOption" v-model="checkVal"/></td>-->
+<!--                    </tr>-->
+                    <tr v-if="accountList!=null &&accountList.length >0" v-for="account in accountList">
+                      <td class="text-right" v-if="isEdit">
+                        <input type="checkbox" name="listOption" v-bind:id="account.username" v-on:change="selectDelete($event)"/>
+                      </td>
+                      <td class="text-left" v-bind:name="account.username">{{account.username}}</td>
+                      <td class="text-left" v-bind:name="account.email">{{account.email}}</td>
+                      <td class="text-left" v-bind:name="account.firstName">{{account.firstName}}</td>
+                      <td class="text-left" v-bind:name="account.lastName">{{account.lastName}}</td>
+                      <td class="text-right" v-bind:name="account.city">{{account.city}}</td>
+                      <td class="text-right" v-bind:name="account.country">{{account.country}}</td>
+                      <td class="text-right" v-bind:name="account.phone">{{account.phone}}</td>
+                      <td class="text-right" ><a v-bind:name="account.username" v-on:click="openMask($event)">...</a></td>
                     </tr>
-                    <tr>
-                      <td class="text-left">master</td>
-                      <td class="text-left">Software1801@csu.cn</td>
-                      <td class="text-left">a</td>
-                      <td class="text-left">a</td>
-                      <td class="text-right">CS</td>
-                      <td class="text-right">CN</td>
-                      <td class="text-right">211241231</td>
-                      <td class="text-right"><a @click="openMask">...</a></td>
-                      <td class="text-right" v-if="isEdit"><input type="checkbox" value="2" name="listOption" v-model="checkVal"/></td>
-                    </tr>
+                    <tr v-if="accountList=== null || accountList.length <= 0"> 你的网站似乎没有用户... </tr>
                     </tbody>
                   </table>
                 </div>
-                <button class="au-btn au-btn-icon au-btn--blue" id="delete_button" @click="deleteAccount" v-if="isEdit">
+                <button class="au-btn au-btn-icon au-btn--blue" id="delete_button" v-on:click="deleteAccount" v-if="isEdit">
                   <i class="zmdi zmdi-delete"></i>delete</button>
-                <button @click="editAccounts" class="au-btn au-btn-icon au-btn--blue" id="edit_button">
-                  <i class="zmdi zmdi-edit"></i>edit account</button>
+                <button v-on:click="editAccounts" class="au-btn au-btn-icon au-btn--blue"
+                        id="edit_button" v-html="button1">
+                </button>
+
                 <!--弹窗-->
                 <popupwin :show="show" :title="titlewin" @hideModal="hideModal" @submit="submit">
                   <label for="firstName">First name: &nbsp;
@@ -149,9 +155,11 @@ export default {
   },
   data () {
     return {
+      button1: '<i class="zmdi zmdi-edit"></i>edit account',
+      accountList: null,
       keyword: '',
       username: 'master', // 示例使用变量
-      checkVal: [],
+      deleteAccount: [],
       isEdit: false,
       titlewin: 'user details', // 弹窗控制数据
       show: false,
@@ -191,31 +199,70 @@ export default {
       // 确认弹窗回调
       this.show = false
     },
-    openMask () {
+    openMask (e) {
+      let acc = e.currentTarget.name;
+      console.log(acc)
       // 打开弹窗
+      for(let i=0; i<this.accountList.length; i++){
+          if(acc === this.accountList[i].username){
+              this.editForm.account = this.accountList[i];
+              this.editForm.languagePreference = this.editForm.account.languagePreference;
+              this.editForm.favouriteCategoryId = this.editForm.account.favouriteCategoryId;
+              this.editForm.listOption = this.editForm.account.listOption;
+              this.editForm.bannerOption = this.editForm.account.bannerOption;
+              this.editForm.firstName = this.editForm.account.firstName;
+              this.editForm.lastName = this.editForm.account.lastName;
+              this.editForm.email = this.editForm.account.email;
+              this.editForm.phone = this.editForm.account.phone;
+              this.editForm.address1 = this.editForm.account.address1;
+              this.editForm.address2 = this.editForm.account.address2;
+              this.editForm.city = this.editForm.account.city;
+              this.editForm.state = this.editForm.account.state;
+              this.editForm.zip = this.editForm.account.zip;
+              this.editForm.country = this.editForm.account.country;
+              break
+          }
+      }
       this.show = true
     },
     addAccount () {
       alert('add')// 待修改
     },
     deleteAccount () {
-      alert(this.checkVal)// 待添加方法
+      alert("本次删除账户:"+this.deleteAccount)// 待添加方法
+    },
+    selectDelete(e){
+        // console.log(e.target.checked)
+        let username = e.currentTarget.id
+        if (e.target.checked){
+            // console.log(e.currentTarget.id)
+            this.deleteAccount.push(username)
+            // console.log("添加后:"+this.deleteAccount)
+        }else{
+            for(let i=0;i<this.deleteAccount.length;i++){
+                if(this.deleteAccount[i] === username) this.deleteAccount.splice(i,1)
+            }
+            // console.log("移出后:"+this.deleteAccount)
+        }
     },
     editAccounts () {
-      var button = document.getElementById('edit_button')
-      var table = document.getElementById('account_table')
-      var editRow = table.childNodes.item(0).childNodes.item(0)
-      // var children = table.childNodes.item(2).childNodes
-      var html1 = '<th class="text-right">del</th>'
       if (!this.isEdit) {
-        editRow.innerHTML += html1
-        button.innerHTML = '<i class="zmdi zmdi-check"></i>complete'
+          this.button1 = '<i class="zmdi zmdi-check"></i>complete'
       } else {
-        editRow.innerHTML = editRow.innerHTML.replace(html1, '')
-        button.innerHTML = '<i class="zmdi zmdi-edit"></i>edit account'
+          this.button1  = '<i class="zmdi zmdi-edit"></i>edit account'
       }
       this.isEdit = !this.isEdit
+    },
+    getData(){
+        this.axios.get('/management/accounts',{
+          params:{}
+        }).then(res =>{
+            this.accountList = res.data.result.accountList;
+        })
     }
+  },
+  created() {
+      this.getData();
   }
 }
 </script>
