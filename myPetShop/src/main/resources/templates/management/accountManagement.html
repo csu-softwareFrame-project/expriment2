@@ -1,10 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Management</title>
 </head>
 <body>
-用户管理界面
+<div th:replace="common/manage_top">
+
+</div>
+
+<div id="templatemo_slider">
+    <!-- This is the container for the carousel. -->
+    <div id = "carousel1">
+        <!-- All ../images with class of "cloudcarousel" will be turned into carousel items -->
+        <!-- You can place links around these ../images -->
+        <a href="/management/accountManagement" rel="lightbox">用户管理</a>
+        <a href="/management/categoryManagement" rel="lightbox">品类管理</a>
+        <a href="/management/productManagement" rel="lightbox">产品管理</a>
+        <a href="/management/itemManagement" rel="lightbox">商品管理</a>
+        <a href="/management/orderManagement" rel="lightbox">订单管理</a>
+    </div>
+</div>
+
+<div th:replace="common/manage_bottom">
+
+</div>
 </body>
 </html>
