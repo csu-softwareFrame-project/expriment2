@@ -9,7 +9,7 @@ import javax.annotation.PreDestroy;
 
 /**
  * @Author:高益基
- * @Description:销毁钩子函数，清空redisDB。
+ * @Description:destroy钩子函数，清空redisDB。
  */
 @Component
 public class backDestroy {

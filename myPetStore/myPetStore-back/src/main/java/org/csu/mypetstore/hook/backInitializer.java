@@ -21,6 +21,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @Author:高益基
+ * @Description:creat钩子函数，清空redisDB。
+ */
 @Configuration
 public class backInitializer {
     @Autowired
