@@ -377,4 +377,10 @@ class DemoApplicationTests {
         String password = "666";
         accountService.updatePassword(username,password);
     }
+
+    @Test
+    void testAccountRemove(){
+        String username = "hahaha";
+        accountService.removeAccount(username);
+    }
 }

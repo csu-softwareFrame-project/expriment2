@@ -296,4 +296,10 @@ public class AccountService {
         String passwordEnc = passwordEncoder.encode(password);
         accountMapper.updatePassword(username,passwordEnc);
     }
+
+    public void removeAccount(String username){
+        accountMapper.removeAccount(username);
+        accountMapper.removeProfile(username);
+        accountMapper.removeSignon(username);
+    }
 }

@@ -139,4 +139,19 @@
         PASSWORD = #{password}
         WHERE USERNAME = #{username}
     </update>
+
+    <delete id="removeAccount" parameterType="string">
+        DELETE FROM ACCOUNT
+        WHERE USERID = #{username}
+    </delete>
+
+    <delete id="removeProfile" parameterType="string">
+        DELETE FROM PROFILE
+        WHERE USERID = #{username}
+    </delete>
+
+    <delete id="removeSignon" parameterType="string">
+        DELETE FROM SIGNON
+        WHERE USERNAME = #{username}
+    </delete>
 </mapper>
