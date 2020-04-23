@@ -1,5 +1,7 @@
 package org.csu.mypetstore.domain;
 
+import org.junit.Test;
+
 import java.io.Serializable;
 
 public class Product implements Serializable {
@@ -43,13 +45,30 @@ public class Product implements Serializable {
   }
 
   public String toString() {
-    String info = new String();
-    info = getCategoryId();
-    info = info + '\n' + getName();
-    info = info + '\n' + getDescription();
-    info = info + '\n' + getProductId();
-
+    String info = "{";
+    info += "\"productId\":"+"\""+getProductId()+"\",";
+    info += "\"categoryId\":" +"\""+getCategoryId()+"\",";
+    info += "\"name\":"+"\""+getName()+"\",";
+    info += "\"description\":"+"\""+getDescription()+"\"}";
     return info;
+  }
+
+  public String toString2(){
+    String info = ",";
+//    info += "\"productId\":"+"\""+getProductId()+"\",";
+    info += "\"categoryId\":" +"\""+getCategoryId()+"\",";
+    info += "\"name\":"+"\""+getName()+"\",";
+    info += "\"description\":"+"\""+getDescription()+"\",";
+    return info;
+  }
+
+  @Test
+  public void test(){
+    productId = "1";
+    categoryId = "2";
+    name = "3";
+    description = "sadfa";
+    System.out.println(toString2());
   }
 
 }

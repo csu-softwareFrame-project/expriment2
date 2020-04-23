@@ -33,14 +33,9 @@ public class CatalogController {
     //product目录跳转
     @GetMapping("/products")
     public ReturnPack viewProduct(HttpServletRequest httpServletRequest,@RequestParam String productId){
-//        String username =  httpServletRequest.getHeader("UserName");
         JSONObject data = new JSONObject();
         Product product = catalogService.getProduct(productId);
         List<Item> itemList = catalogService.getItemListByProductId(productId);
-//        if(username != null && username != "") {
-//            String token = JwtUtil.generate(username);
-//            data.put("token",token);
-//        }
         data.put("product", product);
         data.put("itemList", itemList);
         return ReturnPack.success(data);
@@ -49,14 +44,8 @@ public class CatalogController {
     //Item目录跳转
     @GetMapping("/items")
     public ReturnPack viewItem(HttpServletRequest httpServletRequest,@RequestParam String itemId){
-//        String username =  httpServletRequest.getHeader("UserName");
         JSONObject data = new JSONObject();
-        System.out.println("a");
         Item item = catalogService.getItem(itemId);
-//        if(username != null && username != "") {
-//            String token = JwtUtil.generate(username);
-//            data.put("token",token);
-//        }
         data.put("item", item);
         return ReturnPack.success(data);
     }
