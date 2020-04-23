@@ -20,6 +20,7 @@
           ACCOUNT.ZIP,
           ACCOUNT.COUNTRY,
           ACCOUNT.PHONE,
+          ACCOUNT.TYPE,
           PROFILE.LANGPREF AS languagePreference,
           PROFILE.FAVCATEGORY AS favouriteCategoryId,
           PROFILE.MYLISTOPT AS listOption,
@@ -31,6 +32,32 @@
       AND PROFILE.USERID = ACCOUNT.USERID
       AND PROFILE.FAVCATEGORY = BANNERDATA.FAVCATEGORY
   </select>
+
+    <select id="getAccountList" resultType="Account">
+    SELECT
+          SIGNON.USERNAME,
+          ACCOUNT.EMAIL,
+          ACCOUNT.FIRSTNAME,
+          ACCOUNT.LASTNAME,
+          ACCOUNT.STATUS,
+          ACCOUNT.ADDR1 AS address1,
+          ACCOUNT.ADDR2 AS address2,
+          ACCOUNT.CITY,
+          ACCOUNT.STATE,
+          ACCOUNT.ZIP,
+          ACCOUNT.COUNTRY,
+          ACCOUNT.PHONE,
+          ACCOUNT.TYPE,
+          PROFILE.LANGPREF AS languagePreference,
+          PROFILE.FAVCATEGORY AS favouriteCategoryId,
+          PROFILE.MYLISTOPT AS listOption,
+          PROFILE.BANNEROPT AS bannerOption,
+          BANNERDATA.BANNERNAME
+    FROM ACCOUNT, PROFILE, SIGNON, BANNERDATA
+    WHERE SIGNON.USERNAME = ACCOUNT.USERID
+      AND PROFILE.USERID = ACCOUNT.USERID
+      AND PROFILE.FAVCATEGORY = BANNERDATA.FAVCATEGORY
+    </select>
 
     <select id="getAccountByUsernameAndPassword" parameterType="Account" resultType="Account">
     SELECT
@@ -46,6 +73,7 @@
       ACCOUNT.ZIP,
       ACCOUNT.COUNTRY,
       ACCOUNT.PHONE,
+      ACCOUNT.TYPE,
       PROFILE.LANGPREF AS languagePreference,
       PROFILE.FAVCATEGORY AS favouriteCategoryId,
       PROFILE.MYLISTOPT AS listOption,
@@ -77,9 +105,9 @@
 
     <insert id="insertAccount" parameterType="Account">
     INSERT INTO ACCOUNT
-      (EMAIL, FIRSTNAME, LASTNAME, STATUS, ADDR1, ADDR2, CITY, STATE, ZIP, COUNTRY, PHONE, USERID)
+      (EMAIL, FIRSTNAME, LASTNAME, STATUS, ADDR1, ADDR2, CITY, STATE, ZIP, COUNTRY, PHONE, USERID,TYPE)
     VALUES
-      (#{email}, #{firstName}, #{lastName}, #{status}, #{address1},  #{address2,jdbcType=VARCHAR}, #{city}, #{state}, #{zip}, #{country}, #{phone}, #{username})
+      (#{email}, #{firstName}, #{lastName}, #{status}, #{address1},  #{address2,jdbcType=VARCHAR}, #{city}, #{state}, #{zip}, #{country}, #{phone}, #{username},#{type})
   </insert>
 
     <update id="updateProfile" parameterType="Account">

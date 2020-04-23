@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.csu.mypetstore.persistence.OrderMapper">
-    <select id="getOrder" resultType="Order" parameterType="int">
+  <select id="getOrder" resultType="Order" parameterType="Integer">
     select
       BILLADDR1 AS billAddress1,
       BILLADDR2 AS billAddress2,
@@ -35,7 +35,7 @@
       AND ORDERS.ORDERID = ORDERSTATUS.ORDERID
   </select>
 
-    <select id="getOrdersByUsername" parameterType="string" resultType="Order">
+  <select id="getOrdersByUsername" parameterType="string" resultType="Order">
     SELECT
       BILLADDR1 AS billAddress1,
       BILLADDR2 AS billAddress2,
@@ -69,13 +69,13 @@
     ORDER BY ORDERDATE
   </select>
 
-  <select id="getOrderItemQuantity" resultType="int">
+  <select id="getOrderItemQuantity" resultType="Integer">
     SELECT QUANTITY
     FROM LINEITEM
     WHERE ORDERID = #{orderId} AND ITEMID = #{itemId}
   </select>
 
-    <insert id="insertOrder" parameterType="Order">
+  <insert id="insertOrder" parameterType="Order">
     INSERT INTO ORDERS (ORDERID, USERID, ORDERDATE, SHIPADDR1, SHIPADDR2, SHIPCITY, SHIPSTATE,
       SHIPZIP, SHIPCOUNTRY, BILLADDR1, BILLADDR2, BILLCITY, BILLSTATE, BILLZIP, BILLCOUNTRY,
       COURIER, TOTALPRICE, BILLTOFIRSTNAME, BILLTOLASTNAME, SHIPTOFIRSTNAME, SHIPTOLASTNAME,
@@ -86,8 +86,93 @@
       #{shipToFirstName}, #{shipToLastName}, #{creditCard}, #{expiryDate}, #{cardType}, #{locale})
   </insert>
 
-    <insert id="insertOrderStatus" parameterType="Order">
+  <insert id="insertOrderStatus" parameterType="Order">
     INSERT INTO ORDERSTATUS (ORDERID, LINENUM, TIMESTAMP, STATUS)
     VALUES (#{orderId,jdbcType=NUMERIC}, #{orderId,jdbcType=NUMERIC}, #{orderDate,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR})
   </insert>
+
+  <update id="updateOrder" parameterType="Order">
+    UPDATE ORDERS SET
+        USERID = #{username},
+        ORDERDATE = #{orderDate},
+        SHIPADDR1 = #{shipAddress1},
+        SHIPADDR2 = #{shipAddress2,jdbcType=VARCHAR},
+        SHIPCITY = #{shipCity},
+        SHIPSTATE = #{shipState},
+        SHIPZIP = #{shipZip},
+        SHIPCOUNTRY = #{shipCountry},
+        BILLADDR1 = #{billAddress1},
+        BILLADDR2 = #{billAddress2,jdbcType=VARCHAR},
+        BILLCITY = #{billCity},
+        BILLSTATE = #{billState},
+        BILLZIP = #{billZip},
+        BILLCOUNTRY = #{billCountry},
+        COURIER = #{courier},
+        TOTALPRICE = #{totalPrice},
+        BILLTOFIRSTNAME = #{billToFirstName},
+        SHIPTOFIRSTNAME = #{shipToFirstName},
+        SHIPTOLASTNAME = #{shipToLastName},
+        CREDITCARD = #{creditCard},
+        EXPRDATE = #{expiryDate},
+        CARDTYPE = #{cardType},
+        LOCALE = #{locale}
+    WHERE ORDERID = #{orderId}
+  </update>
+
+  <update id="updateOrderStatus" parameterType="Order">
+    UPDATE ORDERSTATUS SET
+        TIMESTAMP = #{orderDate,jdbcType=TIMESTAMP},
+        STATUS = #{status,jdbcType=VARCHAR}
+    WHERE ORDERID = #{orderId,jdbcType=NUMERIC}
+  </update>
+
+  <delete id="removeOrder" parameterType="Integer">
+    DELETE FROM ORDERS
+    WHERE ORDERID = #{orderId}
+  </delete>
+
+  <delete id="removeOrderStatus" parameterType="Integer">
+    DELETE FROM ORDERSTATUS
+    WHERE ORDERID = #{orderId}
+  </delete>
+
+  <update id="sendOrder" parameterType="Integer">
+        UPDATE ORDERSTATUS SET
+            STATUS = #{status}
+        WHERE ORDERID = #{orderId}
+    </update>
+
+  <select id="getOrdersByStatus" parameterType="Integer" resultType="Order">
+    SELECT
+      BILLADDR1 AS billAddress1,
+      BILLADDR2 AS billAddress2,
+      BILLCITY,
+      BILLCOUNTRY,
+      BILLSTATE,
+      BILLTOFIRSTNAME,
+      BILLTOLASTNAME,
+      BILLZIP,
+      SHIPADDR1 AS shipAddress1,
+      SHIPADDR2 AS shipAddress2,
+      SHIPCITY,
+      SHIPCOUNTRY,
+      SHIPSTATE,
+      SHIPTOFIRSTNAME,
+      SHIPTOLASTNAME,
+      SHIPZIP,
+      CARDTYPE,
+      COURIER,
+      CREDITCARD,
+      EXPRDATE AS expiryDate,
+      LOCALE,
+      ORDERDATE,
+      ORDERS.ORDERID,
+      TOTALPRICE,
+      USERID AS username,
+      STATUS
+    FROM ORDERS, ORDERSTATUS
+    WHERE STATUS = #{status}
+      AND ORDERS.ORDERID = ORDERSTATUS.ORDERID
+    ORDER BY ORDERDATE
+  </select>
 </mapper>

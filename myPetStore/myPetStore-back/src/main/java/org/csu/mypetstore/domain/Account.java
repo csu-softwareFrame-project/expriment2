@@ -31,6 +31,7 @@ public class Account implements Serializable {
     private String listOption;
     private String bannerOption;
     private String bannerName;
+    private int type;
 
     public void duplicate(Account account){
         username = account.getUsername();
@@ -53,7 +54,7 @@ public class Account implements Serializable {
         listOption = account.getListOption();
         bannerOption = account.getBannerOption();
         bannerName = account.getBannerName();
-
+        type = account.getType();
     }
 
     public String getUsername() {
@@ -181,7 +182,7 @@ public class Account implements Serializable {
     }
 
     public void setBooleanListOption(boolean listOption) {
-        this.booleanListOption = listOption;
+        this.booleanBannerOption = listOption;
     }
 
     public boolean isBooleanBannerOption() {
@@ -216,6 +217,14 @@ public class Account implements Serializable {
         this.bannerOption = bannerOption;
     }
 
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
     public String toString()
     {
         String info = new String();
@@ -237,6 +246,7 @@ public class Account implements Serializable {
         info = info + '\n' + getListOption();
         info = info + '\n' + getBannerOption();
         info = info + '\n' + getBannerName();
+        info = info + '\n' + getType();
 
         return info;
     }

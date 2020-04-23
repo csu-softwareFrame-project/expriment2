@@ -42,11 +42,18 @@ public class UserAccessController {
         System.out.println(username);
         System.out.println(password);
         System.out.println(email);
-        if(accountService.userAccessService(username, password,checkCode,session,map, model)){
+        if(accountService.userAccessService(username, password,checkCode,session,map, model) == 1){
             session.removeAttribute("checkCode");
             System.out.println("登录成功");
+
             return "redirect:/main/view_main";
-        }else {
+        }else if(accountService.userAccessService(username, password,checkCode,session,map, model) == 2){
+            session.removeAttribute("checkCode");
+            System.out.println("登录成功");
+
+            return "management/mainPage";
+        }
+        else {
             session.removeAttribute("checkCode");
             System.out.println("登录失败");
             return "account/signonForm";

@@ -1,5 +1,6 @@
 package org.csu.mypetstore.persistence;
 
+import org.apache.ibatis.annotations.Param;
 import org.csu.mypetstore.domain.Account;
 import org.springframework.stereotype.Repository;
 
@@ -27,4 +28,6 @@ public interface AccountMapper {
     void updateSignon(Account account);
 
     List<Account> getAccountList();
+
+    void updatePassword(@Param("username") String username, @Param("password") String password);
 }

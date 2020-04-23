@@ -39,6 +39,7 @@ public class AccountService {
 
     public void insertAccount(Account account) {  //使用时注意填写信息要完整，不然可能出现前面一个表插入以后后面的表插入失败，这样子再次插入时会提示用户已存在
         if(account.getBannerOption() == null) account.setFavouriteCategoryId("NOBANNER");//默认NOBANNER
+        account.setType(0);
         accountMapper.insertAccount(account);
         accountMapper.insertProfile(account);
         accountMapper.insertSignon(account);
@@ -57,7 +58,7 @@ public class AccountService {
         return accountMapper.getPasswordByUsername(username);
     }
 
-    public boolean userAccessService(String username, String password, String checkCode, HttpSession session, Map<String,Object> map, Model model){
+    public int userAccessService(String username, String password, String checkCode, HttpSession session, Map<String,Object> map, Model model){
         String pswd = accountMapper.getPasswordByUsername(username);
         if(pswd == null){
             if(Constants.DEBUG_MODE&&Constants.DEBUG_CONTROLLER)System.out.println("用户名不存在");
@@ -69,33 +70,40 @@ public class AccountService {
             if(checkCode != null && right != null){
                 if(right.isEmpty()){
                     map.put("msg","请获取邮箱验证码");
-                    return false;
+                    return 0;
                 }
                 if(checkCode.isEmpty()){
                     map.put("msg","请输入收到的邮箱验证码");
-                    return false;
+                    return 0;
                 }
                 if(!right.equals(checkCode) && Constants.EMAIL_VERIFY){
                     map.put("msg","邮箱验证码错误");
-                    return false;
+                    return 0;
                 }
             }else if(checkCode == null){
                 map.put("msg","请输入验证码");
-                return false;
+                return 0;
             }else if(right == null){
                 map.put("msg","验证码发送失败，请检查您的网络情况");
-                return false;
+                return 0;
             }
             if(Constants.DEBUG_MODE&&Constants.DEBUG_CONTROLLER)System.out.println("登录成功");
             Account account = getAccount(username);
             model.addAttribute("loginUser",account);//登录成功把用户信息放进session
             System.out.println(username+"  "+account);
-            return true;
+            if(account.getType() == 0)
+            {
+                return 1;
+            }
+            else
+            {
+                return 2;
+            }
         }else {
             if(Constants.DEBUG_MODE&&Constants.DEBUG_CONTROLLER)System.out.println("用户名或密码错误");
             map.put("msg","用户名或密码错误");
         }
-        return false;
+        return 0;
     }
 
     public boolean signUpservice(Account account,String repeatedPassword, Map<String,Object> map){
@@ -224,5 +232,16 @@ public class AccountService {
      */
     public List<Account> getAccountList(){
         return accountMapper.getAccountList();
+    }
+
+    /**
+     *
+     * @更新密码
+     * @参数1：用户名
+     * @参数2：密码
+     */
+    public void updatePassword(String username,String password){
+        String passwordEnc = passwordEncoder.encode(password);
+        accountMapper.updatePassword(username,passwordEnc);
     }
 }

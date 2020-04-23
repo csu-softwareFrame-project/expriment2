@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.csu.mypetstore.persistence.ItemMapper">
-    <select id="getItemListByProduct" parameterType="string" resultType="Item">
+  <select id="getItemListByProduct" parameterType="string" resultType="Item">
     SELECT
       I.ITEMID,
       LISTPRICE,
@@ -25,13 +25,13 @@
     AND I.PRODUCTID = #{value}
   </select>
 
-  <select id="getOrderQuantity" parameterType="string" resultType="int">
+  <select id="getOrderQuantity" parameterType="string" resultType="Integer">
     SELECT QUANTITY
     FROM LINEITEM
     WHERE
   </select>
 
-    <select id="getItem" parameterType="string" resultType="Item">
+  <select id="getItem" parameterType="string" resultType="Item">
     select
       I.ITEMID,
       LISTPRICE,
@@ -54,16 +54,63 @@
       and I.ITEMID = #{value}
   </select>
 
-    <update id="updateInventoryQuantity">
+  <update id="updateInventoryQuantity">
     UPDATE INVENTORY SET
       QTY = QTY - #{increment}
     WHERE ITEMID = #{itemId}
   </update>
 
-  <select id="getInventoryQuantity" parameterType="string" resultType="int">
+  <select id="getInventoryQuantity" parameterType="string" resultType="Integer">
     SELECT QTY AS value
     FROM INVENTORY
     WHERE ITEMID = #{itemId}
   </select>
+
+  <insert id="insertItem" parameterType="Item">
+    INSERT INTO ITEM
+        (ITEMID,PRODUCTID,LISTPRICE,UNITCOST,SUPPLIER,STATUS,ATTR1,ATTR2,ATTR3,ATTR4,ATTR5)
+    VALUES
+        (#{itemId},#{productId},#{listPrice},#{unitCost},#{supplierId},#{status},#{attribute1},#{attribute2},#{attribute3},#{attribute4},#{attribute5})
+  </insert>
+
+  <insert id="insertQuantity" parameterType="Item">
+    INSERT INTO INVENTORY
+        (ITEMID,QTY)
+    VALUES
+        (#{itemId},#{quantity})
+  </insert>
+
+  <delete id="removeItem" parameterType="string">
+    DELETE FROM ITEM
+    WHERE ITEMID = #{itemId}
+  </delete>
+
+  <delete id="removeQuantity" parameterType="string">
+    DELETE FROM INVENTORY
+    WHERE ITEMID = #{itemId}
+  </delete>
+
+  <update id="updateItem">
+    UPDATE ITEM SET
+        ITEMID = #{item.itemId},
+        PRODUCTID = #{item.productId},
+        LISTPRICE = #{item.listPrice},
+        UNITCOST = #{item.unitCost},
+        SUPPLIER = #{item.supplierId},
+        STATUS = #{item.status},
+        ATTR1 = #{item.attribute1},
+        ATTR2 = #{item.attribute2},
+        ATTR3 = #{item.attribute3},
+        ATTR4 = #{item.attribute4},
+        ATTR5 = #{item.attribute5}
+    WHERE ITEMID = #{oldId}
+  </update>
+
+  <update id="updateQuantity">
+    UPDATE INVENTORY SET
+        ITEMID = #{item.itemId},
+        QTY = #{item.quantity}
+    WHERE ITEMID = #{oldId}
+  </update>
 
 </mapper>
