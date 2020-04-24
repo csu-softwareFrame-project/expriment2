@@ -11,7 +11,7 @@
                   <h2 class="title-1">Search</h2>
                   <!--搜索account-->
                   <form class="form-header">
-                    <input class="au-input au-input--xl" type="search" name="search" placeholder="Search for accounts" v-model="keyword"/>
+                    <input class="au-input au-input--xl" type="search" name="search" placeholder="Search for order" v-model="keyword"/>
                     <button class="au-btn--submit"  @click="search">
                       <i class="zmdi zmdi-search"></i>
                     </button>

@@ -17,7 +17,7 @@
                     </button>
                   </form>
                   <button class="au-btn au-btn-icon au-btn--blue" @click="addCategory">
-                    <i class="zmdi zmdi-plus"></i>add to product</button>
+                    <i class="zmdi zmdi-plus"></i>add product</button>
                 </div>
               </div>
             </div>
@@ -39,10 +39,12 @@
                     </thead>
                     <tbody>
                     <tr v-for="product in productList" v-if="productList != null">
-                      <td class="text-left"><router-link v-bind:to="'/management/item?productId='+product.productId" >{{product.productId}}</router-link></td>
-                      <td class="text-left">{{product.name}}</td>
+                      <td class="text-left"><router-link v-if="product != null" v-bind:to="'/management/item?productId='+product.productId" >{{product.productId}}</router-link></td>
+                      <td class="text-left" v-if="product != null">{{product.name}}</td>
                       <td class="text-left" @click="openMask">...</td>
-                      <td v-if="isEdit" class="text-right"><input type="checkbox" v-bind:value="product.productId" name="listOption" v-model="checkVal"/></td>
+                      <td v-if="isEdit" class="text-right">
+                        <input type="checkbox" v-if="product != null" v-bind:value="product.productId" name="listOption" v-model="checkVal"/>
+                      </td>
                     </tr>
                     </tbody>
                   </table>
@@ -107,11 +109,7 @@ export default {
       }).then(res => {
         this.productList = res.data.result.productList
         if (res.data.result.token != null) {
-          // 更新token
-          // 更新token
           if (typeof (res.data.result.token) !== 'undefined') {
-            // console.log("更新了token:         "+res.data.result.token);
-            // console.log("更新了failToken:     "+res.data.result.failToken)
             this.$store.commit('changeLogin', { Authorization: res.data.result.token })
             this.$store.commit('changeFail', {failToken: res.data.result.failToken})
           }

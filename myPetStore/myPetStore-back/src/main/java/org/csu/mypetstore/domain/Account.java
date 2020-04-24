@@ -182,7 +182,7 @@ public class Account implements Serializable {
     }
 
     public void setBooleanListOption(boolean listOption) {
-        this.booleanBannerOption = listOption;
+        this.booleanListOption = listOption;
     }
 
     public boolean isBooleanBannerOption() {
@@ -227,26 +227,26 @@ public class Account implements Serializable {
 
     public String toString()
     {
-        String info = new String();
-        info = getUsername();
-        info = info + '\n' + getPassword();
-        info = info + '\n' + getEmail();
-        info = info + '\n' + getFirstName();
-        info = info + '\n' + getLastName();
-        info = info + '\n' + getStatus();
-        info = info + '\n' + getAddress1();
-        info = info + '\n' + getAddress2();
-        info = info + '\n' + getCity();
-        info = info + '\n' + getState();
-        info = info + '\n' + getZip();
-        info = info + '\n' + getCountry();
-        info = info + '\n' + getPhone();
-        info = info + '\n' + getFavouriteCategoryId();
-        info = info + '\n' + getLanguagePreference();
-        info = info + '\n' + getListOption();
-        info = info + '\n' + getBannerOption();
-        info = info + '\n' + getBannerName();
-        info = info + '\n' + getType();
+        String info = "";
+        info +=      "username : "+ getUsername();
+        info += '\n'+"password : " + getPassword();
+        info += '\n'+"email :"+ getEmail();
+        info += '\n'+"firstName : "+ getFirstName();
+        info += '\n'+"lastName : "+ getLastName();
+        info += '\n'+"status : "+ getStatus();
+        info += '\n'+"address1 : "+ getAddress1();
+        info += '\n'+"address2 : "+ getAddress2();
+        info += '\n'+"city : "+ getCity();
+        info += '\n'+"state : "+ getState();
+        info += '\n'+"zip : "+ getZip();
+        info += '\n'+"country : "+ getCountry();
+        info += '\n'+"phone : "+ getPhone();
+        info += '\n'+"favoriteCategoryId : "+ getFavouriteCategoryId();
+        info += '\n'+"languagePreference : "+ getLanguagePreference();
+        info += '\n'+"listOption : "+ getListOption();
+        info += '\n'+"bannerOption : "+ getBannerOption();
+        info += '\n'+"bannerName : "+ getBannerName();
+        info += '\n'+"type : "+ getType();
 
         return info;
     }

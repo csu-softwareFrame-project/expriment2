@@ -37,7 +37,7 @@ public class webConfig extends WebMvcConfigurerAdapter {
                 //拦截所有数据请求，检查token有效性
                 registry.addInterceptor(new AuthenticationInterceptor()).addPathPatterns("/**")
                         .excludePathPatterns("/users","/categories","/products","/items","/results","/newTokens"
-                                ,"/mail/getCheckCode","/management/*");
+                                ,"/mail/getCheckCode","/management/*","/accounts/*");
             }
         };
         return adapter;

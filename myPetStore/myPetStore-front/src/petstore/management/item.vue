@@ -17,7 +17,7 @@
                     </button>
                   </form>
                   <button class="au-btn au-btn-icon au-btn--blue" @click="addCategory">
-                    <i class="zmdi zmdi-plus"></i>add to item</button>
+                    <i class="zmdi zmdi-plus"></i>add item</button>
                 </div>
               </div>
             </div>
@@ -25,7 +25,7 @@
             <div class="row">
               <div class="col-lg-9">
                 <!--待完善路径-->
-                <div align="left"><router-link v-bind:to="'/management/product?categoryId='+product.categoryId"><i class="zmdi zmdi-arrow-back"></i>&nbsp;return</router-link></div>
+                <div align="left"><router-link v-if="product != null" v-bind:to="'/management/product?categoryId='+product.categoryId"><i class="zmdi zmdi-arrow-back"></i>&nbsp;return</router-link></div>
                 <!--{{product.name}}-->
                 <h2 class="title-1 m-b-25">test-a</h2>
                 <div class="table-responsive table--no-card m-b-55">

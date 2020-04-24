@@ -216,66 +216,31 @@ public class AccountService {
         }
     }
 
-    public ReturnPack editAccountService(HttpServletRequest httpServletRequest,Account account){
-        String username =  httpServletRequest.getHeader("UserName");
-        boolean success = true;
+    public ReturnPack editAccountService(HttpServletRequest httpServletRequest,Account account) {
+        String username = httpServletRequest.getHeader("UserName");
         JSONObject data;
-        if(httpServletRequest.getAttribute("data")!=null) data = (JSONObject) httpServletRequest.getAttribute("data");
-        else  {
-            data = new JSONObject();
-//            String token = JwtUtil.generate(username);
-//            data.put("token",token);
+        if (httpServletRequest.getAttribute("data") != null)
+            data = (JSONObject) httpServletRequest.getAttribute("data");
+        else data = new JSONObject();
+        System.out.println(account.getListOption()+"asmdkfnasklfdjasl    "+account.getListOption().equals("true"));
+        if (account.getListOption().equals("true")) account.setBooleanListOption(true);
+        else account.setBooleanListOption(false);
+        if (account.getBannerOption().equals("true")) account.setBooleanBannerOption(true);
+        else account.setBooleanBannerOption(false);
+
+        if (account.getLanguagePreference() == null) {
+            account.setLanguagePreference("English");
+        } else if (account.getLanguagePreference().equals("")) {
+            account.setLanguagePreference("English");
         }
-//        //如果用户名为空，说明注册的逻辑有bug
-//        if(account.getUsername().equals("")){
-//            System.out.println("修改账户信息异常：userId为空");
-//            map.put("username_msg","账户信息异常");
-//            success =false;
-//        }
-//
-//        //密码不能修改为空
-//        if(account.getPassword().equals("")){
-//            System.out.println("密码不能为空");
-//            map.put("password_msg","密码不能为空");
-//            success = false;
-//        }
-//        //确认密码不能为空
-//        if(repeatedPassword.equals("")){
-//            System.out.println("重复密码不能为空");
-//            map.put("repeated_password_msg","重复密码不能为空");
-//            success = false;
-//        }
-//        //如果密码和确认密码不一致
-//        if(!account.getPassword().equals(repeatedPassword)){
-//            System.out.println("重复密码有误");
-//            map.put("repeated_password_msg","重复密码有误");
-//            success = false;
-//        }
+        System.out.println("listoption:"+account.getListOption()+"booleanList:"+account.isBooleanListOption());
+        System.out.println("bannero:"+account.getBannerOption()+"booleanBanner"+account.isBooleanBannerOption());
+//        System.out.println("修改后:" + account);
+        account.setUsername(username);
+        //将修改信息同步到数据库
+        updateAccount(account);
 
-        if(success) {
-            System.out.println("l:"+account.getListOption()+"  b:"+account.getBannerOption());
-            if (account.getListOption().equals("true")) account.setBooleanListOption(true);
-            else account.setBooleanListOption(false);
-            if(account.getBannerOption().equals("true")) account.setBooleanBannerOption(true);
-            else account.setBooleanBannerOption(false);
-            System.out.println("l:"+account.isBooleanListOption()+"  b:"+account.isBooleanBannerOption());
-
-            if(account.getLanguagePreference() == null){
-                account.setLanguagePreference("English");
-            }else if(account.getLanguagePreference().equals("")){
-                account.setLanguagePreference("English");
-            }
-
-            //加密
-//            String password = passwordEncoder.encode(account.getPassword());
-//            account.setPassword(password);
-            System.out.println("修改后:"+account);
-            account.setUsername(username);
-            //将修改信息同步到数据库
-            updateAccount(account);
-
-            data.put("account",account);
-        }
+        data.put("account", account);
         return ReturnPack.success(data);
     }
 

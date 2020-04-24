@@ -68,6 +68,7 @@ export default {
       }).then(res => {
         this.itemList = res.data.result.itemList
         this.product = res.data.result.product
+        //如果后台更新了token，这里也更新
         if (res.data.result.token != null) {
           // 更新token
           if (typeof (res.data.result.token) !== 'undefined') {

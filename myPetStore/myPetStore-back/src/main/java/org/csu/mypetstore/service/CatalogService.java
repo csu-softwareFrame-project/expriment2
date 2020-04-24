@@ -194,17 +194,20 @@ public class CatalogService {
             jedis.select(1);
             if(categoryId != ""){
 
-                System.out.println(jedis.hgetAll("category").size());
+//                System.out.println(jedis.hgetAll("category").size());
                 Category category = JSON.parseObject(jedis.hget("category",categoryId),Category.class);
                 Map<String,String> productMap = jedis.hgetAll("product");
                 List<Product> productList = new LinkedList<>();
                 for(String b:productMap.keySet()){
                     Product product = JSON.parseObject(productMap.get(b),Product.class);
-                    System.out.println(product);
+//                    System.out.println(product);
                     if(product.getCategoryId().equals(categoryId)) productList.add(product);
                 }
                 data.put("category", category);
                 data.put("productList", productList);
+                for(Product product:productList){
+                    System.out.println(product);
+                }
             }else {
                 Map<String,String> categoryMap = jedis.hgetAll("category");
                 List<Category> categoryList = new LinkedList<>();
