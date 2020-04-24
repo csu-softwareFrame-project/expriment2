@@ -12,4 +12,4 @@ target/
 # 忽略lib下生成文件
 
 #忽略application.properties
-./myPetShop/src/main/resources/application.properties
+myPetShop/src/main/resources/application.properties
