@@ -45,6 +45,21 @@ Vue.use(VueAxios, axios)
 Vue.use(VueCookies)
 // 设置axios的默认路径
 axios.defaults.baseURL = '/back'
+// 弹出框不可以滑动
+Vue.prototype.noScroll = function () {
+  var mo = function (e) { e.preventDefault() }
+  document.body.style.overflow = 'hidden'
+  document.addEventListener('touchmove', mo, false)// 禁止页面滑动
+}
+
+// 弹出框可以滑动
+Vue.prototype.canScroll = function () {
+  var mo = function (e) {
+    e.preventDefault()
+  }
+  document.body.style.overflow = ''// 出现滚动条
+  document.removeEventListener('touchmove', mo, false)
+}
 
 // 添加页面刷新的监听器
 // window.addEventListener('beforeunload',()=>{

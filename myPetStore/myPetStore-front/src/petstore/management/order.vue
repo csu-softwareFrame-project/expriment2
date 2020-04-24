@@ -112,6 +112,7 @@ export default {
       this.show = false
     },
     openMask () {
+      this.noScroll()
       this.show = true
     },
     addAccount () {

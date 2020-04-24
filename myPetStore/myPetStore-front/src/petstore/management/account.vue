@@ -161,7 +161,7 @@ export default {
   },
   data () {
     return {
-      time: 0,//计时器
+      time: 0, // 计时器
       showNotice: false,
       noticeMsg: '',
       button1: '<i class="zmdi zmdi-edit"></i>edit account',
@@ -195,9 +195,9 @@ export default {
     Manageframe,
     popupwin},
   methods: {
-    hideNotice(){
-        this.showNotice = false;
-        clearInterval(this.time);//暂停计时器
+    hideNotice () {
+      this.showNotice = false
+      clearInterval(this.time)// 暂停计时器
     },
     search () {
       alert('关键词： ' + this.keyword)
@@ -210,61 +210,62 @@ export default {
     },
     submit () {
       // 确认弹窗回调
-      this.show = false;
-      console.log(this.editForm.listOption);
+      this.show = false
+      console.log(this.editForm.listOption)
       let account = {
-            username: this.editForm.username,
-            languagePreference: this.editForm.languagePreference,
-            favouriteCategoryId: this.editForm.favouriteCategoryId,
-            listOption: this.editForm.listOption,
-            bannerOption: this.editForm.bannerOption,
-            firstName: this.editForm.firstName,
-            lastName: this.editForm.lastName,
-            email: this.editForm.email,
-            phone: this.editForm.phone,
-            address1: this.editForm.address1,
-            address2: this.editForm.address2,
-            city: this.editForm.city,
-            state: this.editForm.state,
-            zip: this.editForm.zip,
-            country: this.editForm.country,
-      };
-      this.axios.put('/management/accounts',account).then(res => {
-          if(res.data.status){
-              this.showNotice = true;
-              this.noticeMsg = "修改成功."
-              this.time=setInterval(this.hideNotice,1000);
-          }else {
-              this.showNotice = true;
-              this.noticeMsg = "服务器异常,修改失败"
-              this.time=setInterval(this.hideNotice,1000);
-          }
+        username: this.editForm.username,
+        languagePreference: this.editForm.languagePreference,
+        favouriteCategoryId: this.editForm.favouriteCategoryId,
+        listOption: this.editForm.listOption,
+        bannerOption: this.editForm.bannerOption,
+        firstName: this.editForm.firstName,
+        lastName: this.editForm.lastName,
+        email: this.editForm.email,
+        phone: this.editForm.phone,
+        address1: this.editForm.address1,
+        address2: this.editForm.address2,
+        city: this.editForm.city,
+        state: this.editForm.state,
+        zip: this.editForm.zip,
+        country: this.editForm.country
+      }
+      this.axios.put('/management/accounts', account).then(res => {
+        if (res.data.status) {
+          this.showNotice = true
+          this.noticeMsg = '修改成功.'
+          this.time = setInterval(this.hideNotice, 1000)
+        } else {
+          this.showNotice = true
+          this.noticeMsg = '服务器异常,修改失败'
+          this.time = setInterval(this.hideNotice, 1000)
+        }
       })
     },
     openMask (e) {
-      let acc = e.currentTarget.name;
+      this.noScroll()
+      let acc = e.currentTarget.name
       // console.log(acc)
       // 打开弹窗
-      for(let i=0; i<this.accountList.length; i++){
-          if(acc === this.accountList[i].username){
-              this.editForm.account = this.accountList[i];
-              this.editForm.username = this.editForm.account.username;
-              this.editForm.languagePreference = this.editForm.account.languagePreference;
-              this.editForm.favouriteCategoryId = this.editForm.account.favouriteCategoryId;
-              this.editForm.listOption = this.editForm.account.listOption;
-              this.editForm.bannerOption = this.editForm.account.bannerOption;
-              this.editForm.firstName = this.editForm.account.firstName;
-              this.editForm.lastName = this.editForm.account.lastName;
-              this.editForm.email = this.editForm.account.email;
-              this.editForm.phone = this.editForm.account.phone;
-              this.editForm.address1 = this.editForm.account.address1;
-              this.editForm.address2 = this.editForm.account.address2;
-              this.editForm.city = this.editForm.account.city;
-              this.editForm.state = this.editForm.account.state;
-              this.editForm.zip = this.editForm.account.zip;
-              this.editForm.country = this.editForm.account.country;
-              break
-          }
+      for (let i = 0; i < this.accountList.length; i++) {
+        if (acc === this.accountList[i].username) {
+          this.editForm.account = this.accountList[i]
+          this.editForm.username = this.editForm.account.username
+          this.editForm.languagePreference = this.editForm.account.languagePreference
+          this.editForm.favouriteCategoryId = this.editForm.account.favouriteCategoryId
+          this.editForm.listOption = this.editForm.account.listOption
+          this.editForm.bannerOption = this.editForm.account.bannerOption
+          this.editForm.firstName = this.editForm.account.firstName
+          this.editForm.lastName = this.editForm.account.lastName
+          this.editForm.email = this.editForm.account.email
+          this.editForm.phone = this.editForm.account.phone
+          this.editForm.address1 = this.editForm.account.address1
+          this.editForm.address2 = this.editForm.account.address2
+          this.editForm.city = this.editForm.account.city
+          this.editForm.state = this.editForm.account.state
+          this.editForm.zip = this.editForm.account.zip
+          this.editForm.country = this.editForm.account.country
+          break
+        }
       }
       this.show = true
     },
@@ -272,37 +273,37 @@ export default {
       alert('add')// 待修改
     },
     deleteAccount () {
-      alert("本次删除账户:"+this.deleteAccountList)// 待添加方法
+      alert('本次删除账户:' + this.deleteAccountList)// 待添加方法
     },
-    selectDelete(e){
-        let username = e.currentTarget.id
-        if (e.target.checked){
-            this.deleteAccountList.push(username)
-        }else{
-            for(let i=0;i<this.deleteAccountList.length;i++){
-                if(this.deleteAccountList[i] === username) this.deleteAccountList.splice(i,1)
-            }
-            // console.log("移出后:"+this.deleteAccount)
+    selectDelete (e) {
+      let username = e.currentTarget.id
+      if (e.target.checked) {
+        this.deleteAccountList.push(username)
+      } else {
+        for (let i = 0; i < this.deleteAccountList.length; i++) {
+          if (this.deleteAccountList[i] === username) this.deleteAccountList.splice(i, 1)
         }
+        // console.log("移出后:"+this.deleteAccount)
+      }
     },
     editAccounts () {
       if (!this.isEdit) {
-          this.button1 = '<i class="zmdi zmdi-check"></i>complete'
+        this.button1 = '<i class="zmdi zmdi-check"></i>complete'
       } else {
-          this.button1  = '<i class="zmdi zmdi-edit"></i>edit account'
+        this.button1 = '<i class="zmdi zmdi-edit"></i>edit account'
       }
       this.isEdit = !this.isEdit
     },
-    getData(){
-        this.axios.get('/management/accounts',{
-          params:{}
-        }).then(res =>{
-            this.accountList = res.data.result.accountList;
-        })
+    getData () {
+      this.axios.get('/management/accounts', {
+        params: {}
+      }).then(res => {
+        this.accountList = res.data.result.accountList
+      })
     }
   },
-  created() {
-      this.getData();
+  created () {
+    this.getData()
   }
 }
 </script>

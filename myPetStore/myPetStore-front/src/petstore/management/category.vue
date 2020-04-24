@@ -103,6 +103,7 @@ export default {
     },
     openMask () {
       // 打开弹窗
+      this.noScroll()
       this.show = true
     },
     getData () {
