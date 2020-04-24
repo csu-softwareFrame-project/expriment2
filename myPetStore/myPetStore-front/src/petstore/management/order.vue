@@ -16,7 +16,7 @@
                       <i class="zmdi zmdi-search"></i>
                     </button>
                   </form>
-                  <button class="au-btn au-btn-icon au-btn--blue" @click="addAccount">
+                  <button class="au-btn au-btn-icon au-btn--blue" @click="addOrder">
                     <i class="zmdi zmdi-plus"></i>add account</button>
                 </div>
               </div>
@@ -29,6 +29,7 @@
                   <table class="table table-borderless table-striped table-earning" id="account_table">
                     <thead>
                     <tr>
+                      <th v-if="isEdit">del</th>
                       <th>User ID</th>
                       <th>Order ID</th>
                       <th>Date</th>
@@ -38,20 +39,22 @@
                     </thead>
                     <tbody>
                     <tr>
+                      <td class="text-left" v-if="isEdit">
+                        <input type="checkbox" v-bind:value="username+'-test-1'" name="listOption" v-model="checkVal"/>
+                      </td>
                       <td class="text-left">{{username}}</td>
                       <td class="text-left">test-1</td>
                       <td class="text-left">2019-1-1</td>
                       <td class="text-left">118.00</td>
                       <td class="text-right"><a @click="openMask">...</a></td>
-                      <td class="text-right" v-if="isEdit"><input type="checkbox" v-bind:value="username+'-test-1'" name="listOption" v-model="checkVal"/></td>
                     </tr>
                     </tbody>
                   </table>
                 </div>
                 <button class="au-btn au-btn-icon au-btn--blue" id="delete_button" @click="deleteAccount" v-if="isEdit">
                   <i class="zmdi zmdi-delete"></i>delete</button>
-                <button @click="edit" class="au-btn au-btn-icon au-btn--blue" id="edit_button">
-                  <i class="zmdi zmdi-edit"></i>edit</button>
+                <button @click="edit" class="au-btn au-btn-icon au-btn--blue" id="edit_button" v-html="button1">
+                </button>
               </div>
             </div>
           </div>
@@ -86,6 +89,7 @@ export default {
   },
   data () {
     return {
+      button1: '<i class="zmdi zmdi-edit"></i>edit',
       keyword: '',
       username: 'master', // 示例使用变量
       checkVal: [],
@@ -117,28 +121,28 @@ export default {
       this.noScroll()
       this.show = true
     },
-    addAccount () {
-      alert('add')// 待修改
-    },
-    deleteAccount () {
-      alert(this.checkVal)// 待添加方法
-    },
-    edit () {
-      var button = document.getElementById('edit_button')
-      var table = document.getElementById('account_table')
-      var editRow = table.childNodes.item(0).childNodes.item(0)
-      // var children = table.childNodes.item(2).childNodes
-      var html1 = '<th class="text-right">del</th>'
-      if (!this.isEdit) {
-        editRow.innerHTML += html1
-        button.innerHTML = '<i class="zmdi zmdi-check"></i>complete'
-      } else {
-        editRow.innerHTML = editRow.innerHTML.replace(html1, '')
-        button.innerHTML = '<i class="zmdi zmdi-edit"></i>edit'
+      addOrder () {
+          alert('功能维护中...')// 待修改
+      },
+      deleteAccount () {
+          alert(this.checkVal)// 待添加方法
+      },
+      edit () {
+          if (!this.isEdit) {
+              this.button1 = '<i class="zmdi zmdi-check"></i>complete'
+          } else {
+              this.button1 = '<i class="zmdi zmdi-edit"></i>edit'
+          }
+          this.isEdit = !this.isEdit
+      },
+      getData(){
+        this.axios.get("/management/orders",{
+            params : {}
+        })
       }
-      this.isEdit = !this.isEdit
+  },created() {
+      getData()
     }
-  }
 }
 </script>
 

@@ -134,11 +134,6 @@
           username: this.account.username,
           cartItemId: e.currentTarget.id,
         })
-        // this.axios({
-        //   method: 'delete',
-        //   url: '/carts',
-        //   data: postData,
-        // })
         this.axios.delete("/carts",{
             params: {
                 username: this.account.username,

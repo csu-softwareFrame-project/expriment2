@@ -126,20 +126,24 @@ axios.interceptors.response.use(function (response) {
       case 400: err.message = '请求错误(400)'; break
       case 401: {
         // err.message = '未授权，请重新登录(401)';
-        store.commit('removeAccount')
-        store.commit('changeLogin', 'undefined')
-        console.log('旧token:' + store.state.Authorization)
-        alert('后台：登录认证已过期')
-        router.push('/account/view-sign-in')
+        store.commit('removeAccount');
+        store.commit('changeLogin', 'undefined');
+        console.log('旧token:' + store.state.Authorization);
+        alert('后台：登录认证已过期');
+        router.push('/account/view-sign-in');
         break
       }
       case 403: err.message = '拒绝访问(403)'; break
-      case 404: err.message = '请求出错(404)'; break
+      case 404: {
+        alert('服务器无响应');
+        // err.message = '请求出错(404)';
+        break;
+      }
       case 408: err.message = '请求超时(408)'; break
       case 500: {
-        alert('服务器错误')
-        break
-        // err.message = '服务器错误(500)'; break;
+        alert('服务器错误');
+        // err.message = '服务器错误(500)';
+        break;
       }
       case 501: err.message = '服务未实现(501)'; break
       case 502: err.message = '网络错误(502)'; break

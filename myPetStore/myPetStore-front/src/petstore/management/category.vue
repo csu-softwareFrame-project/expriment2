@@ -41,17 +41,20 @@
                     </thead>
                     <tbody>
                     <tr v-for="category in categoryList" v-if="categoryList != null">
-                      <td v-if="isEdit" class="text-left"><input type="checkbox" v-bind:value="category.categoryId" name="listOption" v-model="checkVal"/></td>
+                      <td v-if="isEdit" class="text-left">
+                        <input type="checkbox" name="listOption"
+                               v-bind:id="category.categoryId" v-on:change="selectDelete($event)"/>
+                      </td>
                       <td class="text-left"><router-link v-bind:to="'/management/product?categoryId='+category.categoryId">{{category.categoryId}}</router-link></td>
                       <td class="text-left"><router-link v-bind:to="'/management/product?categoryId='+category.categoryId">{{category.name}}</router-link></td>
-                      <td class="text-left" @click="openMask">...</td>
+                      <td class="text-left" v-on:click="openMask">...</td>
                     </tr>
                     </tbody>
                   </table>
                 </div>
-                <button class="au-btn au-btn-icon au-btn--blue" id="delete_button" @click="deleteAccount" v-if="isEdit">
+                <button class="au-btn au-btn-icon au-btn--blue" id="delete_button" v-on:click="deleteCategory" v-if="isEdit">
                   <i class="zmdi zmdi-delete"></i>delete</button>
-                <button @click="edit" class="au-btn au-btn-icon au-btn--blue"
+                <button v-on:click="editCategory" class="au-btn au-btn-icon au-btn--blue"
                         id="edit_button" v-html="button1">
                 </button>
                 <marquee style="WIDTH: 388px; HEIGHT: 20px" scrollamount="2" direction="up">
@@ -109,6 +112,7 @@ export default {
       category: null,
       categoryList: null,
       productList: null,
+      deleteCategoryList: [],
       checkVal: [],
       keyword: '',
       isEdit: false,
@@ -123,17 +127,17 @@ export default {
   methods: {
     hideModal () {
       // 取消弹窗回调
-      this.canScroll()
+      this.canScroll();
       this.show = false
     },
     submit () {
       // 确认弹窗回调
-      this.canScroll()
+      this.canScroll();
       this.show = false
     },
     openMask () {
       // 打开弹窗
-      this.noScroll()
+      this.noScroll();
       this.show = true
     },
     getData () {
@@ -168,20 +172,45 @@ export default {
     addCategory () {
       alert('add')// 待修改
     },
-    deleteAccount () {
-      alert(this.checkVal)// 待添加方法
+    deleteCategory () {//删除选中Category
+      alert(this.checkVal);
+      if(this.deleteCategoryList.length >0 ){
+          let categoryList = this.deleteCategoryList
+          this.axios({
+              method : 'delete',
+              url : '/management/categories',
+              data: categoryList,
+              contentType : 'application/json'
+          }).then( res => {
+              if(res.data.status){
+                  alert("删除成功")
+              }else{
+                  alert("删除失败,原因"+res.data.msg)
+              }
+          }).catch( err => {
+              console.log("发生错误")
+          })
+      }
     },
-    edit () {
-      // var table = document.getElementById('account_table')
-      // var editRow = table.childNodes.item(0).childNodes.item(0)
-      // var children = table.childNodes.item(2).childNodes
-      // var html1 = '<th class="text-right">del</th>'
+    selectDelete(e){//选中Category加入List
+        let categoryName = e.currentTarget.id
+        if(e.target.checked){
+            this.deleteCategoryList.push(categoryName)
+        }else{
+            for (let i = 0; i < this.deleteCategoryList.length; i++) {
+                if (this.deleteCategoryList[i] === categoryName) this.deleteCategoryList.splice(i, 1)
+            }
+        }
+        console.log("当前选中:"+this.deleteCategoryList)
+    },
+    editCategory () {//打开编辑模式
       if (!this.isEdit) {
-        // editRow.innerHTML += html1
         this.button1 = '<i class="zmdi zmdi-check"></i>complete'
       } else {
-        // editRow.innerHTML = editRow.innerHTML.replace(html1, '')
         this.button1 = '<i class="zmdi zmdi-edit"></i>edit'
+        //点击complete后，清空选中删除的目录
+        this.deleteCategoryList = []
+        console.log("完成后清空列表:"+this.deleteCategoryList)
       }
       this.isEdit = !this.isEdit
     }

@@ -51,8 +51,8 @@
                 </div>
                 <button class="au-btn au-btn-icon au-btn--blue" id="delete_button" @click="deleteAccount" v-if="isEdit">
                   <i class="zmdi zmdi-delete"></i>delete</button>
-                <button @click="edit" class="au-btn au-btn-icon au-btn--blue" id="edit_button">
-                  <i class="zmdi zmdi-edit"></i>edit</button>
+                <button @click="edit" class="au-btn au-btn-icon au-btn--blue" id="edit_button" v-html="button1">
+                </button>
               </div>
             </div>
           </div>
@@ -75,6 +75,7 @@ export default {
   name: 'product',
   data () {
     return {
+      button1:  '<i class="zmdi zmdi-edit"></i>edit',
       account: this.$store.state.account,
       productList: null,
       checkVal: [],
@@ -134,20 +135,13 @@ export default {
       alert(this.checkVal)// 待添加方法
     },
     edit () {
-      var button = document.getElementById('edit_button')
-      var table = document.getElementById('account_table')
-      var editRow = table.childNodes.item(0).childNodes.item(0)
-      // var children = table.childNodes.item(2).childNodes
-      var html1 = '<th class="text-right">del</th>'
       if (!this.isEdit) {
-        editRow.innerHTML += html1
-        button.innerHTML = '<i class="zmdi zmdi-check"></i>complete'
+        this.button1 = '<i class="zmdi zmdi-check"></i>complete'
       } else {
-        editRow.innerHTML = editRow.innerHTML.replace(html1, '')
-        button.innerHTML = '<i class="zmdi zmdi-edit"></i>edit'
+        this.button1 = '<i class="zmdi zmdi-edit"></i>edit'
       }
       this.isEdit = !this.isEdit
-    }
+    },
   },
   created () {
     this.getData()

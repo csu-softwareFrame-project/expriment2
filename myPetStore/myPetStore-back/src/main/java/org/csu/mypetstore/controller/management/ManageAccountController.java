@@ -1,56 +1,47 @@
-package org.csu.mypetstore.controller;
+package org.csu.mypetstore.controller.management;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.csu.mypetstore.domain.Account;
-import org.csu.mypetstore.persistence.AccountMapper;
 import org.csu.mypetstore.service.AccountService;
 import org.csu.mypetstore.util.ReturnPack;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
-public class ManageController {
-    @Autowired
-    AccountMapper accountMapper;
+public class ManageAccountController {
     @Autowired
     AccountService accountService;
-
-    //最上方的搜索
-    @GetMapping("/management/accounts/results")
-    public ReturnPack Search(@RequestParam String key){
-
-        return null;
-    }
 
     //获取所有帐号信息
     @GetMapping("/management/accounts")
     public ReturnPack allAccounts(){
         JSONObject data = new JSONObject();
-        List<Account> accountList = accountMapper.getAccountList();
+        List<Account> accountList = accountService.getAccountList();
         data.put("accountList",accountList);
         return ReturnPack.success(data);
     }
 
-    //删除帐号
+    //todo 删除帐号
     @DeleteMapping("/management/accounts")
-    public ReturnPack removeAccounts(){
-        return null;
+    public ReturnPack removeAccounts(@RequestBody List<String> accountList){
+        System.out.println(accountList);
+        JSONObject data = new JSONObject();
+        return ReturnPack.success(data);
     }
 
-    //添加帐号
+    //todo 添加帐号
     @PostMapping("/management/accounts")
     public ReturnPack addAccount(@RequestBody Account account){
         return null;
     }
 
+    //修改账户
     @PutMapping("/management/accounts")
     public ReturnPack editAccount(@RequestBody Account account){
         JSONObject data = new JSONObject();
-        System.out.println(account);
+//        System.out.println(account);
         if (account.getListOption().equals("true")) account.setBooleanListOption(true);
         else account.setBooleanListOption(false);
         if (account.getBannerOption().equals("true")) account.setBooleanBannerOption(true);
@@ -71,5 +62,7 @@ public class ManageController {
         data.put("msg","修改成功");
         return ReturnPack.success(data);
     }
+
+    //todo 修改密码
 
 }

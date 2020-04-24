@@ -65,11 +65,11 @@
                       <td class="text-right" v-bind:name="account.phone">{{account.phone}}</td>
                       <td class="text-right" ><a v-bind:name="account.username" v-on:click="openMask($event)">...</a></td>
                     </tr>
-                    <tr v-if="accountList=== null || accountList.length <= 0"> 你的网站似乎没有用户... </tr>
+                    <td v-if="accountList=== null || accountList.length <= 0"> 你的网站似乎没有用户... </td>
                     </tbody>
                   </table>
                 </div>
-                <button class="au-btn au-btn-icon au-btn--blue" id="delete_button" v-on:click="deleteAccount" v-if="isEdit">
+                <button class="au-btn au-btn-icon au-btn--blue" id="delete_button" v-on:click="deleteCategory" v-if="isEdit">
                   <i class="zmdi zmdi-delete"></i>delete</button>
                 <button v-on:click="editAccounts" class="au-btn au-btn-icon au-btn--blue"
                         id="edit_button" v-html="button1">
@@ -273,10 +273,26 @@ export default {
     addAccount () {
       alert('add')// 待修改
     },
-    deleteAccount () {
+    deleteCategory () {//删除选中Category
+      // this.axios
       alert('本次删除账户:' + this.deleteAccountList)// 待添加方法
+      let accountList = this.deleteAccountList
+      if(this.deleteAccountList.length > 0){
+          this.axios({
+              method : 'delete',
+              url :'/management/accounts',
+              data : accountList,
+              contentType : 'application/json'
+          }).then( res => {
+              if(res.data.status){
+                  alert("删除成功")
+              }else{
+                  alert("删除失败,原因:"+res.data.msg)
+              }
+          })
+      }
     },
-    selectDelete (e) {
+    selectDelete (e) {//选中Account加入List
       let username = e.currentTarget.id
       if (e.target.checked) {
         this.deleteAccountList.push(username)
@@ -284,14 +300,17 @@ export default {
         for (let i = 0; i < this.deleteAccountList.length; i++) {
           if (this.deleteAccountList[i] === username) this.deleteAccountList.splice(i, 1)
         }
-        // console.log("移出后:"+this.deleteAccount)
+        console.log("当前选中:"+this.deleteAccount)
       }
     },
-    editAccounts () {
+    editAccounts () {//开启编辑模式
       if (!this.isEdit) {
         this.button1 = '<i class="zmdi zmdi-check"></i>complete'
       } else {
-        this.button1 = '<i class="zmdi zmdi-edit"></i>edit account'
+        this.button1 = '<i class="zmdi zmdi-edit"></i>edit account';
+        //点击完成后，清空选中删除的用户
+        this.deleteAccountList = []
+          console.log("完成后清空列表:"+this.deleteAccountList)
       }
       this.isEdit = !this.isEdit
     },
