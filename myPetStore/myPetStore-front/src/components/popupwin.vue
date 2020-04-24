@@ -4,7 +4,7 @@
       <div class="modal-header">
         {{ title }}
       </div>
-      <div class="modal-main">
+      <div class="modal-main" style="max-height: 500px;overflow-x:auto;overflow-y:auto;">
         <slot></slot>
       </div>
       <div class="modal-footer">

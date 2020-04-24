@@ -52,8 +52,31 @@
                 <button class="au-btn au-btn-icon au-btn--blue" id="delete_button" @click="deleteAccount" v-if="isEdit">
                   <i class="zmdi zmdi-delete"></i>delete</button>
                 <button @click="edit" class="au-btn au-btn-icon au-btn--blue"
-                        id="edit_button"v-html="button1">
+                        id="edit_button" v-html="button1">
                 </button>
+                <marquee style="WIDTH: 388px; HEIGHT: 20px" scrollamount="2" direction="up">
+                  <div align="left" >
+
+                  </div >
+                  <center ><font face="黑体" color="#008000" size="4" ></font ></center >
+                  <div align="left" >
+
+                  </div >
+                  <center >
+                    <p ><font color="#ff6600" size="4" >滚动文字</font ></p >
+                    <p ><font color="#ff4500" size="4" >滚动文字</font ></p >
+                    <p ><font color="#ff3300" size="4" >滚动文字</font ></p >
+                    <p ><font color="#ff6600" size="4" >滚动文字</font ></p >
+                    <p ><font color="#ff4500" size="4" >滚动文字</font ></p >
+                    <p ><font color="#ff3300" size="4" >滚动文字</font ></p >
+                    <p ><font color="#ff6600" size="4" >滚动文字</font ></p >
+                    <p ><font color="#ff4500" size="4" >滚动文字</font ></p >
+                    <p ><font color="#ff3300" size="4" >滚动文字</font ></p >
+                    <p ><font color="#ff6600" size="4" >滚动文字</font ></p >
+                    <p ><font color="#ff4500" size="4" >滚动文字</font ></p >
+                    <p ><font color="#ff3300" size="4" >滚动文字</font ></p >
+                  </center>
+                </marquee>
               </div>
             </div>
           </div>
@@ -64,7 +87,12 @@
     <!-- END MAIN CONTENT-->
     <!-- END PAGE CONTAINER-->
     <popupwin :show="show" :title="title" @hideModal="hideModal" @submit="submit">
-      <p> test </p>
+      <p>test</p>
+      <p>test</p>
+      <p>test</p>
+      <p>test</p>
+      <p>test</p>
+      <p>test</p>
     </popupwin>
   </manageframe>
 </template>
