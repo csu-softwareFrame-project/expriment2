@@ -36,4 +36,6 @@ public interface AccountMapper {
     List<Account> getAccountList();
 
     void updatePassword(@Param("username") String username, @Param("password") String password);
+
+    List<Account> searchAccountList(String keyword);
 }

@@ -29,4 +29,6 @@ public interface OrderMapper {
     void sendOrder(@Param("orderId") int orderId,@Param("status") int status);
 
     List<Order> getOrdersByStatus(int status);
+
+    List<Order> searchOrderList(String keyword);
 }

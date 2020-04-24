@@ -25,6 +25,29 @@
     AND I.PRODUCTID = #{value}
   </select>
 
+  <select id="getItemListByItemStatus" parameterType="string" resultType="Item">
+    SELECT
+      I.ITEMID,
+      LISTPRICE,
+      UNITCOST,
+      SUPPLIER AS supplierId,
+      I.PRODUCTID AS "product.productId",
+      NAME AS "product.name",
+      DESCN AS "product.description",
+      CATEGORY AS "product.categoryId",
+      STATUS,
+      ATTR1 AS attribute1,
+      ATTR2 AS attribute2,
+      ATTR3 AS attribute3,
+      ATTR4 AS attribute4,
+      ATTR5 AS attribute5,
+      QTY AS quantity
+    FROM ITEM I, PRODUCT P,INVENTORY Y
+    WHERE P.PRODUCTID = I.PRODUCTID
+    AND Y.ITEMID = I.ITEMID
+    AND I.STATUS = #{status}
+  </select>
+
   <select id="getOrderQuantity" parameterType="string" resultType="Integer">
     SELECT QUANTITY
     FROM LINEITEM
@@ -113,4 +136,9 @@
     WHERE ITEMID = #{oldId}
   </update>
 
+  <update id="updateStatus">
+    UPDATE ITEM
+    SET STATUS = #{status}
+    WHERE ITEMID = #{itemId}
+  </update>
 </mapper>

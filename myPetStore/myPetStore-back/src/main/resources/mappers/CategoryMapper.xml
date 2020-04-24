@@ -27,9 +27,21 @@
             (#{categoryId},#{name},#{description})
     </insert>
 
+    <insert id="insertBannerData" parameterType="Category">
+        INSERT INTO BANNERDATA
+            (FAVCATEGORY,BANNERNAME)
+        VALUES
+            (#{categoryId},#{description})
+    </insert>
+
     <delete id="removeCategory" parameterType="string">
         DELETE FROM CATEGORY
         WHERE CATID = #{categoryId}
+    </delete>
+
+    <delete id="removeBannerData" parameterType="string">
+        DELETE FROM BANNERDATA
+        WHERE FAVCATEGORY = #{categoryId}
     </delete>
 
     <update id="updateCategory">
@@ -38,5 +50,12 @@
             NAME = #{category.name},
             DESCN = #{category.description}
         WHERE CATID = #{oldId}
+    </update>
+
+    <update id="updateBannerData">
+        UPDATE BANNERDATA SET
+            FAVCATEGORY = #{category.categoryId},
+            BANNERNAME = #{category.description}
+        WHERE FAVCATEGORY = #{oldId}
     </update>
 </mapper>

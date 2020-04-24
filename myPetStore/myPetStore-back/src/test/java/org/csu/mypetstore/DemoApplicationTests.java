@@ -383,4 +383,60 @@ class DemoApplicationTests {
         String username = "hahaha";
         accountService.removeAccount(username);
     }
+
+    @Test
+    void testCategoryInsert(){
+        Category category = new Category();
+        category.setCategoryId("PIGS");
+        category.setName("Pigs");
+        category.setDescription("666");
+
+        catalogService.insertCategory(category);
+    }
+
+    @Test
+    void testCategoryUpdate(){
+        Category category = new Category();
+        category.setCategoryId("PIGSS");
+        category.setName("Pigss");
+        category.setDescription("6666");
+        String oldId = "PIGS";
+
+        catalogService.updateCategory(category,oldId);
+    }
+
+    @Test
+    void testCategoryRemove(){
+        String categoryId = "PIGSS";
+
+        catalogService.removeCategory(categoryId);
+    }
+
+    @Test
+    void testAccountSearch(){
+        String keyword = "A";
+        List<Account> accountList = accountService.searchAccountList(keyword);
+        System.out.println(accountList.size());
+    }
+
+    @Test
+    void testOrderSearch(){
+        String keyword = "88";
+        List<Order> orderList = orderService.searchOrderList(keyword);
+        System.out.println(orderList.size());
+    }
+
+    @Test
+    void testItemStatusUpdate(){
+        String itemId = "EST-11";
+        String status = "S";
+        catalogService.updateStatus(itemId,status);
+    }
+
+    @Test
+    void testItemListGetByStatus(){
+        String status = "S";
+        List<Item> itemList = catalogService.getItemListByItemStatus(status);
+        System.out.println(itemList.size());
+    }
 }

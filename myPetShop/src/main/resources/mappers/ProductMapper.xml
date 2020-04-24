@@ -13,7 +13,7 @@
         FROM PRODUCT
         WHERE PRODUCTID = #{productId}
     </select>
-    
+
     <select id="getProductListByCategory" parameterType="string" resultType="Product">
         SELECT
         PRODUCTID,
@@ -24,7 +24,7 @@
         WHERE CATEGORY = #{categoryId}
     </select>
 
-    <select id="searchProductList" parameterType="string" resultType="product">
+    <select id="searchProductList" parameterType="string" resultType="Product">
     select
       PRODUCTID,
       NAME,

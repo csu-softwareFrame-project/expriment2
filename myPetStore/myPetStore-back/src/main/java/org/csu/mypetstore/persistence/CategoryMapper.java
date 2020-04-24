@@ -15,7 +15,13 @@ public interface CategoryMapper {
 
     void insertCategory(Category category);
 
+    void insertBannerData(Category category);
+
     void removeCategory(String categoryId);
 
+    void removeBannerData(String categoryId);
+
     void updateCategory(@Param("category") Category category, @Param("oldId") String oldId);
+
+    void updateBannerData(@Param("category") Category category, @Param("oldId") String oldId);
 }

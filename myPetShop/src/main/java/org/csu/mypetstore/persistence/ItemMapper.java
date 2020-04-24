@@ -15,6 +15,8 @@ public interface ItemMapper {
 
     List<Item> getItemListByProduct(String productId);
 
+    List<Item> getItemListByItemStatus(String status);
+
     Item getItem(String itemId);
 
     void insertItem(Item item);
@@ -28,4 +30,6 @@ public interface ItemMapper {
     void updateItem(@Param("item") Item item,@Param("oldId") String oldId);
 
     void updateQuantity(@Param("item") Item item,@Param("oldId") String oldId);
+
+    void updateStatus(@Param("itemId") String itemId,@Param("status") String status);
 }

@@ -27,7 +27,15 @@ public interface AccountMapper {
 
     void updateSignon(Account account);
 
+    void removeAccount(String username);
+
+    void removeProfile(String username);
+
+    void removeSignon(String username);
+
     List<Account> getAccountList();
 
     void updatePassword(@Param("username") String username, @Param("password") String password);
+
+    List<Account> searchAccountList(String keyword);
 }

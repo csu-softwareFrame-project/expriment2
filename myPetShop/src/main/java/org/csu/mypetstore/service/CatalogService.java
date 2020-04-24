@@ -39,6 +39,7 @@ public class CatalogService {
      * */
     public void insertCategory(Category category) {
         categoryMapper.insertCategory(category);
+        categoryMapper.insertBannerData(category);
     }
 
     /**
@@ -57,6 +58,7 @@ public class CatalogService {
             productMapper.removeProduct(productList.get(i).getProductId());
         }
         categoryMapper.removeCategory(categoryId);
+        categoryMapper.removeBannerData(categoryId);
     }
 
     /**
@@ -66,6 +68,7 @@ public class CatalogService {
     public void updateCategory(Category category,String oldId){
         List<Product> productList = productMapper.getProductListByCategory(oldId);
         categoryMapper.updateCategory(category,oldId);
+        categoryMapper.updateBannerData(category,oldId);
         for(int i=0;i<productList.size();i++){
             productList.get(i).setCategoryId(category.getCategoryId());
             productMapper.updateProduct(productList.get(i),productList.get(i).getProductId());
@@ -189,5 +192,30 @@ public class CatalogService {
     public void updateItem(Item item,String oldId){
         itemMapper.updateItem(item,oldId);
         itemMapper.updateQuantity(item,oldId);
+    }
+
+    /**
+     * @修改商品状态
+     * @参数1：商品id
+     * @参数2：商品状态
+     * @状态修改为P代表上架，状态修改为S代表下架
+     */
+    public void updateStatus(String itemId,String status){
+        itemMapper.updateStatus(itemId,status);
+    }
+
+    /**
+     * @获取指定状态的商品
+     * @参数：商品状态，P代表上架商品，S代表下架商品
+     * @返回商品列表
+     */
+    public List<Item> getItemListByItemStatus(String status){
+        List<Item> itemList = itemMapper.getItemListByItemStatus(status);
+        Product product = new Product();
+        for(int i=0;i<itemList.size();i++){
+            product = productMapper.getProduct(itemList.get(i).getProductId());
+            itemList.get(i).setProduct(product);
+        }
+        return itemList;
     }
 }

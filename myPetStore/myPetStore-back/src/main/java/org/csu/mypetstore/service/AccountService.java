@@ -262,9 +262,34 @@ public class AccountService {
         accountMapper.updatePassword(username,passwordEnc);
     }
 
+    /**
+     * @删除用户
+     * @参数：用户名
+     */
     public void removeAccount(String username){
         accountMapper.removeAccount(username);
         accountMapper.removeProfile(username);
         accountMapper.removeSignon(username);
+    }
+
+    /**
+     * @批量删除用户
+     * @参数：用户名的列表
+     */
+    public void removeAccountList(List<String> usernameList){
+        for(int i=0;i<usernameList.size();i++){
+            accountMapper.removeAccount(usernameList.get(i));
+            accountMapper.removeProfile(usernameList.get(i));
+            accountMapper.removeSignon(usernameList.get(i));
+        }
+    }
+
+    /**
+     * @搜索用户列表
+     * @参数：用户名的关键字
+     * @返回用户列表
+     */
+    public List<Account> searchAccountList(String keyword){
+        return accountMapper.searchAccountList(keyword);
     }
 }

@@ -194,4 +194,24 @@ public class OrderService {
 
         return orderList;
     }
+
+    /**
+     * @根据关键字获得订单列表
+     * @参数：订单的用户名的关键字
+     * @返回订单列表
+     */
+    public List<Order> searchOrderList(String keyword){
+        List<Order> orderList = orderMapper.searchOrderList(keyword);
+        for(int i=0;i<orderList.size();i++) {
+            orderList.get(i).setLineItems(lineItemMapper.getLineItemsByOrderId(orderList.get(i).getOrderId()));
+            for(int j=0;j<orderList.get(i).getLineItems().size();j++) {
+                LineItem lineItem = (LineItem) orderList.get(i).getLineItems().get(j);
+                Item item = itemMapper.getItem(lineItem.getItemId());
+                item.setQuantity(orderMapper.getOrderItemQuantity(orderList.get(i).getOrderId(),item.getItemId()));
+                lineItem.setItem(item);
+            }
+        }
+
+        return orderList;
+    }
 }
