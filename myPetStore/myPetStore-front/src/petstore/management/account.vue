@@ -74,63 +74,6 @@
                 <button v-on:click="editAccounts" class="au-btn au-btn-icon au-btn--blue"
                         id="edit_button" v-html="button1">
                 </button>
-
-                <!--弹窗-->
-                <popupwin :show="show" :title="titlewin" @hideModal="hideModal" @submit="submit">
-                  <input hidden v-model="editForm.username"/>
-                  <label for="firstName">First name: &nbsp;
-                    <input type="text" size="40" name="firstName" v-model="editForm.firstName" class="required input_field" id="firstName" /></label>
-                  <div class="cleaner h10"></div>
-                  <label for="lastName">Last name: &nbsp;
-                    <input type="text" size="40" name="lastName" v-model="editForm.lastName" class="required input_field" id="lastName"/></label>
-                  <div class="cleaner h10"></div>
-                  <label for="email">Email: &nbsp;
-                    <input type="text" size="40" name="email" v-model="editForm.email" class="required input_field" id="email"/></label>
-                  <div class="cleaner h10"></div>
-                  <label for="phone">Phone: &nbsp;
-                    <input type="text" size="40" name="phone" v-model="editForm.phone" class="required input_field" id="phone"/></label>
-                  <div class="cleaner h10"></div>
-                  <label for="address1">Address 1: &nbsp;
-                    <input type="text" size="40" name="address1" v-model="editForm.address1" class="required input_field" id="address1"/></label>
-                  <div class="cleaner h10"></div>
-                  <label for="address2">Address 2: &nbsp;
-                    <input type="text" size="40" name="address2" v-model="editForm.address2" class="required input_field" id="address2"/></label>
-                  <div class="cleaner h10"></div>
-                  <label for="city">City: &nbsp;
-                    <input type="text" size="40" name="city" v-model="editForm.city" class="required input_field" id="city"/></label>
-                  <div class="cleaner h10"></div>
-                  <label for="state">State: &nbsp;
-                    <input type="text" size="40"  name="state" v-model="editForm.state" class="required input_field" id="state"/></label>
-                  <div class="cleaner h10"></div>
-                  <label for="zip">Zip: &nbsp;
-                    <input type="text" size="40"  name="zip" v-model="editForm.zip" class="required input_field" id="zip"/></label>
-                  <div class="cleaner h10"></div>
-                  <label for="country">Country: &nbsp;
-                    <input type="text" size="40"  name="country" v-model="editForm.country" class="required input_field" id="country"/></label>
-                  <div class="cleaner h10"></div>
-                  <popupwin :show="showNotice" title="通知">
-                    <label v-text="noticeMsg"></label>
-                  </popupwin>
-                  <hr>
-                  <h4>Profile Information</h4><br>
-                  <label>Language Preference: &nbsp;
-                    <select name="languagePreference" id="languagePreference" v-model="editForm.languagePreference">
-                      <option>English</option>
-                    </select>
-                  </label>
-                  <div class="cleaner h10"></div>
-                  <label>Favourite Category: &nbsp;
-                    <select name="favouriteCategoryId" id="favouriteCategoryId" v-model="editForm.favouriteCategoryId">
-                      <option >NOBANNER</option>
-                    </select>
-                  </label>
-                  <div class="cleaner h10"></div>
-                  <label>Enable MyList &nbsp;
-                    <input type="checkbox" id="listOption" v-model="editForm.listOption" name="listOption" /></label>
-                  <div class="cleaner h10"></div>
-                  <label>Enable MyBanner &nbsp;
-                    <input type="checkbox" id="bannerOption" v-model="editForm.bannerOption" name="bannerOption" /></label>
-                </popupwin>
               </div>
             </div>
             </div>
@@ -140,6 +83,62 @@
       </div>
       <!-- END MAIN CONTENT-->
       <!-- END PAGE CONTAINER-->
+    <!--弹窗-->
+    <popupwin :show="show" :title="titlewin" @hideModal="hideModal" @submit="submit">
+      <input hidden v-model="editForm.username"/>
+      <label for="firstName">First name: &nbsp;
+        <input type="text" size="40" name="firstName" v-model="editForm.firstName" class="required input_field" id="firstName" /></label>
+      <div class="cleaner h10"></div>
+      <label for="lastName">Last name: &nbsp;
+        <input type="text" size="40" name="lastName" v-model="editForm.lastName" class="required input_field" id="lastName"/></label>
+      <div class="cleaner h10"></div>
+      <label for="email">Email: &nbsp;
+        <input type="text" size="40" name="email" v-model="editForm.email" class="required input_field" id="email"/></label>
+      <div class="cleaner h10"></div>
+      <label for="phone">Phone: &nbsp;
+        <input type="text" size="40" name="phone" v-model="editForm.phone" class="required input_field" id="phone"/></label>
+      <div class="cleaner h10"></div>
+      <label for="address1">Address 1: &nbsp;
+        <input type="text" size="40" name="address1" v-model="editForm.address1" class="required input_field" id="address1"/></label>
+      <div class="cleaner h10"></div>
+      <label for="address2">Address 2: &nbsp;
+        <input type="text" size="40" name="address2" v-model="editForm.address2" class="required input_field" id="address2"/></label>
+      <div class="cleaner h10"></div>
+      <label for="city">City: &nbsp;
+        <input type="text" size="40" name="city" v-model="editForm.city" class="required input_field" id="city"/></label>
+      <div class="cleaner h10"></div>
+      <label for="state">State: &nbsp;
+        <input type="text" size="40"  name="state" v-model="editForm.state" class="required input_field" id="state"/></label>
+      <div class="cleaner h10"></div>
+      <label for="zip">Zip: &nbsp;
+        <input type="text" size="40"  name="zip" v-model="editForm.zip" class="required input_field" id="zip"/></label>
+      <div class="cleaner h10"></div>
+      <label for="country">Country: &nbsp;
+        <input type="text" size="40"  name="country" v-model="editForm.country" class="required input_field" id="country"/></label>
+      <div class="cleaner h10"></div>
+      <popupwin :show="showNotice" title="通知">
+        <label v-text="noticeMsg"></label>
+      </popupwin>
+      <hr>
+      <h4>Profile Information</h4><br>
+      <label>Language Preference: &nbsp;
+        <select name="languagePreference" id="languagePreference" v-model="editForm.languagePreference">
+          <option>English</option>
+        </select>
+      </label>
+      <div class="cleaner h10"></div>
+      <label>Favourite Category: &nbsp;
+        <select name="favouriteCategoryId" id="favouriteCategoryId" v-model="editForm.favouriteCategoryId">
+          <option >NOBANNER</option>
+        </select>
+      </label>
+      <div class="cleaner h10"></div>
+      <label>Enable MyList &nbsp;
+        <input type="checkbox" id="listOption" v-model="editForm.listOption" name="listOption" /></label>
+      <div class="cleaner h10"></div>
+      <label>Enable MyBanner &nbsp;
+        <input type="checkbox" id="bannerOption" v-model="editForm.bannerOption" name="bannerOption" /></label>
+    </popupwin>
   </manageframe>
 </template>
 
@@ -206,10 +205,12 @@ export default {
     },
     hideModal () {
       // 取消弹窗回调
+      this.canScroll()
       this.show = false
     },
     submit () {
       // 确认弹窗回调
+      this.canScroll()
       this.show = false
       console.log(this.editForm.listOption)
       let account = {

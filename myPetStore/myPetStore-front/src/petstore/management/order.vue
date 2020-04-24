@@ -52,10 +52,6 @@
                   <i class="zmdi zmdi-delete"></i>delete</button>
                 <button @click="edit" class="au-btn au-btn-icon au-btn--blue" id="edit_button">
                   <i class="zmdi zmdi-edit"></i>edit</button>
-                <!--弹窗-->
-                <Modal :show="show" :title="title2" @hideModal="hideModal" @submit="submit">
-                 <p>order</p>
-                </Modal>
               </div>
             </div>
           </div>
@@ -65,6 +61,10 @@
     </div>
     <!-- END MAIN CONTENT-->
     <!-- END PAGE CONTAINER-->
+    <!--弹窗-->
+    <Modal :show="show" :title="title2" @hideModal="hideModal" @submit="submit">
+      <p>order</p>
+    </Modal>
   </manageframe>
 </template>
 
@@ -105,10 +105,12 @@ export default {
     },
     hideModal () {
       // 取消弹窗回调
+      this.canScroll()
       this.show = false
     },
     submit () {
       // 确认弹窗回调
+      this.canScroll()
       this.show = false
     },
     openMask () {

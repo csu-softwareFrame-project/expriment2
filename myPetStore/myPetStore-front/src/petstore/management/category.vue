@@ -55,9 +55,6 @@
                         id="edit_button"v-html="button1">
                 </button>
               </div>
-              <popupwin :show="show" :title="title" @hideModal="hideModal" @submit="submit">
-                <p> test </p>
-              </popupwin>
             </div>
           </div>
 
@@ -66,6 +63,9 @@
     </div>
     <!-- END MAIN CONTENT-->
     <!-- END PAGE CONTAINER-->
+    <popupwin :show="show" :title="title" @hideModal="hideModal" @submit="submit">
+      <p> test </p>
+    </popupwin>
   </manageframe>
 </template>
 
@@ -95,10 +95,12 @@ export default {
   methods: {
     hideModal () {
       // 取消弹窗回调
+      this.canScroll()
       this.show = false
     },
     submit () {
       // 确认弹窗回调
+      this.canScroll()
       this.show = false
     },
     openMask () {
