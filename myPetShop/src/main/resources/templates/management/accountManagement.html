@@ -9,16 +9,136 @@
 
 </div>
 
-<div id="templatemo_slider">
-    <!-- This is the container for the carousel. -->
-    <div id = "carousel1">
-        <!-- All ../images with class of "cloudcarousel" will be turned into carousel items -->
-        <!-- You can place links around these ../images -->
-        <a href="/management/accountManagement" rel="lightbox">用户管理</a>
-        <a href="/management/categoryManagement" rel="lightbox">品类管理</a>
-        <a href="/management/productManagement" rel="lightbox">产品管理</a>
-        <a href="/management/itemManagement" rel="lightbox">商品管理</a>
-        <a href="/management/orderManagement" rel="lightbox">订单管理</a>
+<div class="page-container">
+    <!-- MAIN CONTENT-->
+    <div class="main-content">
+        <div class="section__content section__content--p30">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="overview-wrap">
+                            <h2 class="title-1">Search</h2>
+                            <!--搜索account-->
+                            <form class="form-header">
+                                <input class="au-input au-input--xl" type="search" name="search" placeholder="Search for accounts" v-model="keyword"/>
+                                <button class="au-btn--submit"  @click="search">
+                                    <i class="zmdi zmdi-search"></i>
+                                </button>
+                            </form>
+                            <button class="au-btn au-btn-icon au-btn--blue" @click="addAccount">
+                                <i class="zmdi zmdi-plus"></i>add account</button>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-lg-9">
+                        <h2 class="title-1 m-b-25">Accounts</h2>
+                        <div class="table-responsive table--no-card m-b-55">
+                            <table class="table table-borderless table-striped table-earning" id="account_table">
+                                <thead>
+                                <tr>
+                                    <th class="text-right" v-if="isEdit">del</th>
+                                    <th>username</th>
+                                    <th>email</th>
+                                    <th>first name</th>
+                                    <th>last name</th>
+                                    <th class="text-right">city</th>
+                                    <th class="text-right">country</th>
+                                    <th class="text-right">phone</th>
+                                    <th class="text-right">details</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <!--                    <tr>-->
+                                <!--                      <td class="text-left">master</td>-->
+                                <!--                      <td class="text-left">Software1801@csu.cn</td>-->
+                                <!--                      <td class="text-left">a</td>-->
+                                <!--                      <td class="text-left">a</td>-->
+                                <!--                      <td class="text-right">CS</td>-->
+                                <!--                      <td class="text-right">CN</td>-->
+                                <!--                      <td class="text-right">211241231</td>-->
+                                <!--                      <td class="text-right"><a @click="openMask">...</a></td>-->
+                                <!--                      <td class="text-right" v-if="isEdit"><input type="checkbox" value="2" name="listOption" v-model="checkVal"/></td>-->
+                                <!--                    </tr>-->
+                                <tr v-if="accountList!=null &&accountList.length >0" v-for="account in accountList">
+                                    <td class="text-right" v-if="isEdit">
+                                        <input type="checkbox" name="listOption" v-bind:id="account.username" v-on:change="selectDelete($event)"/>
+                                    </td>
+                                    <td class="text-left" v-bind:name="account.username">{{account.username}}</td>
+                                    <td class="text-left" v-bind:name="account.email">{{account.email}}</td>
+                                    <td class="text-left" v-bind:name="account.firstName">{{account.firstName}}</td>
+                                    <td class="text-left" v-bind:name="account.lastName">{{account.lastName}}</td>
+                                    <td class="text-right" v-bind:name="account.city">{{account.city}}</td>
+                                    <td class="text-right" v-bind:name="account.country">{{account.country}}</td>
+                                    <td class="text-right" v-bind:name="account.phone">{{account.phone}}</td>
+                                    <td class="text-right" ><a v-bind:name="account.username" v-on:click="openMask($event)">...</a></td>
+                                </tr>
+                                <tr v-if="accountList=== null || accountList.length <= 0"> 你的网站似乎没有用户... </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <button class="au-btn au-btn-icon au-btn--blue" id="delete_button" v-on:click="deleteAccount" v-if="isEdit">
+                            <i class="zmdi zmdi-delete"></i>delete</button>
+                        <button v-on:click="editAccounts" class="au-btn au-btn-icon au-btn--blue"
+                                id="edit_button" v-html="button1">
+                        </button>
+
+                        <!--弹窗-->
+                        <!--<popupwin :show="show" :title="titlewin" @hideModal="hideModal" @submit="submit">-->
+                            <!--<label for="firstName">First name: &nbsp;-->
+                                <!--<input type="text" size="40" name="firstName" v-model="editForm.firstName" class="required input_field" id="firstName" /></label>-->
+                            <!--<div class="cleaner h10"></div>-->
+                            <!--<label for="lastName">Last name: &nbsp;-->
+                                <!--<input type="text" size="40" name="lastName" v-model="editForm.lastName" class="required input_field" id="lastName"/></label>-->
+                            <!--<div class="cleaner h10"></div>-->
+                            <!--<label for="email">Email: &nbsp;-->
+                                <!--<input type="text" size="40" name="email" v-model="editForm.email" class="required input_field" id="email"/></label>-->
+                            <!--<div class="cleaner h10"></div>-->
+                            <!--<label for="phone">Phone: &nbsp;-->
+                                <!--<input type="text" size="40" name="phone" v-model="editForm.phone" class="required input_field" id="phone"/></label>-->
+                            <!--<div class="cleaner h10"></div>-->
+                            <!--<label for="address1">Address 1: &nbsp;-->
+                                <!--<input type="text" size="40" name="address1" v-model="editForm.address1" class="required input_field" id="address1"/></label>-->
+                            <!--<div class="cleaner h10"></div>-->
+                            <!--<label for="address2">Address 2: &nbsp;-->
+                                <!--<input type="text" size="40" name="address2" v-model="editForm.address2" class="required input_field" id="address2"/></label>-->
+                            <!--<div class="cleaner h10"></div>-->
+                            <!--<label for="city">City: &nbsp;-->
+                                <!--<input type="text" size="40" name="city" v-model="editForm.city" class="required input_field" id="city"/></label>-->
+                            <!--<div class="cleaner h10"></div>-->
+                            <!--<label for="state">State: &nbsp;-->
+                                <!--<input type="text" size="40"  name="state" v-model="editForm.state" class="required input_field" id="state"/></label>-->
+                            <!--<div class="cleaner h10"></div>-->
+                            <!--<label for="zip">Zip: &nbsp;-->
+                                <!--<input type="text" size="40"  name="zip" v-model="editForm.zip" class="required input_field" id="zip"/></label>-->
+                            <!--<div class="cleaner h10"></div>-->
+                            <!--<label for="country">Country: &nbsp;-->
+                                <!--<input type="text" size="40"  name="country" v-model="editForm.country" class="required input_field" id="country"/></label>-->
+                            <!--<div class="cleaner h10"></div>-->
+                            <!--<hr>-->
+                            <!--<h4>Profile Information</h4><br>-->
+                            <!--<label>Language Preference: &nbsp;-->
+                                <!--<select name="languagePreference" id="languagePreference" v-model="editForm.languagePreference">-->
+                                    <!--<option>English</option>-->
+                                <!--</select>-->
+                            <!--</label>-->
+                            <!--<div class="cleaner h10"></div>-->
+                            <!--<label>Favourite Category: &nbsp;-->
+                                <!--<select name="favouriteCategoryId" id="favouriteCategoryId" v-model="editForm.favouriteCategoryId">-->
+                                    <!--<option >NOBANNER</option>-->
+                                <!--</select>-->
+                            <!--</label>-->
+                            <!--<div class="cleaner h10"></div>-->
+                            <!--<label>Enable MyList &nbsp;<input type="checkbox" id="listOption" v-model="editForm.listOption" name="listOption" /></label>-->
+                            <!--<div class="cleaner h10"></div>-->
+                            <!--<label>Enable MyBanner &nbsp;<input type="checkbox" id="bannerOption" v-model="editForm.bannerOption" name="bannerOption" /></label>-->
+                        <!--</popupwin>-->
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
 </div>
 
