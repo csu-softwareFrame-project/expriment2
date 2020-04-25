@@ -202,9 +202,11 @@ export default {
             for (let i = 0; i < this.categoryList.length; i++) {
               // console.log(this.categoryList[i]+"   "+this.deleteCategoryList.indexOf(this.categoryList[i]));
               if (this.deleteCategoryList.indexOf(this.categoryList[i].categoryId) !== -1) {
-                this.categoryList.splice(i, 1)
+                  this.categoryList.splice(i, 1);
+                  i = 0
               }
             }
+            this.deleteCategoryList = []
             // this.isEdit = false;
           } else {
             alert('删除失败,原因' + res.data.msg)

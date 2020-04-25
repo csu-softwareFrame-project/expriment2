@@ -41,17 +41,6 @@
                     </tr>
                     </thead>
                     <tbody>
-<!--                    <tr>-->
-<!--                      <td class="text-left">master</td>-->
-<!--                      <td class="text-left">Software1801@csu.cn</td>-->
-<!--                      <td class="text-left">a</td>-->
-<!--                      <td class="text-left">a</td>-->
-<!--                      <td class="text-right">CS</td>-->
-<!--                      <td class="text-right">CN</td>-->
-<!--                      <td class="text-right">211241231</td>-->
-<!--                      <td class="text-right"><a @click="openMask">...</a></td>-->
-<!--                      <td class="text-right" v-if="isEdit"><input type="checkbox" value="2" name="listOption" v-model="checkVal"/></td>-->
-<!--                    </tr>-->
                     <tr v-if="accountList!=null &&accountList.length >0" v-for="account in accountList">
                       <td class="text-right" v-if="isEdit">
                         <input type="checkbox" name="listOption" v-bind:id="account.username" v-on:change="selectDelete($event)"/>
@@ -69,11 +58,12 @@
                     </tbody>
                   </table>
                 </div>
-                <button class="au-btn au-btn-icon au-btn--blue" id="delete_button" v-on:click="deleteCategory" v-if="isEdit">
+                <button class="au-btn au-btn-icon au-btn--blue" id="delete_button" v-on:click="deleteAccount" v-if="isEdit">
                   <i class="zmdi zmdi-delete"></i>delete</button>
-                <button v-on:click="editAccounts" class="au-btn au-btn-icon au-btn--blue"
-                        id="edit_button" v-html="button1">
-                </button>
+                <button v-on:click="editAccounts" class="au-btn au-btn-icon au-btn--blue" v-if="isEdit">
+                  <i class="zmdi zmdi-check"></i>complete</button>
+                <button v-on:click="editAccounts" class="au-btn au-btn-icon au-btn--blue" v-if="!isEdit">
+                  <i class="zmdi zmdi-check"></i>Edit</button>
               </div>
             </div>
             </div>
@@ -84,7 +74,7 @@
       <!-- END MAIN CONTENT-->
       <!-- END PAGE CONTAINER-->
     <!--弹窗-->
-    <popupwin :show="show" :title="titlewin" @hideModal="hideModal" @submit="submit">
+    <popupwin :show="show" :title="titlewin" v-on:hideModal="hideModal" v-on:submit="submit">
       <input hidden v-model="editForm.username"/>
       <label for="firstName">First name: &nbsp;
         <input type="text" size="40" name="firstName" v-model="editForm.firstName" class="required input_field" id="firstName" /></label>
@@ -136,9 +126,7 @@
       <label>Enable MyBanner &nbsp;
         <input type="checkbox" id="bannerOption" v-model="editForm.bannerOption" name="bannerOption" /></label>
     </popupwin>
-    <popupwin :show="showNotice" title="通知">
-      <label v-text="noticeMsg"></label>
-    </popupwin>
+
   </manageframe>
 </template>
 
@@ -161,7 +149,6 @@ export default {
   data () {
     return {
       time: 0, // 计时器
-      showNotice: false,
       noticeMsg: '',
       button1: '<i class="zmdi zmdi-edit"></i>edit account',
       accountList: null,
@@ -232,19 +219,17 @@ export default {
       }
       this.axios.put('/management/accounts', account).then(res => {
         if (res.data.status) {
-          this.showNotice = true
-          this.noticeMsg = '修改成功.'
+          this.noticeMsg = '修改成功.';
           this.time = setInterval(this.hideNotice, 1000)
         } else {
-          this.showNotice = true
           this.noticeMsg = '服务器异常,修改失败'
           this.time = setInterval(this.hideNotice, 1000)
         }
       })
-    },
+    },//提交修改信息到后台
     openMask (e) {
-      this.noScroll()
-      let acc = e.currentTarget.name
+      this.noScroll();
+      let acc = e.currentTarget.name;
       // console.log(acc)
       // 打开弹窗
       for (let i = 0; i < this.accountList.length; i++) {
@@ -269,13 +254,12 @@ export default {
         }
       }
       this.show = true
-    },
+    },//打开用户详细信息
     addAccount () {
       alert('add')// 待修改
-    },
-    deleteCategory () {//删除选中Category
-      // this.axios
-      alert('本次删除账户:' + this.deleteAccountList)// 待添加方法
+    },//打开添加新用户
+    deleteAccount () {
+      console.log('本次删除账户:' + this.deleteAccountList)
       let accountList = this.deleteAccountList
       if(this.deleteAccountList.length > 0){
           this.axios({
@@ -291,28 +275,22 @@ export default {
               }
           })
       }
-    },
+    },//删除选中账户
     selectDelete (e) {//选中Account加入List
       let username = e.currentTarget.id
       if (e.target.checked) {
         this.deleteAccountList.push(username)
       } else {
         for (let i = 0; i < this.deleteAccountList.length; i++) {
-          if (this.deleteAccountList[i] === username) this.deleteAccountList.splice(i, 1)
+            if (this.deleteAccountList[i] === username){
+                this.deleteAccountList.splice(i, 1)
+            }
         }
         console.log("当前选中:"+this.deleteAccount)
       }
-    },
+    },//选中的账户加入list
     editAccounts () {//开启编辑模式
-      if (!this.isEdit) {
-        this.button1 = '<i class="zmdi zmdi-check"></i>complete'
-      } else {
-        this.button1 = '<i class="zmdi zmdi-edit"></i>edit account';
-        //点击完成后，清空选中删除的用户
-        this.deleteAccountList = []
-          console.log("完成后清空列表:"+this.deleteAccountList)
-      }
-      this.isEdit = !this.isEdit
+        this.isEdit = !this.isEdit
     },
     getData () {
       this.axios.get('/management/accounts', {

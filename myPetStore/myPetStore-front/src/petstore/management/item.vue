@@ -52,12 +52,8 @@
                       <td v-if="isEdit" class="text-right">
                         <input type="checkbox" v-bind:id="item.itemId" name="listOption" v-on:change="selectDelete($event)"/>
                       </td>
-                      <td class="text-left">
-                        {{item.itemId}}
-                      </td>
-                      <td v-if="item != null" class="text-left">
-                        {{item.product.productId}}
-                      </td>
+                      <td class="text-left">{{item.itemId}}</td>
+                      <td v-if="item != null" class="text-left">{{item.product.productId}}</td>
                       <td class="text-left">
                         <nobr v-if="item != null && item.attribute1 != null">{{item.attribute1}}</nobr>
                         <nobr v-if="item != null && item.attribute2 != null">{{item.attribute2}}</nobr>
@@ -152,12 +148,9 @@ export default {
         this.itemList = res.data.result.itemList;
         this.product = res.data.result.product;
         if (res.data.result.token != null) {
-          // 更新token
           if (typeof (res.data.result.token) !== 'undefined') {
-            // console.log("更新了token:         "+res.data.result.token);
-            // console.log("更新了failToken:     "+res.data.result.failToken)
-            this.$store.commit('changeLogin', { Authorization: res.data.result.token })
-            this.$store.commit('changeFail', { failToken: res.data.result.failToken})
+              this.$store.commit('changeLogin', { Authorization: res.data.result.token });
+              this.$store.commit('changeFail', { failToken: res.data.result.failToken})
           }
         }
         // console.log("搜到了产品")
@@ -204,10 +197,30 @@ export default {
           }).catch( err => {
               console.log("服务器错误")
           })
-      },//todo 上传新item到后台
+      },//上传新item到后台 todo 部分属性尚未添加
       deleteItem () {
-          alert(this.checkVal)//待添加方法
-      },//todo 上传选中的item删除
+          if(this.deleteItemList.length > 0){
+              this.axios({
+                  method : 'delete',
+                  url : '/management/items',
+                  data : this.deleteItemList,
+                  contentType : 'application/json',
+              }).then( res => {
+                  if(res.data.status){
+                      alert("删除成功"+this.deleteItemList);
+                      for (let i = 0; i < this.itemList.length; i++) {
+                          if (this.deleteItemList.indexOf(this.itemList[i].itemId) !== -1) {
+                              this.itemList.splice(i, 1);
+                              i = 0
+                          }
+                      }
+                      this.deleteItemList = []
+                  }else{
+                      alert("删除失败,原因:"+res.data.msg)
+                  }
+              })
+          }
+      },//上传选中的item删除
       selectDelete(e){
           let itemId = e.currentTarget.id;
           if(e.target.checked){

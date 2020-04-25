@@ -100,6 +100,7 @@ public class ManageCatalogController {
 
         catalogService.insertProduct(product);
         JSONObject data = new JSONObject();
+        System.out.println(product);
         data.put("product",product);
         return ReturnPack.success(data);
     }
@@ -113,16 +114,19 @@ public class ManageCatalogController {
         return ReturnPack.success(data);
     }
 
-    //todo 删除产品
+    //删除产品
     @DeleteMapping("/management/items")
     public ReturnPack deleteItem(@RequestBody List<String> itemList){
         if(DEBUG) System.out.println("删除产品");
         if(DEBUG) System.out.println(itemList);
+        for (int i = 0; i < itemList.size(); i++) {
+            catalogService.removeItem(itemList.get(i));
+        }
         JSONObject data = new JSONObject();
         return ReturnPack.success(data);
     }
 
-    //todo 添加产品
+    //添加产品
     @PostMapping("/management/items")
     public ReturnPack addItem(@RequestBody receiveItem receiveItem){
         if(DEBUG) System.out.println("添加产品");
@@ -133,11 +137,14 @@ public class ManageCatalogController {
         }catch (Exception e){
             return ReturnPack.fail("不支持的价格类型");
         }
+        if(catalogService.getItem(receiveItem.getItemId()) != null)
+            return ReturnPack.fail("该产品ID已存在");
         Item item = new Item();
         item.setItemId(receiveItem.getItemId());
         item.setProductId(receiveItem.getProductId());
         item.setListPrice(price);
         item.setStatus("S");
+        item.setProduct(catalogService.getProduct(receiveItem.getProductId()));
         catalogService.insertItem(item);
         JSONObject data = new JSONObject();
         data.put("item",item);

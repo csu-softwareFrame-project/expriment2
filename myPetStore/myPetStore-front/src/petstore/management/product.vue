@@ -162,9 +162,9 @@ export default {
       }).then(res => {
         if (res.data.status) {
           alert('已添加新的产品类型,ID:' + this.newPdtID + ',Name:' + this.newPdtName)
-          this.productList.push(res.data.result.product)
-          this.isNew = false
-          this.newPdtName = ''
+          this.productList.push(res.data.result.product);
+          this.isNew = false;
+          this.newPdtName = '';
           this.newPdtID = ''
         } else {
           alert('添加新产品类型失败,原因:' + res.data.msg)
@@ -187,11 +187,13 @@ export default {
             alert('删除成功')
             // 同步页面数据
             for (let i = 0; i < this.productList.length; i++) {
-              console.log(this.productList[i] + '   ' + this.deleteProductList.indexOf(this.productList[i]))
-              if (this.deleteProductList.indexOf(this.productList[i].productId) !== -1) {
-                this.productList.splice(i, 1)
+                  // console.log(this.productList[i] + '   ' + this.deleteProductList.indexOf(this.productList[i]))
+                  if (this.deleteProductList.indexOf(this.productList[i].productId) !== -1) {
+                      this.productList.splice(i, 1)
+                      i = 0
+                  }
               }
-            }
+            this.deleteProductList = []
             // this.isEdit = false;
           } else {
             alert('删除失败,原因:' + res.data.msg)
