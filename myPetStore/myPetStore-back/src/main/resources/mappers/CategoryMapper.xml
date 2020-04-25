@@ -20,6 +20,15 @@
         FROM CATEGORY
     </select>
 
+    <select id="searchCategoryList" parameterType="string" resultType="Category">
+        SELECT
+            CATID AS categoryId,
+            NAME,
+            DESCN AS description
+        FROM CATEGORY
+        WHERE lower(CATID) like concat(concat('%',#{keyword}),'%')
+    </select>
+
     <insert id="insertCategory" parameterType="Category">
         INSERT INTO CATEGORY
             (CATID,NAME,DESCN)

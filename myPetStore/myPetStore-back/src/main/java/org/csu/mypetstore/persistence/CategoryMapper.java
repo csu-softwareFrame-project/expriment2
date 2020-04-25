@@ -11,6 +11,8 @@ public interface CategoryMapper {
 
     List<Category> getCategoryList();
 
+    List<Category> searchCategoryList(String keyword);
+
     Category getCategory(String categoryId);
 
     void insertCategory(Category category);

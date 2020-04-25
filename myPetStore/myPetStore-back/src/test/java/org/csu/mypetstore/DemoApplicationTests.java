@@ -439,4 +439,18 @@ class DemoApplicationTests {
         List<Item> itemList = catalogService.getItemListByItemStatus(status);
         System.out.println(itemList.size());
     }
+
+    @Test
+    void testCategorySearch(){
+        String keyword = "s";
+        List<Category> categoryList = catalogService.searchCategoryList(keyword);
+        System.out.println(categoryList.size());
+    }
+
+    @Test
+    void testItemSearch(){
+        String keyword = "1";
+        List<Item> itemList = catalogService.searchItemList(keyword);
+        System.out.println(itemList.size());
+    }
 }

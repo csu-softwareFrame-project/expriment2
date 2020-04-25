@@ -291,4 +291,27 @@ public class CatalogService {
         return itemList;
     }
 
+    /**
+     * @根据关键字搜索品类
+     * @参数：品类名的关键字
+     * @返回品类列表
+     */
+    public List<Category> searchCategoryList(String keyword){
+        return categoryMapper.searchCategoryList(keyword);
+    }
+
+    /**
+     * @根据关键字搜索商品
+     * @参数：商品名的关键字
+     * @返回商品列表
+     */
+    public List<Item> searchItemList(String keyword){
+        List<Item> itemList = itemMapper.searchItemList(keyword);
+        Product product = new Product();
+        for(int i=0;i<itemList.size();i++){
+            product = productMapper.getProduct(itemList.get(i).getProductId());
+            itemList.get(i).setProduct(product);
+        }
+        return itemList;
+    }
 }

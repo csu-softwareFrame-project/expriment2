@@ -24,6 +24,8 @@ public interface ItemMapper {
 
     List<Item> getItemListByItemStatus(String status);
 
+    List<Item> searchItemList(String keyword);
+
     Item getItem(String itemId);
 
     void insertItem(Item item);
