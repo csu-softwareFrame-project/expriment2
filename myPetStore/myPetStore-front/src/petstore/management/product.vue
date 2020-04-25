@@ -41,11 +41,11 @@
                     </thead>
                     <tbody>
                     <tr v-if="isNew">
-                      <td class="text-left"><input type="text" placeholder="ID of Category" v-model="newPdtID"/></td>
-                      <td class="text-left"><input type="text" placeholder="Name of Category" v-model="newPdtName"/></td>
-                      <td><button v-on:click="submitNewProduct">勾勾图片</button></td>
+                      <td class="text-left"><input type="text" placeholder="ID of Product" v-model="newPdtID"/></td>
+                      <td class="text-left"><input type="text" placeholder="Name of Product" v-model="newPdtName"/></td>
+                      <td><button v-on:click="submitNewProduct">完成</button></td>
                     </tr>
-                    <tr v-for="product in productList" v-if="productList != null">
+                    <tr v-for="product in productList" v-if="productList != null && productList.length > 0">
                       <td v-if="isEdit" class="text-left">
                         <input type="checkbox" v-if="product != null" v-bind:id="product.productId"
                                name="listOption" v-on:change="selectDelete($event)"/>
@@ -54,10 +54,12 @@
                       <td class="text-left" v-if="product != null">{{product.name}}</td>
                       <td class="text-left" v-on:click="openMask">...</td>
                     </tr>
+                    <td v-if="productList === null || productList.length <= 0">
+                      该种类还没有产品类型...
+                    </td>
                     </tbody>
                   </table>
                 </div>
-
                 <button class="au-btn au-btn-icon au-btn--blue" id="delete_button" v-on:click="deleteProduct" v-if="isEdit">
                   <i class="zmdi zmdi-delete"></i>delete</button>
                 <button v-on:click="editProduct" class="au-btn au-btn-icon au-btn--blue"
@@ -147,8 +149,30 @@ export default {
           this.isEdit = false;
       },//打开新增product编辑页面
       submitNewProduct(){
-
-      },//todo 上传新product到后台
+          let params = {
+              productId :  this.newPdtID,
+              name : this.newPdtName,
+              categoryId: this.$route.query.categoryId
+          }
+          this.axios({
+              method : 'post',
+              url : '/management/products',
+              data : params,
+              contentType : 'application/json'
+          }).then( res => {
+              if(res.data.status){
+                  alert("已添加新的产品类型,ID:"+this.newPdtID+",Name:"+this.newPdtName)
+                  this.productList.push(res.data.result.product);
+                  this.isNew = false;
+                  this.newPdtName = '';
+                  this.newPdtID = '';
+              }else{
+                  alert("添加新产品类型失败,原因:"+res.data.msg)
+              }
+          }).catch( err => {
+              console.log("服务器错误")
+          })
+      },//上传新product到后台
       deleteProduct () {
           console.log("即将删除:"+this.deleteProductList);
           if(this.deleteProductList.length > 0){
@@ -165,7 +189,7 @@ export default {
                       for(let i=0;i<this.productList.length;i++){
                           console.log(this.productList[i]+"   "+this.deleteProductList.indexOf(this.productList[i]));
                           if(this.deleteProductList.indexOf(this.productList[i].productId) !== -1){
-                              this.categoryList.splice(i,1)
+                              this.productList.splice(i,1)
                           }
                       }
                       // this.isEdit = false;
@@ -174,9 +198,9 @@ export default {
                   }
               })
           }
-      },//todo 删除选中product
+      },//上传选中product删除
       selectDelete(e){
-          let productId = e.currentTarget.id
+          let productId = e.currentTarget.id;
           if(e.target.checked){
               this.deleteProductList.push(productId)
           }else{
@@ -189,7 +213,7 @@ export default {
       editProduct () {
           this.isEdit = !this.isEdit;
           this.isNew = false
-    },//来回切换编辑模式
+    },//编辑模式来回切换
   },
   created () {
     this.getData()

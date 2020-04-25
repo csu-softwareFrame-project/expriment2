@@ -41,9 +41,9 @@
                     <tr v-if="isNew">
                       <td class="text-left"><input type="text" placeholder="ID of Category" v-model="newCatID"/></td>
                       <td class="text-left"><input type="text" placeholder="Name of Category" v-model="newCatName"/></td>
-                      <td><button v-on:click="submitNewCategory">勾勾图片</button></td>
+                      <td><button v-on:click="submitNewCategory">完成</button></td>
                     </tr>
-                    <tr v-for="category in categoryList" v-if="categoryList != null">
+                    <tr v-for="category in categoryList" v-if="categoryList != null && categoryList.length > 0">
                       <td v-if="isEdit" class="text-left">
                         <input type="checkbox" name="listOption"
                                v-bind:id="category.categoryId" v-on:change="selectDelete($event)"/>
@@ -52,6 +52,9 @@
                       <td class="text-left"><router-link v-bind:to="'/management/product?categoryId='+category.categoryId">{{category.name}}</router-link></td>
                       <td class="text-left" v-on:click="openMask">...</td>
                     </tr>
+                    <td v-if="categoryList === null || categoryList.length <= 0">
+                      似乎没有种类...
+                    </td>
                     </tbody>
                   </table>
                 </div>
@@ -93,7 +96,7 @@
     </div>
     <!-- END MAIN CONTENT-->
     <!-- END PAGE CONTAINER-->
-    <popupwin :show="show" :title="title" v-on:hideModal="hideModal" @submit="submit">
+    <popupwin :show="show" :title="title" v-on:hideModal="hideModal" v-on:submit="submit">
       <p>test</p>
       <p>test</p>
       <p>test</p>
@@ -154,15 +157,14 @@ export default {
           categoryId: ''
         }
       }).then(res => {
-        this.category = res.data.result.category
-        this.categoryList = res.data.result.categoryList
-        this.productList = res.data.result.productList
+          console.log(res.data.result.categoryList);
+        this.category = res.data.result.category;
+        this.categoryList = res.data.result.categoryList;
+        this.productList = res.data.result.productList;
         if (res.data.result.token != null) {
           // 更新token
           // 更新token
           if (typeof (res.data.result.token) !== 'undefined') {
-            // console.log("更新了token:         "+res.data.result.token);
-            // console.log("更新了failToken:     "+res.data.result.failToken)
             this.$store.commit('changeLogin', { Authorization: res.data.result.token })
             this.$store.commit('changeFail', {failToken: res.data.result.failToken})
           }
@@ -234,7 +236,7 @@ export default {
                   console.log("发生错误")
               })
           }
-      },// 删除选中Category
+      },// 上传选中Category删除
       selectDelete(e){
         let categoryId = e.currentTarget.id
         if(e.target.checked){
@@ -249,7 +251,7 @@ export default {
       editCategory () {
           this.isEdit = !this.isEdit;
           this.isNew = false;
-      }//来回切换编辑模式
+      }//编辑模式来回切换
   },
   created () {
     this.getData()

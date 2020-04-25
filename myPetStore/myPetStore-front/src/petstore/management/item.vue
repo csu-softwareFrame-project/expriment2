@@ -12,26 +12,27 @@
                   <!--搜索account-->
                   <form class="form-header">
                     <input class="au-input au-input--xl" type="search" name="search" placeholder="Search for item" v-model="keyword"/>
-                    <button class="au-btn--submit"  @click="search">
+                    <button class="au-btn--submit"  v-on:click="search">
                       <i class="zmdi zmdi-search"></i>
                     </button>
                   </form>
-                  <button class="au-btn au-btn-icon au-btn--blue" @click="addCategory">
+                  <button class="au-btn au-btn-icon au-btn--blue" v-on:click="editNewItem" v-if="!isNew">
                     <i class="zmdi zmdi-plus"></i>add item</button>
+                  <button class="au-btn au-btn-icon au-btn--blue" v-on:click="editNewItem" v-if="isNew">
+                    <i class="zmdi zmdi-plus"></i>cancel</button>
                 </div>
               </div>
             </div>
             <hr>
             <div class="row">
               <div class="col-lg-9">
-                <!--待完善路径-->
                 <div align="left"><router-link v-if="product != null" v-bind:to="'/management/product?categoryId='+product.categoryId"><i class="zmdi zmdi-arrow-back"></i>&nbsp;return</router-link></div>
-                <!--{{product.name}}-->
                 <h2 class="title-1 m-b-25">test-a</h2>
                 <div class="table-responsive table--no-card m-b-55">
                   <table class="table table-borderless table-striped table-earning" id="account_table">
                     <thead>
                     <tr>
+                      <th v-if="isEdit" class="text-left">del</th>
                       <th>Item ID</th>
                       <th>Product ID</th>
                       <th>Description</th>
@@ -40,7 +41,17 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="item in itemList">
+                    <tr v-if="isNew">
+                      <td class="text-left"><input type="text" placeholder="ID of Item" v-model="newItemId"/></td>
+                      <td class="text-left">{{productId}}</td>
+                      <td>弹窗添加属性</td>
+                      <td class="text-left"><input type="text" placeholder="Price of Item" v-model="newItemPrice"/></td>
+                      <td><button v-on:click="submitNewItem">完成</button></td>
+                    </tr>
+                    <tr v-for="item in itemList" v-if="itemList != null && itemList.length >0">
+                      <td v-if="isEdit" class="text-right">
+                        <input type="checkbox" v-bind:id="item.itemId" name="listOption" v-on:change="selectDelete($event)"/>
+                      </td>
                       <td class="text-left">
                         {{item.itemId}}
                       </td>
@@ -56,16 +67,22 @@
                         <nobr v-if="product != null && product.name != null">{{product.name}}</nobr>
                       </td>
                       <td v-if="item != null" class="text-left">{{item.listPrice}}</td>
-                      <td class="text-left" @click="openMask">...</td>
-                      <td v-if="isEdit" class="text-right"><input type="checkbox" v-bind:value="item.itemId" name="listOption" v-model="checkVal"/></td>
+                      <td class="text-left" v-on:click="openMask">...</td>
                     </tr>
+                    <td v-if="itemList === null || itemList.length <= 0">
+                      该产品类型似乎没有产品...</td>
                     </tbody>
                   </table>
                 </div>
-                <button class="au-btn au-btn-icon au-btn--blue" id="delete_button" @click="deleteAccount" v-if="isEdit">
+                <button class="au-btn au-btn-icon au-btn--blue"
+                        v-if="isEdit" v-on:click="deleteItem">
                   <i class="zmdi zmdi-delete"></i>delete</button>
-                <button @click="edit" class="au-btn au-btn-icon au-btn--blue" id="edit_button">
+                <button class="au-btn au-btn-icon au-btn--blue"
+                        v-if="!isEdit"  v-on:click="editItem">
                   <i class="zmdi zmdi-edit"></i>edit</button>
+                <button class="au-btn au-btn-icon au-btn--blue"
+                        v-if="isEdit" v-on:click="editItem">
+                  <i class="zmdi zmdi-check"></i>complete</button>
               </div>
             </div>
           </div>
@@ -75,7 +92,7 @@
     </div>
     <!-- END MAIN CONTENT-->
     <!-- END PAGE CONTAINER-->
-    <popupwin :show="show" :title="title" @hideModal="hideModal" @submit="submit">
+    <popupwin :show="show" :title="title" v-on:hideModal="hideModal" v-on:submit="submit">
       <p> test </p>
     </popupwin>
   </manageframe>
@@ -88,13 +105,23 @@ export default {
   name: 'item',
   data () {
     return {
-      itemList: null,
-      product: null,
-      checkVal: [],
-      isEdit: false,
-      keyword: '',
-      title: 'edit',
-      show: false
+        productId: this.$route.query.productId,
+        newItemId: '',
+        newItemPrice: '',
+        newAttr1: '',
+        newAttr2: '',
+        newAttr3: '',
+        newAttr4: '',
+        newAttr5: '',
+        newAttr6: '',
+        itemList: null,
+        product: null,
+        deleteItemList: [],
+        keyword: '',
+        title: 'edit',
+        isNew: false,
+        isEdit: false,
+        show: false
     }
   },
   components: {
@@ -102,29 +129,28 @@ export default {
     popupwin
   },
   methods: {
-    hideModal () {
+      hideModal () {
       // 取消弹窗回调
       this.canScroll()
       this.show = false
     },
-    submit () {
+      submit () {
       // 确认弹窗回调
       this.canScroll()
       this.show = false
     },
-    openMask () {
-      // 打开弹窗
+      openMask () {
       this.noScroll()
       this.show = true
-    },
-    getData () {
+    },//打开编辑弹窗
+      getData () {
       this.axios.get('/products', {
         params: {
           productId: this.$route.query.productId
         }
       }).then(res => {
-        this.itemList = res.data.result.itemList
-        this.product = res.data.result.product
+        this.itemList = res.data.result.itemList;
+        this.product = res.data.result.product;
         if (res.data.result.token != null) {
           // 更新token
           if (typeof (res.data.result.token) !== 'undefined') {
@@ -138,33 +164,65 @@ export default {
       }).catch(err => {
         window.console.error(err)
       })
-    },
-    search () {
+    },//初始化函数
+      search () {
       alert('关键词： ' + this.keyword)
       // this.reload()
       // this.$router.push({path: '/result', query: {keyword: this.keyword}})
-    },
-    addCategory () {
-      alert('add')// 待修改
-    },
-    deleteAccount () {
-      alert(this.checkVal)// 待添加方法
-    },
-    edit () {
-      var button = document.getElementById('edit_button')
-      var table = document.getElementById('account_table')
-      var editRow = table.childNodes.item(0).childNodes.item(0)
-      // var children = table.childNodes.item(2).childNodes
-      var html1 = '<th class="text-right">del</th>'
-      if (!this.isEdit) {
-        editRow.innerHTML += html1
-        button.innerHTML = '<i class="zmdi zmdi-check"></i>complete'
-      } else {
-        editRow.innerHTML = editRow.innerHTML.replace(html1, '')
-        button.innerHTML = '<i class="zmdi zmdi-edit"></i>edit'
-      }
-      this.isEdit = !this.isEdit
-    }
+    },//todo 搜索功能
+      editNewItem () {
+          this.isNew = !this.isNew;
+          this.isEdit = false;
+      },//打开新增item编辑页面
+      submitNewItem(){
+          let params = {
+              itemId : this.newItemId,
+              productId : this.productId,
+              listPrice : this.newItemPrice,
+          }
+          this.axios({
+              method : 'post',
+              url : '/management/items',
+              data : params,
+              contentType : 'application/json'
+          }).then( res => {
+              if(res.data.status){
+                  alert("已添加新的产品,ID:"+this.newItemId);
+                  this.itemList.push(res.data.result.item);
+                  this.isNew = false;
+                  this.newItemId = '';
+                  this.newItemPrice = '';
+                  this.newAttr1 = '';
+                  this.newAttr2 = '';
+                  this.newAttr3 = '';
+                  this.newAttr4 = '';
+                  this.newAttr5 = '';
+                  this.newAttr6 = '';
+              }else{
+                  alert("添加产品失败，原因:"+res.data.msg)
+              }
+          }).catch( err => {
+              console.log("服务器错误")
+          })
+      },//todo 上传新item到后台
+      deleteItem () {
+          alert(this.checkVal)//待添加方法
+      },//todo 上传选中的item删除
+      selectDelete(e){
+          let itemId = e.currentTarget.id;
+          if(e.target.checked){
+              this.deleteItemList.push(itemId);
+          }else{
+              for (let i = 0; i < this.deleteItemList.length; i++) {
+                  if (this.deleteItemList[i] === itemId) this.deleteItemList.splice(i, 1)
+              }
+          }
+          console.log("当前选中"+this.deleteItemList)
+      },//选中的item的id加入list
+      editItem () {
+          this.isEdit = !this.isEdit;
+          this.isNew = false;
+      }//编辑来回切换
   },
   created () {
     this.getData()
