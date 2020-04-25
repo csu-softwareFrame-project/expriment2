@@ -70,7 +70,7 @@ Vue.prototype.canScroll = function () {
 router.beforeEach((to, from, next) => {
 // 使用 router.beforeEach 注册一个全局前置守卫，判断用户登录验证是否过期
   // 暂时使管理端可以不用验证
-  var managementTest = (to.path === '/management/mainPage' || to.path === '/management/account' ||
+  var managementTest = (to.path === '/management/product_result' || to.path === '/management/mainPage' || to.path === '/management/account' ||
     to.path === '/management/order' || to.path === '/management/category' || to.path === '/management/product' || to.path === '/management/item')
   if ((managementTest || to.path === '/' || to.path === '/account/view-sign-in' || to.path === '/main/view-main' ||
   to.path === '/viewCategory' || to.path === '/viewProduct' || to.path === '/viewItem' ||

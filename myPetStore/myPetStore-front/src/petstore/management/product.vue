@@ -10,16 +10,16 @@
                 <div class="overview-wrap">
                   <h2 class="title-1">Search</h2>
                   <!--搜索account-->
-                  <form class="form-header">
+                  <div class="form-header">
                     <input class="au-input au-input--xl" type="search" name="search" placeholder="Search for product" v-model="keyword"/>
                     <button class="au-btn--submit"  v-on:click="search">
                       <i class="zmdi zmdi-search"></i>
                     </button>
-                  </form>
+                  </div>
                     <button v-if="!isNew" class="au-btn au-btn-icon au-btn--blue" v-on:click="editNewProduct">
                       <i class="zmdi zmdi-plus" ></i>add product</button>
                     <button v-if="isNew" class="au-btn au-btn-icon au-btn--blue" v-on:click="editNewProduct">
-                      <i class="zmdi zmdi-plus" ></i>cancel(+号要改)</button>
+                      <i class="fa fa-ban" ></i>cancel</button>
                 </div>
               </div>
             </div>
@@ -28,7 +28,7 @@
               <div class="col-lg-9">
                 <!--待完善路径-->
                 <div align="left"><router-link v-bind:to="'/management/category'"><i class="zmdi zmdi-arrow-back"></i>&nbsp;return</router-link></div>
-                <h2 class="title-1 m-b-25">test-a</h2>
+                <h2 class="title-1 m-b-25">{{this.$route.query.categoryId}}</h2>
                 <div class="table-responsive table--no-card m-b-55">
                   <table class="table table-borderless table-striped table-earning" id="account_table">
                     <thead>
@@ -89,16 +89,16 @@ export default {
   name: 'product',
   data () {
     return {
-        newPdtID : '',
-        newPdtName: '',
-        deleteProductList: [],
-        account: this.$store.state.account,
-        productList: null,
-        keyword: '',
-        title: 'edit',
-        isEdit: false,
-        isNew: false,
-        show: false
+      newPdtID: '',
+      newPdtName: '',
+      deleteProductList: [],
+      account: this.$store.state.account,
+      productList: null,
+      keyword: '',
+      title: 'edit',
+      isEdit: false,
+      isNew: false,
+      show: false
     }
   },
   components: {
@@ -106,22 +106,22 @@ export default {
     popupwin
   },
   methods: {
-      hideModal () {
+    hideModal () {
       // 取消弹窗回调
       this.canScroll()
       this.show = false
     },
-      submit () {
+    submit () {
       // 确认弹窗回调
       this.canScroll()
       this.show = false
     },
-      openMask () {
+    openMask () {
       // 打开弹窗
       this.noScroll()
       this.show = true
-    },//打开编辑弹窗
-      getData () {
+    }, // 打开编辑弹窗
+    getData () {
       this.axios.get('/categories', {
         params: {
           categoryId: this.$route.query.categoryId
@@ -138,82 +138,82 @@ export default {
       }).catch(err => {
         window.console.error(err)
       })
-    },//初始化函数
-      search () {
-      alert('关键词： ' + this.keyword)
-      // this.reload()
-      // this.$router.push({path: '/result', query: {keyword: this.keyword}})
-    },//todo 搜索功能
-      editNewProduct () {
-          this.isNew = !this.isNew;
-          this.isEdit = false;
-      },//打开新增product编辑页面
-      submitNewProduct(){
-          let params = {
-              productId :  this.newPdtID,
-              name : this.newPdtName,
-              categoryId: this.$route.query.categoryId
-          }
-          this.axios({
-              method : 'post',
-              url : '/management/products',
-              data : params,
-              contentType : 'application/json'
-          }).then( res => {
-              if(res.data.status){
-                  alert("已添加新的产品类型,ID:"+this.newPdtID+",Name:"+this.newPdtName)
-                  this.productList.push(res.data.result.product);
-                  this.isNew = false;
-                  this.newPdtName = '';
-                  this.newPdtID = '';
-              }else{
-                  alert("添加新产品类型失败,原因:"+res.data.msg)
-              }
-          }).catch( err => {
-              console.log("服务器错误")
-          })
-      },//上传新product到后台
-      deleteProduct () {
-          console.log("即将删除:"+this.deleteProductList);
-          if(this.deleteProductList.length > 0){
-              let productIdList = this.deleteProductList;
-              this.axios({
-                  method : 'delete',
-                  url : '/management/products',
-                  data : productIdList,
-                  contentType : 'application/json'
-              }).then( res => {
-                  if(res.data.status){
-                      alert("删除成功");
-                      //同步页面数据
-                      for(let i=0;i<this.productList.length;i++){
-                          console.log(this.productList[i]+"   "+this.deleteProductList.indexOf(this.productList[i]));
-                          if(this.deleteProductList.indexOf(this.productList[i].productId) !== -1){
-                              this.productList.splice(i,1)
-                          }
-                      }
-                      // this.isEdit = false;
-                  }else{
-                      alert("删除失败,原因:"+res.data.msg)
-                  }
-              })
-          }
-      },//上传选中product删除
-      selectDelete(e){
-          let productId = e.currentTarget.id;
-          if(e.target.checked){
-              this.deleteProductList.push(productId)
-          }else{
-              for (let i = 0; i < this.deleteProductList.length; i++) {
-                  if (this.deleteProductList[i] === productId) this.deleteProductList.splice(i, 1)
-              }
-          }
-          console.log("当前选中:"+this.deleteProductList)
-      },//选中category的id加入List
-      editProduct () {
-          this.isEdit = !this.isEdit;
+    }, // 初始化函数
+    search () {
+      // alert('关键词： ' + this.keyword)
+      this.reload()
+      this.$router.push({path: '/management/product_result', query: {keyword: this.keyword}})
+    }, // todo 搜索功能
+    editNewProduct () {
+      this.isNew = !this.isNew
+      this.isEdit = false
+    }, // 打开新增product编辑页面
+    submitNewProduct () {
+      let params = {
+        productId: this.newPdtID,
+        name: this.newPdtName,
+        categoryId: this.$route.query.categoryId
+      }
+      this.axios({
+        method: 'post',
+        url: '/management/products',
+        data: params,
+        contentType: 'application/json'
+      }).then(res => {
+        if (res.data.status) {
+          alert('已添加新的产品类型,ID:' + this.newPdtID + ',Name:' + this.newPdtName)
+          this.productList.push(res.data.result.product)
           this.isNew = false
-    },//编辑模式来回切换
+          this.newPdtName = ''
+          this.newPdtID = ''
+        } else {
+          alert('添加新产品类型失败,原因:' + res.data.msg)
+        }
+      }).catch(err => {
+        console.log('服务器错误')
+      })
+    }, // 上传新product到后台
+    deleteProduct () {
+      console.log('即将删除:' + this.deleteProductList)
+      if (this.deleteProductList.length > 0) {
+        let productIdList = this.deleteProductList
+        this.axios({
+          method: 'delete',
+          url: '/management/products',
+          data: productIdList,
+          contentType: 'application/json'
+        }).then(res => {
+          if (res.data.status) {
+            alert('删除成功')
+            // 同步页面数据
+            for (let i = 0; i < this.productList.length; i++) {
+              console.log(this.productList[i] + '   ' + this.deleteProductList.indexOf(this.productList[i]))
+              if (this.deleteProductList.indexOf(this.productList[i].productId) !== -1) {
+                this.productList.splice(i, 1)
+              }
+            }
+            // this.isEdit = false;
+          } else {
+            alert('删除失败,原因:' + res.data.msg)
+          }
+        })
+      }
+    }, // 上传选中product删除
+    selectDelete (e) {
+      let productId = e.currentTarget.id
+      if (e.target.checked) {
+        this.deleteProductList.push(productId)
+      } else {
+        for (let i = 0; i < this.deleteProductList.length; i++) {
+          if (this.deleteProductList[i] === productId) this.deleteProductList.splice(i, 1)
+        }
+      }
+      console.log('当前选中:' + this.deleteProductList)
+    }, // 选中category的id加入List
+    editProduct () {
+      this.isEdit = !this.isEdit
+      this.isNew = false
+    }// 编辑模式来回切换
   },
   created () {
     this.getData()

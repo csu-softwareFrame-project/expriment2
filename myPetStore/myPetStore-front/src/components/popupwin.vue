@@ -8,8 +8,8 @@
         <slot></slot>
       </div>
       <div class="modal-footer">
-        <button @click="hideModal">取消</button>
-        <button @click="submit">确认</button>
+        <button @click="hideModal"><i class="fa fa-ban"></i>&nbsp;cancel</button>
+        <button @click="submit"><i class="fa fa-check"></i>&nbsp;confirm</button>
       </div>
     </div>
   </div>

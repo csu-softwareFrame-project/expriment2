@@ -11,7 +11,7 @@
                   <h2 class="title-1">Search</h2>
                   <!--搜索account-->
                   <form class="form-header">
-                    <input class="au-input au-input--xl" type="search" name="search" placeholder="Search for item" v-model="keyword"/>
+                    <input class="au-input au-input--xl" type="search" name="search" placeholder="Search for product" v-model="keyword"/>
                     <button class="au-btn--submit"  v-on:click="search">
                       <i class="zmdi zmdi-search"></i>
                     </button>
@@ -19,7 +19,7 @@
                   <button class="au-btn au-btn-icon au-btn--blue" v-on:click="editNewItem" v-if="!isNew">
                     <i class="zmdi zmdi-plus"></i>add item</button>
                   <button class="au-btn au-btn-icon au-btn--blue" v-on:click="editNewItem" v-if="isNew">
-                    <i class="zmdi zmdi-plus"></i>cancel</button>
+                    <i class="fa fa-ban"></i>cancel</button>
                 </div>
               </div>
             </div>
@@ -167,8 +167,8 @@ export default {
     },//初始化函数
       search () {
       alert('关键词： ' + this.keyword)
-      // this.reload()
-      // this.$router.push({path: '/result', query: {keyword: this.keyword}})
+      this.reload()
+      this.$router.push({path: '/management/product_result', query: {keyword: this.keyword}})
     },//todo 搜索功能
       editNewItem () {
           this.isNew = !this.isNew;

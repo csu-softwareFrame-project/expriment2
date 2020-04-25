@@ -17,6 +17,16 @@ export default new Router({
       component: () => import('../components/Hello')
     },
     {
+      path: '/management/product_result',
+      name: '搜索产品',
+      // 渲染是否可见
+      hidden: true,
+      meta: {
+        title: 'myPetStore - 搜索产品'
+      },
+      component: () => import('../petstore/management/search-product')
+    },
+    {
       path: '/management/account',
       name: '管理用户',
       // 渲染是否可见
