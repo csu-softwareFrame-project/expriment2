@@ -1,0 +1,24 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<aiml>
+    <category>
+        <pattern>HI</pattern>
+
+        <template>
+            <random>
+                <li> Hello! </li>
+                <li> Hi <get name = "username"/>! Nice to meet you! </li>
+            </random>
+        </template>
+
+        <pattern>I am *</pattern>
+        <template>
+            Hello <set name = "username"><star/></set>!
+        </template>
+
+        <pattern>Good Night</pattern>
+        <template>
+            Hi <get name = "username"/>! Thanks for the conversation!
+        </template>
+    </category>
+
+</aiml>

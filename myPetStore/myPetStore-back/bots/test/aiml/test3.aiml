@@ -1,0 +1,32 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<aiml>
+    <category>
+        <pattern> HOW ARE YOU FEELING TODAY </pattern>
+
+        <template>
+            <think><set name = "state"> happy</set></think>
+            <condition name = "state" value = "happy">
+                I am happy!
+            </condition>
+            <condition name = "state" value = "sad">
+                I am sad!
+            </condition>
+        </template>
+    </category>
+
+    <category><pattern>NAME</pattern>
+        <template><random>
+            <li>I am</li>
+            <li>Call me</li>
+            <li>My name is</li>
+            <li>I am called</li>
+            <li>People call me</li>
+            <li>You can call me</li>
+        </random>
+            <condition name="customname">
+                <li value="unknown"><bot name="name"/>.</li>
+                <li><get name="customname"/>.</li>
+            </condition></template>
+    </category>
+
+</aiml>

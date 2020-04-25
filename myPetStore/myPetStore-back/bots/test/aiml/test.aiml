@@ -1,0 +1,39 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<aiml>
+    <category>
+        <pattern> HELLO ALICE </pattern>
+        <template>
+            Hello User
+        </template>
+
+        <pattern> A * is a *. </pattern>
+        <template>
+            When a <star index = "1"/> is not a <star index = "2"/>?
+        </template>
+
+        <pattern> My name is *. </pattern>
+        <template>
+            Hello <star/> .
+        </template>
+
+        <pattern> WHO IS ALBERT EINSTEIN </pattern>
+        <template>Albert Einstein was a German physicist.</template>
+
+        <pattern> WHO IS Isaac NEWTON </pattern>
+        <template>Isaac Newton was a English physicist and mathematician.</template>
+
+        <pattern>DO YOU KNOW WHO * IS</pattern>
+        <template>
+            <srai>WHO IS </srai>
+        </template>
+
+        <pattern>BYE</pattern>
+        <template>Good Bye!</template>
+
+        <pattern>bye *</pattern>
+        <template>
+            <srai>bye</srai>
+        </template>
+
+    </category>
+</aiml>
