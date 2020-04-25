@@ -1,16 +1,18 @@
 package org.csu.mypetstore.controller.management;
 
 import com.alibaba.fastjson.JSONObject;
-import org.csu.mypetstore.domain.Account;
+import org.csu.mypetstore.Constants;
 import org.csu.mypetstore.domain.Category;
 import org.csu.mypetstore.domain.Item;
 import org.csu.mypetstore.domain.Product;
 import org.csu.mypetstore.service.AccountService;
+import org.csu.mypetstore.service.CatalogService;
 import org.csu.mypetstore.util.ReturnPack;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -18,24 +20,38 @@ public class ManageCatalogController {
     private static final boolean DEBUG = true;
 
     @Autowired
-    AccountService accountService;
+    private CatalogService catalogService;
 
-
-    //todo 删除种类
+    //删除种类
     @DeleteMapping("/management/categories")
-    public ReturnPack deleteCategories(@RequestBody List<String> categoryList){
+    public ReturnPack deleteCategories(@RequestBody List<String> categoryIdList){
+        List<String> ORIGIN = new LinkedList<>();
+        ORIGIN.add("FISH");ORIGIN.add("BIRDS");ORIGIN.add("DOGS");ORIGIN.add("REPTILES");ORIGIN.add("CATS");
         if(DEBUG) System.out.println("删除种类");
-        if(DEBUG)System.out.println(categoryList);
+        if(DEBUG)System.out.println(categoryIdList);
+        for (int i = 0; i < categoryIdList.size(); i++) {
+            if(Constants.KEEP_ORIGIN_MODE){
+                if(ORIGIN.contains(categoryIdList.get(i))) continue;
+            }
+            catalogService.removeCategory(categoryIdList.get(i));
+        }
         JSONObject data = new JSONObject();
         return ReturnPack.success(data);
     }
 
-    //todo 添加种类
+    //添加种类
     @PostMapping("/management/categories")
     public ReturnPack addCategories(@RequestBody Category category){
         if(DEBUG) System.out.println("添加种类");
         if(DEBUG) System.out.println(category);
+        if(category.getDescription() == null) category.setDescription("暂无图片");
+
+        if(catalogService.getCategory(category.getCategoryId()) != null)
+            return ReturnPack.fail("已存在同样的ID");
+
+        catalogService.insertCategory(category);
         JSONObject data = new JSONObject();
+        data.put("category",category);
         return ReturnPack.success(data);
     }
 
@@ -48,11 +64,14 @@ public class ManageCatalogController {
         return ReturnPack.success(data);
     }
 
-    //todo 删除产品类型
+    //删除产品类型
     @DeleteMapping("/management/products")
-    public ReturnPack deleteProduct(@RequestBody Product product){
+    public ReturnPack deleteProduct(@RequestBody List<String> productIdList){
         if(DEBUG) System.out.println("删除产品类型");
-        if(DEBUG) System.out.println(product);
+        if(DEBUG) System.out.println(productIdList);
+        for (int i = 0; i < productIdList.size(); i++) {
+            catalogService.removeProduct(productIdList.get(i));
+        }
         JSONObject data = new JSONObject();
         return ReturnPack.success(data);
     }

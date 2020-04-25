@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;
 import org.csu.mypetstore.Constants;
-import org.csu.mypetstore.domain.Account;
 import org.csu.mypetstore.domain.CartItem;
 import org.csu.mypetstore.service.CartService;
 import org.csu.mypetstore.util.JwtUtil;
@@ -29,6 +28,8 @@ public class CartController {
 
     @Autowired
     CartService cartService;
+
+    //todo 显示已下架商品
 
     //查看购物车
     @GetMapping("/carts")

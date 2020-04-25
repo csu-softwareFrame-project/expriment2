@@ -9,4 +9,5 @@ public interface Constants {
     static final boolean DEBUG_CONTROLLER = true;
     static final boolean EMAIL_VERIFY = false;//开启邮箱验证
     static final boolean REDIS_MODE = false;//开启redis模式
+    static final boolean KEEP_ORIGIN_MODE = true;//保持原来菜单模式
 }

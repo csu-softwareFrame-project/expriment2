@@ -12,12 +12,14 @@
                   <!--搜索account-->
                   <form class="form-header">
                     <input class="au-input au-input--xl" type="search" name="search" placeholder="Search for product" v-model="keyword"/>
-                    <button class="au-btn--submit"  @click="search">
+                    <button class="au-btn--submit"  v-on:click="search">
                       <i class="zmdi zmdi-search"></i>
                     </button>
                   </form>
-                  <button class="au-btn au-btn-icon au-btn--blue" @click="addCategory">
-                    <i class="zmdi zmdi-plus"></i>add product</button>
+                    <button v-if="!isNew" class="au-btn au-btn-icon au-btn--blue" v-on:click="editNewProduct">
+                      <i class="zmdi zmdi-plus" ></i>add product</button>
+                    <button v-if="isNew" class="au-btn au-btn-icon au-btn--blue" v-on:click="editNewProduct">
+                      <i class="zmdi zmdi-plus" ></i>cancel(+号要改)</button>
                 </div>
               </div>
             </div>
@@ -26,33 +28,43 @@
               <div class="col-lg-9">
                 <!--待完善路径-->
                 <div align="left"><router-link v-bind:to="'/management/category'"><i class="zmdi zmdi-arrow-back"></i>&nbsp;return</router-link></div>
-                <!--{{product.name}}-->
                 <h2 class="title-1 m-b-25">test-a</h2>
                 <div class="table-responsive table--no-card m-b-55">
                   <table class="table table-borderless table-striped table-earning" id="account_table">
                     <thead>
                     <tr>
+                      <th v-if="isEdit">del</th>
                       <th>Product ID</th>
                       <th>Name</th>
                       <th>edit</th>
                     </tr>
                     </thead>
                     <tbody>
+                    <tr v-if="isNew">
+                      <td class="text-left"><input type="text" placeholder="ID of Category" v-model="newPdtID"/></td>
+                      <td class="text-left"><input type="text" placeholder="Name of Category" v-model="newPdtName"/></td>
+                      <td><button v-on:click="submitNewProduct">勾勾图片</button></td>
+                    </tr>
                     <tr v-for="product in productList" v-if="productList != null">
+                      <td v-if="isEdit" class="text-left">
+                        <input type="checkbox" v-if="product != null" v-bind:id="product.productId"
+                               name="listOption" v-on:change="selectDelete($event)"/>
+                      </td>
                       <td class="text-left"><router-link v-if="product != null" v-bind:to="'/management/item?productId='+product.productId" >{{product.productId}}</router-link></td>
                       <td class="text-left" v-if="product != null">{{product.name}}</td>
-                      <td class="text-left" @click="openMask">...</td>
-                      <td v-if="isEdit" class="text-right">
-                        <input type="checkbox" v-if="product != null" v-bind:value="product.productId" name="listOption" v-model="checkVal"/>
-                      </td>
+                      <td class="text-left" v-on:click="openMask">...</td>
                     </tr>
                     </tbody>
                   </table>
                 </div>
-                <button class="au-btn au-btn-icon au-btn--blue" id="delete_button" @click="deleteAccount" v-if="isEdit">
+
+                <button class="au-btn au-btn-icon au-btn--blue" id="delete_button" v-on:click="deleteProduct" v-if="isEdit">
                   <i class="zmdi zmdi-delete"></i>delete</button>
-                <button @click="edit" class="au-btn au-btn-icon au-btn--blue" id="edit_button" v-html="button1">
-                </button>
+                <button v-on:click="editProduct" class="au-btn au-btn-icon au-btn--blue"
+                        v-if="isEdit"><i class="zmdi zmdi-check"></i>complete</button>
+                <button v-on:click="editProduct" class="au-btn au-btn-icon au-btn--blue"
+                        v-if="!isEdit"><i class="zmdi zmdi-edit"></i>edit</button>
+
               </div>
             </div>
           </div>
@@ -62,7 +74,7 @@
     </div>
     <!-- END MAIN CONTENT-->
     <!-- END PAGE CONTAINER-->
-    <popupwin :show="show" :title="title" @hideModal="hideModal" @submit="submit">
+    <popupwin :show="show" :title="title" v-on:hideModal="hideModal" v-on:submit="submit">
       <p> test </p>
     </popupwin>
   </manageframe>
@@ -75,14 +87,16 @@ export default {
   name: 'product',
   data () {
     return {
-      button1:  '<i class="zmdi zmdi-edit"></i>edit',
-      account: this.$store.state.account,
-      productList: null,
-      checkVal: [],
-      keyword: '',
-      isEdit: false,
-      title: 'edit',
-      show: false
+        newPdtID : '',
+        newPdtName: '',
+        deleteProductList: [],
+        account: this.$store.state.account,
+        productList: null,
+        keyword: '',
+        title: 'edit',
+        isEdit: false,
+        isNew: false,
+        show: false
     }
   },
   components: {
@@ -90,22 +104,22 @@ export default {
     popupwin
   },
   methods: {
-    hideModal () {
+      hideModal () {
       // 取消弹窗回调
       this.canScroll()
       this.show = false
     },
-    submit () {
+      submit () {
       // 确认弹窗回调
       this.canScroll()
       this.show = false
     },
-    openMask () {
+      openMask () {
       // 打开弹窗
       this.noScroll()
       this.show = true
-    },
-    getData () {
+    },//打开编辑弹窗
+      getData () {
       this.axios.get('/categories', {
         params: {
           categoryId: this.$route.query.categoryId
@@ -122,26 +136,60 @@ export default {
       }).catch(err => {
         window.console.error(err)
       })
-    },
-    search () {
+    },//初始化函数
+      search () {
       alert('关键词： ' + this.keyword)
       // this.reload()
       // this.$router.push({path: '/result', query: {keyword: this.keyword}})
-    },
-    addCategory () {
-      alert('add')// 待修改
-    },
-    deleteAccount () {
-      alert(this.checkVal)// 待添加方法
-    },
-    edit () {
-      if (!this.isEdit) {
-        this.button1 = '<i class="zmdi zmdi-check"></i>complete'
-      } else {
-        this.button1 = '<i class="zmdi zmdi-edit"></i>edit'
-      }
-      this.isEdit = !this.isEdit
-    },
+    },//todo 搜索功能
+      editNewProduct () {
+          this.isNew = !this.isNew;
+          this.isEdit = false;
+      },//打开新增product编辑页面
+      submitNewProduct(){
+
+      },//todo 上传新product到后台
+      deleteProduct () {
+          console.log("即将删除:"+this.deleteProductList);
+          if(this.deleteProductList.length > 0){
+              let productIdList = this.deleteProductList;
+              this.axios({
+                  method : 'delete',
+                  url : '/management/products',
+                  data : productIdList,
+                  contentType : 'application/json'
+              }).then( res => {
+                  if(res.data.status){
+                      alert("删除成功");
+                      //同步页面数据
+                      for(let i=0;i<this.productList.length;i++){
+                          console.log(this.productList[i]+"   "+this.deleteProductList.indexOf(this.productList[i]));
+                          if(this.deleteProductList.indexOf(this.productList[i].productId) !== -1){
+                              this.categoryList.splice(i,1)
+                          }
+                      }
+                      // this.isEdit = false;
+                  }else{
+                      alert("删除失败,原因:"+res.data.msg)
+                  }
+              })
+          }
+      },//todo 删除选中product
+      selectDelete(e){
+          let productId = e.currentTarget.id
+          if(e.target.checked){
+              this.deleteProductList.push(productId)
+          }else{
+              for (let i = 0; i < this.deleteProductList.length; i++) {
+                  if (this.deleteProductList[i] === productId) this.deleteProductList.splice(i, 1)
+              }
+          }
+          console.log("当前选中:"+this.deleteProductList)
+      },//选中category的id加入List
+      editProduct () {
+          this.isEdit = !this.isEdit;
+          this.isNew = false
+    },//来回切换编辑模式
   },
   created () {
     this.getData()

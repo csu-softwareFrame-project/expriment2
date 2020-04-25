@@ -12,12 +12,14 @@
                   <!--搜索account-->
                   <form class="form-header">
                     <input class="au-input au-input--xl" type="search" name="search" placeholder="Search for category" v-model="keyword"/>
-                    <button class="au-btn--submit"  @click="search">
+                    <button class="au-btn--submit"  v-on:click="search">
                       <i class="zmdi zmdi-search"></i>
                     </button>
                   </form>
-                  <button class="au-btn au-btn-icon au-btn--blue" @click="addCategory">
+                  <button v-if="!isNew" class="au-btn au-btn-icon au-btn--blue" v-on:click="editNewCategory">
                     <i class="zmdi zmdi-plus"></i>add category</button>
+                  <button v-if="isNew" class="au-btn au-btn-icon au-btn--blue" v-on:click="editNewCategory">
+                    <i class="zmdi zmdi-plus"></i>cancel</button>
                 </div>
               </div>
             </div>
@@ -26,10 +28,6 @@
               <div class="col-lg-9">
                 <h2 class="title-1 m-b-25">Category</h2>
                 <div class="table-responsive table--no-card m-b-55">
-                  <!--<tr v-if="productList != null">-->
-                    <!--<th>Product ID</th>-->
-                    <!--<th>Name</th>-->
-                  <!--</tr>-->
                   <table class="table table-borderless table-striped table-earning" id="account_table">
                     <thead>
                     <tr>
@@ -40,6 +38,11 @@
                     </tr>
                     </thead>
                     <tbody>
+                    <tr v-if="isNew">
+                      <td class="text-left"><input type="text" placeholder="ID of Category" v-model="newCatID"/></td>
+                      <td class="text-left"><input type="text" placeholder="Name of Category" v-model="newCatName"/></td>
+                      <td><button v-on:click="submitNewCategory">勾勾图片</button></td>
+                    </tr>
                     <tr v-for="category in categoryList" v-if="categoryList != null">
                       <td v-if="isEdit" class="text-left">
                         <input type="checkbox" name="listOption"
@@ -55,8 +58,9 @@
                 <button class="au-btn au-btn-icon au-btn--blue" id="delete_button" v-on:click="deleteCategory" v-if="isEdit">
                   <i class="zmdi zmdi-delete"></i>delete</button>
                 <button v-on:click="editCategory" class="au-btn au-btn-icon au-btn--blue"
-                        id="edit_button" v-html="button1">
-                </button>
+                        v-if="!isEdit" id="edit_button"><i class="zmdi zmdi-edit"></i>edit</button>
+                <button v-on:click="editCategory" class="au-btn au-btn-icon au-btn--blue"
+                        v-if="isEdit" id="edit_button"><i class="zmdi zmdi-check"></i>complete</button>
                 <marquee style="WIDTH: 388px; HEIGHT: 20px" scrollamount="2" direction="up">
                   <div align="left" >
 
@@ -89,7 +93,7 @@
     </div>
     <!-- END MAIN CONTENT-->
     <!-- END PAGE CONTAINER-->
-    <popupwin :show="show" :title="title" @hideModal="hideModal" @submit="submit">
+    <popupwin :show="show" :title="title" v-on:hideModal="hideModal" @submit="submit">
       <p>test</p>
       <p>test</p>
       <p>test</p>
@@ -107,17 +111,20 @@ export default {
   name: 'catagory',
   data () {
     return {
-      button1: '<i class="zmdi zmdi-edit"></i>edit',
-      account: this.$store.state.account,
-      category: null,
-      categoryList: null,
-      productList: null,
-      deleteCategoryList: [],
-      checkVal: [],
-      keyword: '',
-      isEdit: false,
-      title: 'edit',
-      show: false
+        newCatID: '',//新category的ID
+        newCatName: '',//新category的name
+        button1: '<i class="zmdi zmdi-edit"></i>edit',
+        account: this.$store.state.account,
+        category: null,
+        categoryList: null,
+        productList: null,
+        deleteCategoryList: [],
+        checkVal: [],
+        keyword: '',
+        title: 'edit',
+        isEdit: false,//编辑模式
+        isNew: false,//新建模式
+        show: false,//显示通知框
     }
   },
   components: {
@@ -125,22 +132,23 @@ export default {
     popupwin
   },
   methods: {
-    hideModal () {
+      //todo 改进建议 列表显示翻页
+      hideModal () {
       // 取消弹窗回调
       this.canScroll();
       this.show = false
     },
-    submit () {
+      submit () {
       // 确认弹窗回调
       this.canScroll();
       this.show = false
     },
-    openMask () {
+      openMask () {
       // 打开弹窗
       this.noScroll();
       this.show = true
-    },
-    getData () {
+    },//打开编辑弹窗
+      getData () {
       this.axios.get('/categories', {
         params: {
           categoryId: ''
@@ -163,57 +171,85 @@ export default {
       }).catch(err => {
         window.console.error(err)
       })
-    },
-    search () {
-      alert('关键词： ' + this.keyword)
-      // this.reload()
-      // this.$router.push({path: '/result', query: {keyword: this.keyword}})
-    },
-    addCategory () {
-      alert('add')// 待修改
-    },
-    deleteCategory () {//删除选中Category
-      alert(this.checkVal);
-      if(this.deleteCategoryList.length >0 ){
-          let categoryList = this.deleteCategoryList
+    },//初始化函数
+      search () {
+          console.log('关键词:' + this.keyword)
+          //todo 如果搜索成功，搜索后放大镜图标变成取消，用搜索结果代替原来列表，
+          //todo 点击取消，恢复原来的列表
+          // this.reload()
+          // this.$router.push({path: '/result', query: {keyword: this.keyword}})
+      },//todo 搜索功能
+      editNewCategory () {
+          this.isNew = !this.isNew;
+          this.isEdit = false;//添加新category时应该关闭编辑模式
+      },//打开新增category编辑页面
+      submitNewCategory(){
+          let params = {
+              categoryId : this.newCatID,
+              name : this.newCatName
+          };
           this.axios({
-              method : 'delete',
-              url : '/management/categories',
-              data: categoryList,
+              method : 'post',
+              url: '/management/categories',
+              data: params,
               contentType : 'application/json'
           }).then( res => {
               if(res.data.status){
-                  alert("删除成功")
+                  alert("已添加新种类,ID:"+this.newCatID+",Name:"+this.newCatName);
+                  this.categoryList.push(res.data.result.category);
+                  this.isNew = false;
+                  this.newCatID = '';
+                  this.newCatName = ''
               }else{
-                  alert("删除失败,原因"+res.data.msg)
+                  alert("添加新种类失败,原因:"+res.data.msg)
               }
-          }).catch( err => {
-              console.log("发生错误")
+          }).catch(err => {
+              console.log("请求服务器失败")
           })
-      }
-    },
-    selectDelete(e){//选中Category加入List
-        let categoryName = e.currentTarget.id
+      },//上传新category到后台
+      deleteCategory () {
+          console.log("即将删除:"+this.deleteCategoryList);
+          if(this.deleteCategoryList.length >0 ){
+              let categoryIdList = this.deleteCategoryList;
+              this.axios({
+                  method : 'delete',
+                  url : '/management/categories',
+                  data: categoryIdList,
+                  contentType : 'application/json'
+              }).then( res => {
+                  if(res.data.status){
+                      alert("删除成功");
+                      //同步页面数据
+                      for(let i=0;i<this.categoryList.length;i++){
+                          // console.log(this.categoryList[i]+"   "+this.deleteCategoryList.indexOf(this.categoryList[i]));
+                          if(this.deleteCategoryList.indexOf(this.categoryList[i].categoryId) !== -1){
+                              this.categoryList.splice(i,1)
+                          }
+                      }
+                      // this.isEdit = false;
+                  }else{
+                      alert("删除失败,原因"+res.data.msg)
+                  }
+              }).catch( err => {
+                  console.log("发生错误")
+              })
+          }
+      },// 删除选中Category
+      selectDelete(e){
+        let categoryId = e.currentTarget.id
         if(e.target.checked){
-            this.deleteCategoryList.push(categoryName)
+            this.deleteCategoryList.push(categoryId)
         }else{
             for (let i = 0; i < this.deleteCategoryList.length; i++) {
-                if (this.deleteCategoryList[i] === categoryName) this.deleteCategoryList.splice(i, 1)
+                if (this.deleteCategoryList[i] === categoryId) this.deleteCategoryList.splice(i, 1)
             }
         }
         console.log("当前选中:"+this.deleteCategoryList)
-    },
-    editCategory () {//打开编辑模式
-      if (!this.isEdit) {
-        this.button1 = '<i class="zmdi zmdi-check"></i>complete'
-      } else {
-        this.button1 = '<i class="zmdi zmdi-edit"></i>edit'
-        //点击complete后，清空选中删除的目录
-        this.deleteCategoryList = []
-        console.log("完成后清空列表:"+this.deleteCategoryList)
-      }
-      this.isEdit = !this.isEdit
-    }
+    },//选中category的id加入List
+      editCategory () {
+          this.isEdit = !this.isEdit;
+          this.isNew = false;
+      }//来回切换编辑模式
   },
   created () {
     this.getData()

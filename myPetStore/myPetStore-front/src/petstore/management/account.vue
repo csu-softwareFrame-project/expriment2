@@ -116,9 +116,6 @@
       <label for="country">Country: &nbsp;
         <input type="text" size="40"  name="country" v-model="editForm.country" class="required input_field" id="country"/></label>
       <div class="cleaner h10"></div>
-      <popupwin :show="showNotice" title="通知">
-        <label v-text="noticeMsg"></label>
-      </popupwin>
       <hr>
       <h4>Profile Information</h4><br>
       <label>Language Preference: &nbsp;
@@ -138,6 +135,9 @@
       <div class="cleaner h10"></div>
       <label>Enable MyBanner &nbsp;
         <input type="checkbox" id="bannerOption" v-model="editForm.bannerOption" name="bannerOption" /></label>
+    </popupwin>
+    <popupwin :show="showNotice" title="通知">
+      <label v-text="noticeMsg"></label>
     </popupwin>
   </manageframe>
 </template>
