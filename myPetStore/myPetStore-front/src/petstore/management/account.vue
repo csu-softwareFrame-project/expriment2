@@ -234,10 +234,10 @@ export default {
       // 打开弹窗
       for (let i = 0; i < this.accountList.length; i++) {
         if (acc === this.accountList[i].username) {
-          this.editForm.account = this.accountList[i]
-          this.editForm.username = this.editForm.account.username
-          this.editForm.languagePreference = this.editForm.account.languagePreference
-          this.editForm.favouriteCategoryId = this.editForm.account.favouriteCategoryId
+          this.editForm.account = this.accountList[i];
+          this.editForm.username = this.editForm.account.username;
+          this.editForm.languagePreference = this.editForm.account.languagePreference;
+          this.editForm.favouriteCategoryId = this.editForm.account.favouriteCategoryId;
           this.editForm.listOption = this.editForm.account.listOption
           this.editForm.bannerOption = this.editForm.account.bannerOption
           this.editForm.firstName = this.editForm.account.firstName

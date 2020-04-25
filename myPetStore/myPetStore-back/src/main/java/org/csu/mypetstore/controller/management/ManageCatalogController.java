@@ -132,13 +132,17 @@ public class ManageCatalogController {
         if(DEBUG) System.out.println("添加产品");
         if(DEBUG) System.out.println(receiveItem.toString());
         BigDecimal price;
+
         try{
             price = new BigDecimal(receiveItem.getListPrice());
         }catch (Exception e){
             return ReturnPack.fail("不支持的价格类型");
         }
-        if(catalogService.getItem(receiveItem.getItemId()) != null)
+
+        if(catalogService.getItem(receiveItem.getItemId()) != null){
             return ReturnPack.fail("该产品ID已存在");
+
+        }
         Item item = new Item();
         item.setItemId(receiveItem.getItemId());
         item.setProductId(receiveItem.getProductId());
@@ -159,4 +163,13 @@ public class ManageCatalogController {
         JSONObject data = new JSONObject();
         return ReturnPack.success(data);
     }
+
+//    //todo 上架下架
+//    @PutMapping("/management/s")
+//    public ReturnPack sold(@RequestBody String itemId){
+//        if(DEBUG) System.out.println("上架产品");
+//        if(DEBUG) System.out.println(itemId);
+//        JSONObject data = new JSONObject();
+//        return ReturnPack.success(data);
+//    }
 }

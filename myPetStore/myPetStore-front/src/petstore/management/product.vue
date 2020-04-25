@@ -141,11 +141,11 @@ export default {
     }, // 初始化函数
     search () {
       // alert('关键词： ' + this.keyword)
-      this.reload()
+      this.reload();
       this.$router.push({path: '/management/product_result', query: {keyword: this.keyword}})
     }, // todo 搜索功能
     editNewProduct () {
-      this.isNew = !this.isNew
+      this.isNew = !this.isNew;
       this.isEdit = false
     }, // 打开新增product编辑页面
     submitNewProduct () {

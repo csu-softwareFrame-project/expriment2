@@ -162,6 +162,7 @@ public class CatalogService {
             return item;
         }else{
             Item item = itemMapper.getItem(itemId);
+            if(item == null) return null;
             item.setProductId(item.getProduct().getProductId());
             return item;
         }

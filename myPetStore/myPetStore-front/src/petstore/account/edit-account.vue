@@ -1,4 +1,4 @@
-<template>
+d<template>
   <div id="templatemo_main" align="center">
     <page-frame>
 <!--    <form  action="/account/edit_account" method="post">-->

@@ -38,9 +38,12 @@
                       <th>Description</th>
                       <th>List Price</th>
                       <th>edit</th>
+                      <th></th>
+                      <th></th>
                     </tr>
                     </thead>
                     <tbody>
+                    <!--添加商品-->
                     <tr v-if="isNew">
                       <td class="text-left"><input type="text" placeholder="ID of Item" v-model="newItemId"/></td>
                       <td class="text-left">{{productId}}</td>
@@ -48,6 +51,7 @@
                       <td class="text-left"><input type="text" placeholder="Price of Item" v-model="newItemPrice"/></td>
                       <td><button v-on:click="submitNewItem">完成</button></td>
                     </tr>
+                    <!--添加商品-->
                     <tr v-for="item in itemList" v-if="itemList != null && itemList.length >0">
                       <td v-if="isEdit" class="text-right">
                         <input type="checkbox" v-bind:id="item.itemId" name="listOption" v-on:change="selectDelete($event)"/>
@@ -64,6 +68,8 @@
                       </td>
                       <td v-if="item != null" class="text-left">{{item.listPrice}}</td>
                       <td class="text-left" v-on:click="openMask">...</td>
+                      <td><button v-if="item.status === 'S'" v-bind:id="item.itemId" v-on:click="putOnSale($evnet)">上架</button></td>
+                      <td><button v-if="item.status === 'P'" v-bind:id="item.itemId" v-on:click="pullOffShelves($event)">下架</button></td>
                     </tr>
                     <td v-if="itemList === null || itemList.length <= 0">
                       该产品类型似乎没有产品...</td>
@@ -235,7 +241,42 @@ export default {
       editItem () {
           this.isEdit = !this.isEdit;
           this.isNew = false;
-      }//编辑来回切换
+      },//编辑来回切换
+      putOnSale(e){
+          // let itemId = e.currentTarget.id;
+          // this.axios({
+          //     method : 'put',
+          //     url : '/management/pppppppp',
+          //     data : itemId ,
+          // }).then( res => {
+          //     if(res.data.status){
+          //         console.log(itemId+" 上架成功")
+          //     }else{
+          //         console.log("上架失败,原因:"+res.data.msg)
+          //     }
+          // }).catch( err => {
+          //     console.log("服务器错误")
+          // })
+      },//上架商品
+      pullOffShelves(e){
+          // let item = {
+          //     itemId : e.currentTarget.id,
+          // }
+          // this.axios({
+          //     method : 'put',
+          //     url : '/management/',
+          //     data : item ,
+          //     contentType : 'application/json'
+          // }).then( res => {
+          //     if(res.data.status){
+          //         console.log(itemId+" 下架成功")
+          //     }else{
+          //         console.log("下架失败,原因:"+res.data.msg)
+          //     }
+          // }).catch( err => {
+          //     console.log("服务器错误")
+          // })
+      },//下架商品
   },
   created () {
     this.getData()
