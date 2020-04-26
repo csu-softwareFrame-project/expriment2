@@ -156,12 +156,12 @@
       <div class="section__content section__content--p30">
         <div class="container-fluid">
           <div class="header-wrap">
-            <form class="form-header" action="" method="POST">
-              <input class="au-input au-input--xl" type="text" name="search" placeholder="Search for products" />
-              <button class="au-btn--submit" type="submit">
+            <div class="form-header">
+              <input class="au-input au-input--xl" type="search" name="search" placeholder="Search for ..." v-model="keyword"/>
+              <button class="au-btn--submit"  v-on:click="search">
                 <i class="zmdi zmdi-search"></i>
               </button>
-            </form>
+            </div>
             <div class="header-button">
               <div class="noti-wrap">
                 <div class="noti__item js-item-menu">
@@ -332,8 +332,34 @@ import '../../static/css/font-face.css'
 import '../../static/css/theme.css'
 
 export default {
+  inject: ['reload'],
   name: 'manage_top',
-  method: {
+  data () {
+    return {
+      keyword: ''
+    }
+  },
+  props: {
+    page: {
+      type: String,
+      default: ''
+    }
+  },
+  methods: {
+    search () {
+      alert('页面: ' + this.page + ', 关键词： ' + this.keyword)
+      switch (this.page) {
+        case 'product':
+          this.$router.push({path: '/management/product_result', query: {keyword: this.keyword}})
+          alert('comp...')
+          break
+        case 'search-product':
+          this.reload()
+          this.$router.push({path: '/management/product_result', query: {keyword: this.keyword}})
+          break
+        default: alert('开发中...')
+      }
+    } // todo 搜索功能
   }
 }
 </script>

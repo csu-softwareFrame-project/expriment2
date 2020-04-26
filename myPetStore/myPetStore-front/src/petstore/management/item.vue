@@ -1,5 +1,5 @@
 <template>
-  <manageframe>
+  <manageframe :page="pagename">
     <div class="page-container">
       <!-- MAIN CONTENT-->
       <div class="main-content">
@@ -107,23 +107,24 @@ export default {
   name: 'item',
   data () {
     return {
-        productId: this.$route.query.productId,
-        newItemId: '',
-        newItemPrice: '',
-        newAttr1: '',
-        newAttr2: '',
-        newAttr3: '',
-        newAttr4: '',
-        newAttr5: '',
-        newAttr6: '',
-        itemList: null,
-        product: null,
-        deleteItemList: [],
-        keyword: '',
-        title: 'edit',
-        isNew: false,
-        isEdit: false,
-        show: false
+      pagename: 'item',
+      productId: this.$route.query.productId,
+      newItemId: '',
+      newItemPrice: '',
+      newAttr1: '',
+      newAttr2: '',
+      newAttr3: '',
+      newAttr4: '',
+      newAttr5: '',
+      newAttr6: '',
+      itemList: null,
+      product: null,
+      deleteItemList: [],
+      keyword: '',
+      title: 'edit',
+      isNew: false,
+      isEdit: false,
+      show: false
     }
   },
   components: {
@@ -131,152 +132,152 @@ export default {
     popupwin
   },
   methods: {
-      hideModal () {
+    hideModal () {
       // 取消弹窗回调
       this.canScroll()
       this.show = false
     },
-      submit () {
+    submit () {
       // 确认弹窗回调
       this.canScroll()
       this.show = false
     },
-      openMask () {
+    openMask () {
       this.noScroll()
       this.show = true
-    },//打开编辑弹窗
-      getData () {
+    }, // 打开编辑弹窗
+    getData () {
       this.axios.get('/products', {
         params: {
           productId: this.$route.query.productId
         }
       }).then(res => {
-        this.itemList = res.data.result.itemList;
-        this.product = res.data.result.product;
+        this.itemList = res.data.result.itemList
+        this.product = res.data.result.product
         if (res.data.result.token != null) {
           if (typeof (res.data.result.token) !== 'undefined') {
-              this.$store.commit('changeLogin', { Authorization: res.data.result.token });
-              this.$store.commit('changeFail', { failToken: res.data.result.failToken})
+            this.$store.commit('changeLogin', { Authorization: res.data.result.token })
+            this.$store.commit('changeFail', { failToken: res.data.result.failToken})
           }
         }
         // console.log("搜到了产品")
       }).catch(err => {
         window.console.error(err)
       })
-    },//初始化函数
-      search () {
+    }, // 初始化函数
+    search () {
       alert('关键词： ' + this.keyword)
       this.reload()
       this.$router.push({path: '/management/product_result', query: {keyword: this.keyword}})
-    },//todo 搜索功能
-      editNewItem () {
-          this.isNew = !this.isNew;
-          this.isEdit = false;
-      },//打开新增item编辑页面
-      submitNewItem(){
-          let params = {
-              itemId : this.newItemId,
-              productId : this.productId,
-              listPrice : this.newItemPrice,
-          }
-          this.axios({
-              method : 'post',
-              url : '/management/items',
-              data : params,
-              contentType : 'application/json'
-          }).then( res => {
-              if(res.data.status){
-                  alert("已添加新的产品,ID:"+this.newItemId);
-                  this.itemList.push(res.data.result.item);
-                  this.isNew = false;
-                  this.newItemId = '';
-                  this.newItemPrice = '';
-                  this.newAttr1 = '';
-                  this.newAttr2 = '';
-                  this.newAttr3 = '';
-                  this.newAttr4 = '';
-                  this.newAttr5 = '';
-                  this.newAttr6 = '';
-              }else{
-                  alert("添加产品失败，原因:"+res.data.msg)
+    }, // todo 搜索功能
+    editNewItem () {
+      this.isNew = !this.isNew
+      this.isEdit = false
+    }, // 打开新增item编辑页面
+    submitNewItem () {
+      let params = {
+        itemId: this.newItemId,
+        productId: this.productId,
+        listPrice: this.newItemPrice
+      }
+      this.axios({
+        method: 'post',
+        url: '/management/items',
+        data: params,
+        contentType: 'application/json'
+      }).then(res => {
+        if (res.data.status) {
+          alert('已添加新的产品,ID:' + this.newItemId)
+          this.itemList.push(res.data.result.item)
+          this.isNew = false
+          this.newItemId = ''
+          this.newItemPrice = ''
+          this.newAttr1 = ''
+          this.newAttr2 = ''
+          this.newAttr3 = ''
+          this.newAttr4 = ''
+          this.newAttr5 = ''
+          this.newAttr6 = ''
+        } else {
+          alert('添加产品失败，原因:' + res.data.msg)
+        }
+      }).catch(err => {
+        console.log('服务器错误')
+      })
+    }, // 上传新item到后台 todo 部分属性尚未添加
+    deleteItem () {
+      if (this.deleteItemList.length > 0) {
+        this.axios({
+          method: 'delete',
+          url: '/management/items',
+          data: this.deleteItemList,
+          contentType: 'application/json'
+        }).then(res => {
+          if (res.data.status) {
+            alert('删除成功' + this.deleteItemList)
+            for (let i = 0; i < this.itemList.length; i++) {
+              if (this.deleteItemList.indexOf(this.itemList[i].itemId) !== -1) {
+                this.itemList.splice(i, 1)
+                i = 0
               }
-          }).catch( err => {
-              console.log("服务器错误")
-          })
-      },//上传新item到后台 todo 部分属性尚未添加
-      deleteItem () {
-          if(this.deleteItemList.length > 0){
-              this.axios({
-                  method : 'delete',
-                  url : '/management/items',
-                  data : this.deleteItemList,
-                  contentType : 'application/json',
-              }).then( res => {
-                  if(res.data.status){
-                      alert("删除成功"+this.deleteItemList);
-                      for (let i = 0; i < this.itemList.length; i++) {
-                          if (this.deleteItemList.indexOf(this.itemList[i].itemId) !== -1) {
-                              this.itemList.splice(i, 1);
-                              i = 0
-                          }
-                      }
-                      this.deleteItemList = []
-                  }else{
-                      alert("删除失败,原因:"+res.data.msg)
-                  }
-              })
+            }
+            this.deleteItemList = []
+          } else {
+            alert('删除失败,原因:' + res.data.msg)
           }
-      },//上传选中的item删除
-      selectDelete(e){
-          let itemId = e.currentTarget.id;
-          if(e.target.checked){
-              this.deleteItemList.push(itemId);
-          }else{
-              for (let i = 0; i < this.deleteItemList.length; i++) {
-                  if (this.deleteItemList[i] === itemId) this.deleteItemList.splice(i, 1)
-              }
-          }
-          console.log("当前选中"+this.deleteItemList)
-      },//选中的item的id加入list
-      editItem () {
-          this.isEdit = !this.isEdit;
-          this.isNew = false;
-      },//编辑来回切换
-      putOnSale(e){
-          // let itemId = e.currentTarget.id;
-          // this.axios({
-          //     method : 'put',
-          //     url : '/management/pppppppp',
-          //     data : itemId ,
-          // }).then( res => {
-          //     if(res.data.status){
-          //         console.log(itemId+" 上架成功")
-          //     }else{
-          //         console.log("上架失败,原因:"+res.data.msg)
-          //     }
-          // }).catch( err => {
-          //     console.log("服务器错误")
-          // })
-      },//上架商品
-      pullOffShelves(e){
-          // let item = {
-          //     itemId : e.currentTarget.id,
-          // }
-          // this.axios({
-          //     method : 'put',
-          //     url : '/management/',
-          //     data : item ,
-          //     contentType : 'application/json'
-          // }).then( res => {
-          //     if(res.data.status){
-          //         console.log(itemId+" 下架成功")
-          //     }else{
-          //         console.log("下架失败,原因:"+res.data.msg)
-          //     }
-          // }).catch( err => {
-          //     console.log("服务器错误")
-          // })
-      },//下架商品
+        })
+      }
+    }, // 上传选中的item删除
+    selectDelete (e) {
+      let itemId = e.currentTarget.id
+      if (e.target.checked) {
+        this.deleteItemList.push(itemId)
+      } else {
+        for (let i = 0; i < this.deleteItemList.length; i++) {
+          if (this.deleteItemList[i] === itemId) this.deleteItemList.splice(i, 1)
+        }
+      }
+      console.log('当前选中' + this.deleteItemList)
+    }, // 选中的item的id加入list
+    editItem () {
+      this.isEdit = !this.isEdit
+      this.isNew = false
+    }, // 编辑来回切换
+    putOnSale (e) {
+      // let itemId = e.currentTarget.id;
+      // this.axios({
+      //     method : 'put',
+      //     url : '/management/pppppppp',
+      //     data : itemId ,
+      // }).then( res => {
+      //     if(res.data.status){
+      //         console.log(itemId+" 上架成功")
+      //     }else{
+      //         console.log("上架失败,原因:"+res.data.msg)
+      //     }
+      // }).catch( err => {
+      //     console.log("服务器错误")
+      // })
+    }, // 上架商品
+    pullOffShelves (e) {
+      // let item = {
+      //     itemId : e.currentTarget.id,
+      // }
+      // this.axios({
+      //     method : 'put',
+      //     url : '/management/',
+      //     data : item ,
+      //     contentType : 'application/json'
+      // }).then( res => {
+      //     if(res.data.status){
+      //         console.log(itemId+" 下架成功")
+      //     }else{
+      //         console.log("下架失败,原因:"+res.data.msg)
+      //     }
+      // }).catch( err => {
+      //     console.log("服务器错误")
+      // })
+    }// 下架商品
   },
   created () {
     this.getData()

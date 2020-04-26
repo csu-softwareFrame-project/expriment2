@@ -1,5 +1,5 @@
 <template>
-  <manageframe>
+  <manageframe :page="pagename">
     <div class="page-container">
       <!-- MAIN CONTENT-->
       <div class="main-content">
@@ -126,7 +126,19 @@
       <label>Enable MyBanner &nbsp;
         <input type="checkbox" id="bannerOption" v-model="editForm.bannerOption" name="bannerOption" /></label>
     </popupwin>
-
+    <!--弹窗-->
+    <popupwin :show="showAccount" :title="accountTitle" v-on:hideModal="hideAccountWin" v-on:submit="submitAccountWin">
+      <div class="form-horizontal">
+        <div class="form-group">
+          <input type="text" autocomplete="Off" class="form-control" placeholder="username">
+          <i class="fa fa-user"></i>
+        </div>
+        <div class="form-group">
+          <input v-bind:type="type"  class="form-control" placeholder="password"/>
+          <i><img class="eyes" id="eyes" v-bind:src="src" @click="change" width="20" height="20"></i>
+        </div>
+      </div>
+    </popupwin>
   </manageframe>
 </template>
 
@@ -148,6 +160,9 @@ export default {
   },
   data () {
     return {
+      pagename: 'account',
+      type: 'password',
+      src: '../../../static/images/eye2.png',
       time: 0, // 计时器
       noticeMsg: '',
       button1: '<i class="zmdi zmdi-edit"></i>edit account',
@@ -157,6 +172,8 @@ export default {
       deleteAccountList: [],
       isEdit: false,
       titlewin: 'user details', // 弹窗控制数据
+      accountTitle: 'New Account',
+      showAccount: false,
       show: false,
       editForm: { // 暂时用来显示弹窗内容的数据
         account: '#',
@@ -181,6 +198,26 @@ export default {
     Manageframe,
     popupwin},
   methods: {
+    change () { // 切换密码是否可见
+      if (!this.isShow) {
+        this.type = 'text'
+        this.src = '../../../static/images/eye1.png'
+      } else {
+        this.type = 'password'
+        this.src = '../../../static/images/eye2.png'
+      }
+      this.isShow = !this.isShow
+    },
+    hideAccountWin () {
+      // 取消弹窗回调
+      this.canScroll()
+      this.showAccount = false
+    },
+    submitAccountWin () {
+      // 确认弹窗回调
+      this.canScroll()
+      this.showAccount = false
+    },
     hideNotice () {
       this.showNotice = false
       clearInterval(this.time)// 暂停计时器
@@ -219,25 +256,29 @@ export default {
       }
       this.axios.put('/management/accounts', account).then(res => {
         if (res.data.status) {
-          this.noticeMsg = '修改成功.';
+          this.noticeMsg = '修改成功.'
           this.time = setInterval(this.hideNotice, 1000)
         } else {
           this.noticeMsg = '服务器异常,修改失败'
           this.time = setInterval(this.hideNotice, 1000)
         }
       })
-    },//提交修改信息到后台
+    }, // 提交修改信息到后台
+    openAccount () {
+      this.noScroll()
+      this.showAccount = true
+    },
     openMask (e) {
-      this.noScroll();
-      let acc = e.currentTarget.name;
+      this.noScroll()
+      let acc = e.currentTarget.name
       // console.log(acc)
       // 打开弹窗
       for (let i = 0; i < this.accountList.length; i++) {
         if (acc === this.accountList[i].username) {
-          this.editForm.account = this.accountList[i];
-          this.editForm.username = this.editForm.account.username;
-          this.editForm.languagePreference = this.editForm.account.languagePreference;
-          this.editForm.favouriteCategoryId = this.editForm.account.favouriteCategoryId;
+          this.editForm.account = this.accountList[i]
+          this.editForm.username = this.editForm.account.username
+          this.editForm.languagePreference = this.editForm.account.languagePreference
+          this.editForm.favouriteCategoryId = this.editForm.account.favouriteCategoryId
           this.editForm.listOption = this.editForm.account.listOption
           this.editForm.bannerOption = this.editForm.account.bannerOption
           this.editForm.firstName = this.editForm.account.firstName
@@ -254,43 +295,43 @@ export default {
         }
       }
       this.show = true
-    },//打开用户详细信息
+    }, // 打开用户详细信息
     addAccount () {
-      alert('add')// 待修改
-    },//打开添加新用户
+      this.openAccount()
+    }, // 打开添加新用户
     deleteAccount () {
       console.log('本次删除账户:' + this.deleteAccountList)
       let accountList = this.deleteAccountList
-      if(this.deleteAccountList.length > 0){
-          this.axios({
-              method : 'delete',
-              url :'/management/accounts',
-              data : accountList,
-              contentType : 'application/json'
-          }).then( res => {
-              if(res.data.status){
-                  alert("删除成功")
-              }else{
-                  alert("删除失败,原因:"+res.data.msg)
-              }
-          })
+      if (this.deleteAccountList.length > 0) {
+        this.axios({
+          method: 'delete',
+          url: '/management/accounts',
+          data: accountList,
+          contentType: 'application/json'
+        }).then(res => {
+          if (res.data.status) {
+            alert('删除成功')
+          } else {
+            alert('删除失败,原因:' + res.data.msg)
+          }
+        })
       }
-    },//删除选中账户
-    selectDelete (e) {//选中Account加入List
+    }, // 删除选中账户
+    selectDelete (e) { // 选中Account加入List
       let username = e.currentTarget.id
       if (e.target.checked) {
         this.deleteAccountList.push(username)
       } else {
         for (let i = 0; i < this.deleteAccountList.length; i++) {
-            if (this.deleteAccountList[i] === username){
-                this.deleteAccountList.splice(i, 1)
-            }
+          if (this.deleteAccountList[i] === username) {
+            this.deleteAccountList.splice(i, 1)
+          }
         }
-        console.log("当前选中:"+this.deleteAccount)
+        console.log('当前选中:' + this.deleteAccount)
       }
-    },//选中的账户加入list
-    editAccounts () {//开启编辑模式
-        this.isEdit = !this.isEdit
+    }, // 选中的账户加入list
+    editAccounts () { // 开启编辑模式
+      this.isEdit = !this.isEdit
     },
     getData () {
       this.axios.get('/management/accounts', {

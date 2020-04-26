@@ -1,5 +1,5 @@
 <template>
-  <manageframe>
+  <manageframe :page="pagename">
   <div class="page-container">
     <!-- MAIN CONTENT-->
     <div class="main-content">
@@ -9,13 +9,6 @@
             <div class="col-md-12">
               <div class="overview-wrap">
                 <h2 class="title-1">Search</h2>
-                <!--搜索account-->
-                <div class="form-header">
-                  <input class="au-input au-input--xl" type="search" name="search" placeholder="Search for product" v-model="keyword"/>
-                  <button class="au-btn--submit"  v-on:click="search">
-                    <i class="zmdi zmdi-search"></i>
-                  </button>
-                </div>
                 <button v-if="!isNew" class="au-btn au-btn-icon au-btn--blue" >
                   Sort &nbsp;<i class="zmdi zmdi-triangle-down" ></i></button>
               </div>
@@ -112,6 +105,7 @@ export default {
   name: 'search-product',
   data () {
     return {
+      pagename: 'search-product',
       productList: null,
       newPdtID: '',
       newPdtName: '',
@@ -120,12 +114,13 @@ export default {
       keyword: '',
       title: 'edit',
       isEdit: false,
+      isNew: false,
       show: false
     }
   },
   components: {
     Manageframe,
-    popupwin,
+    popupwin
     // menu
   },
   methods: {

@@ -16,8 +16,8 @@
 
               <div class="form-group">
 <!--                <input type="password" class="form-control" name="password" id="password"  th:placeholder="#{signon.password}"/>-->
-                <input type="password" v-model="signInForm.password" class="form-control"  />
-                <i><img class="eyes" id="eyes" src="../../assets/static/images/eye2.png" onclick="change()" width="20" height="20"></i>
+                <input v-bind:type="type" v-model="signInForm.password" class="form-control"  />
+                <i><img class="eyes" id="eyes" v-bind:src="src" @click="change" width="20" height="20"></i>
               </div>
 
               <div class="form-group">
@@ -67,10 +67,14 @@
 // import '../../../static/css/font-awesome.min.css'
 // import '../../../static/css/zzsc.css'
 // import '../../../static/css/login.css'
+// import { change } from '../../../static/js/change'
 import pageFrame from '../../components/pageframe'
 export default {
   data () {
     return {
+      type: 'password',
+      src: '../../../static/images/eye2.png',
+      isShow: false,
       signInForm: {
         username: '',
         password: '',
@@ -86,6 +90,16 @@ export default {
     pageFrame
   },
   methods: {
+    change () {
+      if (!this.isShow) {
+        this.type = 'text'
+        this.src = '../../../static/images/eye1.png'
+      } else {
+        this.type = 'password'
+        this.src = '../../../static/images/eye2.png'
+      }
+      this.isShow = !this.isShow
+    },
     verify () {
       var email = this.signInForm.email
       if (email == null || email === '') {

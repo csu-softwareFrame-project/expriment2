@@ -1,6 +1,6 @@
 <template>
   <div>
-    <managetop/>
+    <managetop :page="page"/>
     <slot>
     </slot>
     <managebottom/>
@@ -15,6 +15,12 @@ export default {
   components: {
     managetop,
     managebottom
-  }
+  },
+  props: {
+    page: {
+      type: String,
+      default: ''
+    }
+  },
 }
 </script>

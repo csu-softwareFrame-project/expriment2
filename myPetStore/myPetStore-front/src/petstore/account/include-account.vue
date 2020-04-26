@@ -51,7 +51,6 @@
 <!--      <script type="text/javascript" src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>-->
 <!--      <script type="text/javascript" src="js/optionChecked.js"></script>-->
 
-
       <label>Language Preference: &nbsp;
         <!--            <select name="languagePreference" id="languagePreference" th:each="languages:${session.languages}">-->
         <!--            <option th:text="${languages}">languages</option>-->
@@ -87,95 +86,94 @@
 </template>
 
 <script>
-  import editAccount from './edit-account'
-  export default {
-    data(){
-      return{
+import editAccount from './edit-account'
+export default {
+  data () {
+    return {
+      account: this.$store.state.account,
+      editForm: {
         account: this.$store.state.account,
-        editForm:{
-          account: this.$store.state.account,
-          languagePreference: this.$store.state.account.languagePreference,
-          favouriteCategoryId: this.$store.state.account.favouriteCategoryId,
-          listOption: this.$store.state.account.booleanListOption,
-          bannerOption: this.$store.state.account.booleanBannerOption,
-          firstName: this.$store.state.account.firstName,
-          lastName: this.$store.state.account.lastName,
-          email: this.$store.state.account.email,
-          phone: this.$store.state.account.phone,
-          address1: this.$store.state.account.address1,
-          address2: this.$store.state.account.address2,
-          city: this.$store.state.account.city,
-          state: this.$store.state.account.state,
-          zip: this.$store.state.zip,
-          country: this.$store.state.country
+        languagePreference: this.$store.state.account.languagePreference,
+        favouriteCategoryId: this.$store.state.account.favouriteCategoryId,
+        listOption: this.$store.state.account.booleanListOption,
+        bannerOption: this.$store.state.account.booleanBannerOption,
+        firstName: this.$store.state.account.firstName,
+        lastName: this.$store.state.account.lastName,
+        email: this.$store.state.account.email,
+        phone: this.$store.state.account.phone,
+        address1: this.$store.state.account.address1,
+        address2: this.$store.state.account.address2,
+        city: this.$store.state.account.city,
+        state: this.$store.state.account.state,
+        zip: this.$store.state.zip,
+        country: this.$store.state.country
+      }
+    }
+  },
+  components: {
+    editAccount
+  },
+  methods: {
+    editAccount () {
+      let account = {
+        email: this.editForm.email,
+        firstName: this.editForm.firstName,
+        lastName: this.editForm.lastName,
+        address1: this.editForm.address1,
+        address2: this.editForm.address2,
+        city: this.editForm.city,
+        state: this.editForm.state,
+        zip: this.editForm.zip,
+        country: this.editForm.country,
+        phone: this.editForm.phone,
+        favouriteCategoryId: this.editForm.favouriteCategoryId,
+        languagePreference: this.editForm.languagePreference,
+        listOption: this.editForm.listOption,
+        bannerOption: this.editForm.bannerOption
+      }
+      console.log('listOption:' + this.editForm.listOption)
+      this.axios.put('/accounts', account)
+        .then(res => {
+          if (typeof (res.data.result.account) !== 'undefined') { this.$store.commit('updateAccount', res.data.result.account) }
+          console.log('更新listOption:' + res.data.result.account.booleanListOption)
+          // 更新token
+          if (typeof (res.data.result.token) !== 'undefined') {
+            console.log('更新了token:' + res.data.result.token)
+            this.$store.commit('changeLogin', { Authorization: res.data.result.token })
+          }
+          if (res.data.status) alert('修改成功!')
+        })
+    }
+  },
+  created () {
+    console.log('type:' + typeof (this.account) + '  ' + this.account)
+    // console.log("当前listOption:"+this.editForm.listOption)
+    if (this.account === null) {
+      alert('请先登录')
+      this.$router.push('/account/view-sign-in')
+    } else {
+      // 验证token是否还有效
+      console.log('验证token')
+      let token = localStorage.getItem('Authorization')
+      let strToken = this.$qs.stringify({
+        token: token
+      })
+      this.axios({
+        method: 'post',
+        url: '/tokens',
+        data: strToken
+      }).then(res => {
+        // 更新token
+        if (typeof (res.data.result.token) !== 'undefined') {
+          // console.log("更新了token:         "+res.data.result.token);
+          // console.log("更新了failToken:     "+res.data.result.failToken);
+          this.$store.commit('changeLogin', { Authorization: res.data.result.token })
+          this.$store.commit('changeFail', { failToken: res.data.result.failToken})
         }
-      }
-    },
-    components:{
-      editAccount,
-    },
-    methods:{
-      editAccount(){
-          let account = {
-              email: this.editForm.email,
-              firstName: this.editForm.firstName,
-              lastName: this.editForm.lastName,
-              address1: this.editForm.address1,
-              address2: this.editForm.address2,
-              city: this.editForm.city,
-              state: this.editForm.state,
-              zip: this.editForm.zip,
-              country: this.editForm.country,
-              phone: this.editForm.phone,
-              favouriteCategoryId: this.editForm.favouriteCategoryId,
-              languagePreference: this.editForm.languagePreference,
-              listOption: this.editForm.listOption,
-              bannerOption: this.editForm.bannerOption,
-          }
-          console.log("listOption:"+this.editForm.listOption);
-          this.axios.put('/accounts',account)
-              .then(res => {
-                  if(typeof(res.data.result.account) !== "undefined")
-                      this.$store.commit('updateAccount',res.data.result.account);
-                  console.log("更新listOption:"+res.data.result.account.booleanListOption);
-                  //更新token
-                  if(typeof(res.data.result.token) !== "undefined"){
-                      console.log("更新了token:"+res.data.result.token);
-                      this.$store.commit('changeLogin',{ Authorization: res.data.result.token })
-                  }
-                  if(res.data.status) alert("修改成功!")
-              })
-      }
-    },
-      created(){
-          console.log("type:"+typeof(this.account)+"  "+this.account)
-          // console.log("当前listOption:"+this.editForm.listOption)
-          if(this.account === null){
-              alert("请先登录")
-              this.$router.push('/account/view-sign-in')
-          }else {
-              //验证token是否还有效
-              console.log("验证token")
-              let token = localStorage.getItem('Authorization')
-              let strToken = this.$qs.stringify({
-                  token : token
-              })
-              this.axios({
-                  method: 'post',
-                  url: '/tokens',
-                  data: strToken
-              }).then(res => {
-                  //更新token
-                  if(typeof(res.data.result.token) !== "undefined"){
-                      // console.log("更新了token:         "+res.data.result.token);
-                      // console.log("更新了failToken:     "+res.data.result.failToken);
-                      this.$store.commit('changeLogin',{ Authorization: res.data.result.token });
-                      this.$store.commit('changeFail', { failToken: res.data.result.failToken})
-                  }
-              })
-          }
-      }
+      })
+    }
   }
+}
 </script>
 
 <style>

@@ -1,6 +1,6 @@
 <template>
   <div class="page-wrapper">
-<manageframe>
+<manageframe :page="pagename">
     <div class="page-container">
       <!-- MAIN CONTENT-->
       <div class="main-content">
@@ -549,7 +549,12 @@ import '../../../static/css/theme.css'
 import Manageframe from '../../components/manageframe'
 export default {
   name: 'mainPage',
-  components: {Manageframe}
+  components: {Manageframe},
+  data () {
+    return {
+      pagename: 'mainPage'
+    }
+  }
 }
 </script>
 

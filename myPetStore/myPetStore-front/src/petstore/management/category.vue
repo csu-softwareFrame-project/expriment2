@@ -1,5 +1,5 @@
 <template>
-  <manageframe>
+  <manageframe :page="pagename">
     <div class="page-container">
       <!-- MAIN CONTENT-->
       <div class="main-content">
@@ -91,6 +91,7 @@ export default {
   name: 'catagory',
   data () {
     return {
+      pagename: 'catagory',
       newCatID: '', // 新category的ID
       newCatName: '', // 新category的name
       button1: '<i class="zmdi zmdi-edit"></i>edit',
