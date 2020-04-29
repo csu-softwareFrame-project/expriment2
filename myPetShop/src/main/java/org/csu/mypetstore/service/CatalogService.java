@@ -213,6 +213,7 @@ public class CatalogService {
         List<Item> itemList = itemMapper.getItemListByItemStatus(status);
         Product product = new Product();
         for(int i=0;i<itemList.size();i++){
+            itemList.get(i).setProductId(itemList.get(i).getProduct().getProductId());
             product = productMapper.getProduct(itemList.get(i).getProductId());
             itemList.get(i).setProduct(product);
         }

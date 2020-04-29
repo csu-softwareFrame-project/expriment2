@@ -449,7 +449,7 @@ class DemoApplicationTests {
 
     @Test
     void testItemSearch(){
-        String keyword = "1";
+        String keyword = "";
         List<Item> itemList = catalogService.searchItemList(keyword);
         System.out.println(itemList.size());
     }
