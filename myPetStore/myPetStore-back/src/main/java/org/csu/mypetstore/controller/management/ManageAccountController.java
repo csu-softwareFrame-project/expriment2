@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import org.csu.mypetstore.domain.Account;
 import org.csu.mypetstore.service.AccountService;
 import org.csu.mypetstore.util.ReturnPack;
+import org.csu.mypetstore.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,6 +15,8 @@ import java.util.List;
 public class ManageAccountController {
     @Autowired
     AccountService accountService;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     //获取所有帐号信息
     @GetMapping("/management/accounts")
@@ -27,14 +31,33 @@ public class ManageAccountController {
     @DeleteMapping("/management/accounts")
     public ReturnPack removeAccounts(@RequestBody List<String> accountList){
         System.out.println(accountList);
+        for (int i = 0; i < accountList.size(); i++) {
+            accountService.removeAccount(accountList.get(i));
+        }
         JSONObject data = new JSONObject();
         return ReturnPack.success(data);
     }
 
-    //todo 添加帐号
+    //添加帐号
     @PostMapping("/management/accounts")
     public ReturnPack addAccount(@RequestBody Account account){
-        return null;
+        JSONObject data = new JSONObject();
+        String username = account.getUsername();
+        String password = account.getPassword();
+//        String email = account.getEmail();
+        if(accountService.getAccount(username)!=null) return ReturnPack.fail("该用户名已存在");
+        else{
+            try{
+                String enc_password = passwordEncoder.encode(password);
+                account.setPassword(enc_password);
+                accountService.insertAccount(account);//插入数据库
+            }catch (Exception e){
+                e.printStackTrace();
+                return ReturnPack.fail("服务器错误");
+            }
+            data.put("account",accountService.getAccount(username));
+            return ReturnPack.success(data);
+        }
     }
 
     //修改账户
@@ -63,6 +86,17 @@ public class ManageAccountController {
         return ReturnPack.success(data);
     }
 
-    //todo 修改密码
-
+    //重置密码
+    @PutMapping("/management/accounts/passwords")
+    public ReturnPack resetPassword(@RequestBody Account account){
+        System.out.println(account.getUsername());
+        //todo 随机生成密码，发送给用户邮箱
+        String filename= StringUtil.getRandomString(7+(int)(Math.random()*4));
+        String password = "";
+//        String enc_password = passwordEncoder.encode(password);//加密码
+//        Account account1 = accountService.getAccount(account.getUsername()).setPassword(enc_password)
+//        accountService.updateAccount(account1);
+        JSONObject data = new JSONObject();
+        return ReturnPack.success(data);
+    }
 }

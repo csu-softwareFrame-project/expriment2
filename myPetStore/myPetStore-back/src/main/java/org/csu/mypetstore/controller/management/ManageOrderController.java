@@ -23,11 +23,11 @@ public class ManageOrderController {
     @GetMapping("/management/orders")
     public ReturnPack getOrders(@RequestParam String type){
         List<Order> orderList = new LinkedList<>();
-        if(type.equals("1")){
+        if(type.equals("1")){//获取未发货的
             orderList.addAll(orderService.getOrdersByStatus(0));
-        } else if(type.equals("2")){
+        } else if(type.equals("2")){//获取已发货的
             orderList.addAll(orderService.getOrdersByStatus(1));
-        } else if(type.equals("3")){
+        } else if(type.equals("3")){//获取所有订单
             orderList.addAll(orderService.getOrdersByStatus(0));
             orderList.addAll(orderService.getOrdersByStatus(1));
         }
@@ -47,4 +47,14 @@ public class ManageOrderController {
     }
 
     //发货
+    @PutMapping("/management/deliverOrders")
+    public ReturnPack deliverOrders(@RequestBody List<String> deliverOrderIdList){
+        for (int i = 0; i <deliverOrderIdList.size() ; i++) {
+            Order order = orderService.getOrder(Integer.parseInt(deliverOrderIdList.get(i)));
+            order.setStatus("1");
+            orderService.updateOrder(order);
+        }
+        JSONObject data = new JSONObject();
+        return ReturnPack.success(data);
+    }
 }

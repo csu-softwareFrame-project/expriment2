@@ -27,6 +27,24 @@ export default new Router({
       component: () => import('../petstore/management/search-product')
     },
     {
+      path: '/management/account_result',
+      name: '搜索账户',
+      hidden: true,
+      meta: {
+        title: 'myPetStore - 搜索用户'
+      },
+      component: () => import('../petstore/management/search-account')
+    },
+    {
+      path: '/management/order_result',
+      name: '搜索账单',
+      hidden: true,
+      meta: {
+        title: 'myPetStore - 搜索订单'
+      },
+      component: () => import('../petstore/management/search-order')
+    },
+    {
       path: '/management/account',
       name: '管理用户',
       // 渲染是否可见

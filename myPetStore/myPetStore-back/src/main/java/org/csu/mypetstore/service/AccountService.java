@@ -46,6 +46,17 @@ public class AccountService {
     }
 
     public void insertAccount(Account account) {  //使用时注意填写信息要完整，不然可能出现前面一个表插入以后后面的表插入失败，这样子再次插入时会提示用户已存在
+        //默认NOBANNER
+        if(account.getBannerOption() == null)
+            account.setFavouriteCategoryId("NOBANNER");
+        else if(account.getBannerOption().equals(""))
+            account.setFavouriteCategoryId("NOBANNER");
+        //语言偏好(不设置默认为英语)
+        if(account.getLanguagePreference() == null){
+            account.setLanguagePreference("English");
+        }else if(account.getLanguagePreference().equals("")){
+            account.setLanguagePreference("English");
+        }
         accountMapper.insertAccount(account);
         accountMapper.insertProfile(account);
         accountMapper.insertSignon(account);
@@ -196,12 +207,7 @@ public class AccountService {
                 account.setBooleanBannerOption(false);
             }
 
-            //语言偏好(不设置默认为英语)
-            if(account.getLanguagePreference() == null){
-                account.setLanguagePreference("English");
-            }else if(account.getLanguagePreference().equals("")){
-                account.setLanguagePreference("English");
-            }
+
             //最喜欢的种类
 
 

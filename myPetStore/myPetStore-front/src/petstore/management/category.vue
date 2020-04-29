@@ -231,6 +231,7 @@ export default {
     editCategory () {
       this.isEdit = !this.isEdit
       this.isNew = false
+        if(this.isEdit === false) this.deleteCategoryList =[]
     }// 编辑模式来回切换
   },
   created () {

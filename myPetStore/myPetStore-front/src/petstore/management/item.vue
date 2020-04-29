@@ -241,43 +241,49 @@ export default {
       console.log('当前选中' + this.deleteItemList)
     }, // 选中的item的id加入list
     editItem () {
-      this.isEdit = !this.isEdit
-      this.isNew = false
+      this.isEdit = !this.isEdit;
+      this.isNew = false;
+        if(this.isEdit === false) this.deleteItemList =[]
     }, // 编辑来回切换
     putOnSale (e) {
-      // let itemId = e.currentTarget.id;
-      // this.axios({
-      //     method : 'put',
-      //     url : '/management/pppppppp',
-      //     data : itemId ,
-      // }).then( res => {
-      //     if(res.data.status){
-      //         console.log(itemId+" 上架成功")
-      //     }else{
-      //         console.log("上架失败,原因:"+res.data.msg)
-      //     }
-      // }).catch( err => {
-      //     console.log("服务器错误")
-      // })
+      let data = {
+          itemId : e.currentTarget.id
+      };
+      this.axios({
+          method : 'put',
+          url : '/management/items/P',
+          data : data ,
+      }).then( res => {
+          if(res.data.status){
+              console.log(" 上架成功")
+              this.itemList = res.data.result.itemList;
+              console.log(res.data.result.itemList)
+          }else{
+              console.log("上架失败,原因:"+res.data.msg)
+          }
+      }).catch( err => {
+          console.log("服务器错误")
+      })
     }, // 上架商品
     pullOffShelves (e) {
-      // let item = {
-      //     itemId : e.currentTarget.id,
-      // }
-      // this.axios({
-      //     method : 'put',
-      //     url : '/management/',
-      //     data : item ,
-      //     contentType : 'application/json'
-      // }).then( res => {
-      //     if(res.data.status){
-      //         console.log(itemId+" 下架成功")
-      //     }else{
-      //         console.log("下架失败,原因:"+res.data.msg)
-      //     }
-      // }).catch( err => {
-      //     console.log("服务器错误")
-      // })
+        let data = {
+            itemId : e.currentTarget.id
+        }
+      this.axios({
+          method : 'put',
+          url : '/management/items/S',
+          data : data ,
+          contentType : 'application/json'
+      }).then( res => {
+          if(res.data.status){
+              console.log(" 下架成功")
+              this.itemList = res.data.result.itemList;
+          }else{
+              console.log("下架失败,原因:"+res.data.msg)
+          }
+      }).catch( err => {
+          console.log("服务器错误")
+      })
     }// 下架商品
 
   },

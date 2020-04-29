@@ -347,16 +347,23 @@ export default {
   },
   methods: {
     search () {
-      alert('页面: ' + this.page + ', 关键词： ' + this.keyword)
+      // alert('页面: ' + this.page + ', 关键词： ' + this.keyword)
       switch (this.page) {
-        case 'product':
-          this.$router.push({path: '/management/product_result', query: {keyword: this.keyword}})
-          alert('comp...')
-          break
-        case 'search-product':
-          this.reload()
-          this.$router.push({path: '/management/product_result', query: {keyword: this.keyword}})
-          break
+          case 'product':
+              this.$router.push({path: '/management/product_result', query: {keyword: this.keyword}});
+          // alert('comp...')
+              break;
+          case 'order':
+              this.$router.push({path: '/management/order_result', query: {keyword: this.keyword}});
+
+              break;
+          case 'account':
+              this.$router.push({path: '/management/account_result', query: {keyword: this.keyword}});
+              break;
+          case 'search-product':
+              this.reload();
+              this.$router.push({path: '/management/product_result', query: {keyword: this.keyword}})
+              break;
         default: alert('开发中...')
       }
     } // todo 搜索功能

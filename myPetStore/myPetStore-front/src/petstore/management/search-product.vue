@@ -183,12 +183,13 @@ export default {
       console.log('当前选中:' + this.deleteProductList)
     }, // 选中category的id加入List
     editProduct () {
-      this.isEdit = !this.isEdit
-      this.isNew = false
+      this.isEdit = !this.isEdit;
+      this.isNew = false;
+        if(this.isEdit === false) this.deleteProductList =[]
     }// 编辑模式来回切换
   },
   created () {
-    this.axios.get('/results', {
+    this.axios.get('/management/products/results', {
       params: {
         keyword: this.$route.query.keyword
       }

@@ -164,12 +164,16 @@ public class ManageCatalogController {
         return ReturnPack.success(data);
     }
 
-    //todo 上架下架
+    //上架下架
     @PutMapping("/management/items/{status}")
-    public ReturnPack sold(@PathVariable("status") String status,@RequestBody String itemId){
+    public ReturnPack sold(@PathVariable("status") String status,@RequestBody Item item){
+        String itemId = item.getItemId();
         if(DEBUG) System.out.println("上架下架产品");
         if(DEBUG) System.out.println(status+"   "+itemId);
+        catalogService.updateStatus(itemId,status);
+        List<Item> itemList = catalogService.getItemListByProductId(catalogService.getItem(itemId).getProductId());
         JSONObject data = new JSONObject();
+        data.put("itemList",itemList);
         return ReturnPack.success(data);
     }
 }
