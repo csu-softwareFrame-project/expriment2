@@ -5,7 +5,9 @@ import org.csu.mypetstore.Constants;
 import org.csu.mypetstore.domain.Category;
 import org.csu.mypetstore.domain.Item;
 import org.csu.mypetstore.domain.Product;
+import org.csu.mypetstore.domain.receiveBean.receiveCategory;
 import org.csu.mypetstore.domain.receiveBean.receiveItem;
+import org.csu.mypetstore.domain.receiveBean.receiveProduct;
 import org.csu.mypetstore.service.AccountService;
 import org.csu.mypetstore.service.CatalogService;
 import org.csu.mypetstore.util.ReturnPack;
@@ -61,12 +63,22 @@ public class ManageCatalogController {
         return ReturnPack.success(data);
     }
 
-    //todo 修改种类
+    //修改种类
     @PutMapping("/management/categories")
-    public ReturnPack editCategories(@RequestBody Category category){
+    public ReturnPack editCategories(@RequestBody receiveCategory receiveCategory){
         if(DEBUG) System.out.println("修改种类");
-        if(DEBUG) System.out.println(category);
+        if(DEBUG) System.out.println(receiveCategory);
+        Category category = catalogService.getCategory(receiveCategory.getOldCategoryId());
+        category.setCategoryId(receiveCategory.getCategoryId());
+        category.setName(receiveCategory.getCategoryName());
+        try{
+            catalogService.updateCategory(category,receiveCategory.getOldCategoryId());
+        }catch (Exception e){
+            e.printStackTrace();
+            return ReturnPack.fail("服务器错误");
+        }
         JSONObject data = new JSONObject();
+        data.put("category",category);
         return ReturnPack.success(data);
     }
 
@@ -105,12 +117,22 @@ public class ManageCatalogController {
         return ReturnPack.success(data);
     }
 
-    //todo 修改产品类型
+    //修改产品类型
     @PutMapping("/management/products")
-    public ReturnPack editProduct(@RequestBody Product product){
+    public ReturnPack editProduct(@RequestBody receiveProduct receiveProduct){
         if(DEBUG) System.out.println("修改产品类型");
-        if(DEBUG) System.out.println(product);
+        if(DEBUG) System.out.println(receiveProduct);
+        Product product = catalogService.getProduct(receiveProduct.getOldProductId());
+        product.setProductId(receiveProduct.getProductId());
+        product.setName(receiveProduct.getProductName());
+        try{
+            catalogService.updateProduct(product,receiveProduct.getOldProductId());
+        }catch (Exception e){
+            e.printStackTrace();
+            return ReturnPack.fail("服务器错误");
+        }
         JSONObject data = new JSONObject();
+        data.put("product",product);
         return ReturnPack.success(data);
     }
 
@@ -155,12 +177,27 @@ public class ManageCatalogController {
         return ReturnPack.success(data);
     }
 
-    //todo 修改产品
+    //修改产品
     @PutMapping("/management/items")
-    public ReturnPack editItem(@RequestBody Item item){
+    public ReturnPack editItem(@RequestBody receiveItem receiveItem){
         if(DEBUG) System.out.println("修改产品");
-        if(DEBUG) System.out.println(item);
+        if(DEBUG) System.out.println(receiveItem);
+        Item item = catalogService.getItem(receiveItem.getOldItemId());
+        item.setItemId(receiveItem.getOldItemId());
+        item.setListPrice(new BigDecimal(receiveItem.getListPrice()));
+        item.setAttribute1(receiveItem.getAttribute1());
+        item.setAttribute2(receiveItem.getAttribute2());
+        item.setAttribute3(receiveItem.getAttribute3());
+        item.setAttribute4(receiveItem.getAttribute4());
+        item.setAttribute5(receiveItem.getAttribute5());
+        try{
+            catalogService.updateItem(item,receiveItem.getOldItemId());
+        }catch (Exception e){
+            e.printStackTrace();
+            return ReturnPack.fail("服务器错误");
+        }
         JSONObject data = new JSONObject();
+        data.put("item",item);
         return ReturnPack.success(data);
     }
 

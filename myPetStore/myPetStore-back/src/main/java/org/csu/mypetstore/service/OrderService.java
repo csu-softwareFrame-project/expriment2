@@ -184,6 +184,7 @@ public class OrderService {
         }
         String username =  httpServletRequest.getHeader("UserName");
         //todo 加入判断，库存是否够，购物车中不够的商品数量改成库存上限
+
         int orderId = insertOrder(order);
         data.put("orderId",orderId);
 //        session.removeAttribute("order");//移出订单

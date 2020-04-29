@@ -19,6 +19,7 @@ public class receiveItem implements Serializable {
     private String attribute3;
     private String attribute4;
     private String attribute5;
+    private String oldItemId;
 
     public String getItemId() {
         return itemId;
@@ -108,6 +109,14 @@ public class receiveItem implements Serializable {
         this.status = status;
     }
 
+    public String getOldItemId() {
+        return oldItemId;
+    }
+
+    public void setOldItemId(String oldItemId) {
+        this.oldItemId = oldItemId;
+    }
+
     @Override
     public String toString() {
         return "receiveItem{" +
@@ -122,6 +131,7 @@ public class receiveItem implements Serializable {
                 ", attribute3='" + attribute3 + '\'' +
                 ", attribute4='" + attribute4 + '\'' +
                 ", attribute5='" + attribute5 + '\'' +
+                ", oldItemId='" + oldItemId + '\'' +
                 '}';
     }
 }

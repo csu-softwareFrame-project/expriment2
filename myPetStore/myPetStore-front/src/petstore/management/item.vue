@@ -60,7 +60,7 @@
                         <nobr v-if="product != null && product.name != null">{{product.name}}</nobr>
                       </td>
                       <td v-if="item != null" class="text-left">{{item.listPrice}}</td>
-                      <td class="text-left" v-on:click="openMask">...</td>
+                      <td class="text-left"><a v-bind:name="item.itemId" v-on:click="openMask($event)">...</a></td>
                       <td>
                         <button v-if="item.status === 'S'" v-bind:id="item.itemId" v-on:click="putOnSale($event)">上架</button>
                         <button v-if="item.status === 'P'" v-bind:id="item.itemId" v-on:click="pullOffShelves($event)">下架</button>
@@ -89,8 +89,16 @@
     </div>
     <!-- END MAIN CONTENT-->
     <!-- END PAGE CONTAINER-->
-    <popupwin :show="show" :title="title" v-on:hideModal="hideModal" v-on:submit="submit">
-      <p> test </p>
+    <popupwin :show="show" :title="title" v-on:hideModal="hideModal" v-on:submit="submitEdit">
+      <label>Item ID:<input type="text" size="40" v-model="editForm.itemId" placeholder="Item ID"/></label>
+      <label>Product ID:<p v-model="editForm.productId"></p></label>
+      <label>attribute1:<input type="text" size="40" v-model="editForm.attribute1" placeholder="attribute1"/></label>
+      <label>attribute2:<input type="text" size="40" v-model="editForm.attribute2" placeholder="attribute2"/></label>
+      <label>attribute3:<input type="text" size="40" v-model="editForm.attribute3" placeholder="attribute3"/></label>
+      <label>attribute4:<input type="text" size="40" v-model="editForm.attribute4" placeholder="attribute4"/></label>
+      <label>attribute5:<input type="text" size="40" v-model="editForm.attribute5" placeholder="attribute5"/></label>
+      <label>attribute6:<input type="text" size="40" v-model="editForm.attribute6" placeholder="attribute6"/></label>
+      <label>listPrice:<input type="text" size="40" v-model="editForm.listPrice" placeholder="listPrice"/></label>
     </popupwin>
   </manageframe>
 </template>
@@ -102,24 +110,36 @@ export default {
   name: 'item',
   data () {
     return {
-      pagename: 'item',
-      productId: this.$route.query.productId,
-      newItemId: '',
-      newItemPrice: '',
-      newAttr1: '',
-      newAttr2: '',
-      newAttr3: '',
-      newAttr4: '',
-      newAttr5: '',
-      newAttr6: '',
-      itemList: null,
-      product: null,
-      deleteItemList: [],
-      keyword: '',
-      title: 'edit',
-      isNew: false,
-      isEdit: false,
-      show: false
+        editForm:{
+            itemId : '',
+            productId : '',
+            attribute1 : '',
+            attribute2 : '',
+            attribute3 : '',
+            attribute4 : '',
+            attribute5 : '',
+            attribute6 : '',
+            listPrice : '',
+            oldItemId : '',
+        },
+        pagename: 'item',
+        productId: this.$route.query.productId,
+        newItemId: '',
+        newItemPrice: '',
+        newAttr1: '',
+        newAttr2: '',
+        newAttr3: '',
+        newAttr4: '',
+        newAttr5: '',
+        newAttr6: '',
+        itemList: null,
+        product: null,
+        deleteItemList: [],
+        keyword: '',
+        title: 'edit',
+        isNew: false,
+        isEdit: false,
+        show: false
     }
   },
   components: {
@@ -132,14 +152,59 @@ export default {
       this.canScroll()
       this.show = false
     },
-    submit () {
+    submitEdit () {
       // 确认弹窗回调
-      this.canScroll()
-      this.show = false
+        this.canScroll();
+        this.show = false;
+        this.axios({
+            method : 'put',
+            url : '/management/items',
+            data : this.editForm,
+            contentType : 'application/json',
+        }).then( res => {
+            if(res.data.status){
+                alert("修改成功");
+                for (let i = 0; i < this.itemList.length; i++) {
+                    if(this.itemList[i].itemId === this.editForm.oldItemId){
+                        this.itemList[i] = res.data.result.item;
+                        break;
+                    }
+                    // console.log(this.categoryList[i].categoryId+"     "+this.editForm.oldCategoryId);
+                }
+                this.editForm.itemId = '';
+                this.editForm.productId = '';
+                this.editForm.attribute1 = '';
+                this.editForm.attribute2 = '';
+                this.editForm.attribute3 = '';
+                this.editForm.attribute4 = '';
+                this.editForm.attribute5 = '';
+                this.editForm.attribute6 = '';
+                this.editForm.listPrice = '';
+                this.show = false;
+            }else{
+                alert("修改失败,原因:"+res.data.msg)
+            }
+        })
     },
-    openMask () {
-      this.noScroll()
-      this.show = true
+    openMask (e) {
+        let itemId = e.currentTarget.name;
+        this.noScroll();
+        this.show = true;
+        for (let i = 0; i < this.itemList.length; i++) {
+            if(this.itemList[i].itemId === itemId){
+                this.editForm.itemId = itemId;
+                this.editForm.oldItemId = itemId;
+                this.editForm.productId = this.itemList[i].productId;
+                this.editForm.attribute1 = this.itemList[i].attribute1;
+                this.editForm.attribute2 = this.itemList[i].attribute2;
+                this.editForm.attribute3 = this.itemList[i].attribute3;
+                this.editForm.attribute4 = this.itemList[i].attribute4;
+                this.editForm.attribute5 = this.itemList[i].attribute5;
+                this.editForm.attribute6 = this.itemList[i].attribute6;
+                this.editForm.listPrice = this.itemList[i].listPrice;
+                break;
+            }
+        }
     }, // 打开编辑弹窗
     getData () {
       this.axios.get('/products', {
@@ -279,7 +344,6 @@ export default {
           console.log("服务器错误")
       })
     }// 下架商品
-
   },
   created () {
     this.getData()

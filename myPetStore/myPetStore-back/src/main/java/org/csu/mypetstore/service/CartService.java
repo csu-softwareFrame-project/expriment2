@@ -106,12 +106,13 @@ public class CartService {
         int stock = catalogService.getInventoryQuantity(itemId);
         if(stock<=0){
             return ReturnPack.fail("库存不足");
-        }else{
-
+        }
+        else{
+            Item item = itemMapper.getItem(itemId);
+            if(item.getStatus().equals("S")) return ReturnPack.fail("该商品已下架");
             int q = getQuantity(username,itemId);//方法报错
             if(q == 0){
                 //购物车里没有，添加进购物车x
-            Item item = itemMapper.getItem(itemId);
             CartItem cartItem = new CartItem();
             cartItem.setItem(item);
             cartItem.setQuantity(1);

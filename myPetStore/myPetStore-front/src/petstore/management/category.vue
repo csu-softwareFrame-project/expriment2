@@ -43,7 +43,7 @@
                       </td>
                       <td class="text-left"><router-link v-bind:to="'/management/product?categoryId='+category.categoryId">{{category.categoryId}}</router-link></td>
                       <td class="text-left"><router-link v-bind:to="'/management/product?categoryId='+category.categoryId">{{category.name}}</router-link></td>
-                      <td class="text-left" v-on:click="openMask">...</td>
+                      <td class="text-left"><a v-bind:name="category.categoryId" v-on:click="openMask($event)">...</a></td>
                     </tr>
                     <td v-if="categoryList === null || categoryList.length <= 0">
                       似乎没有种类...
@@ -66,8 +66,9 @@
     </div>
     <!-- END MAIN CONTENT-->
     <!-- END PAGE CONTAINER-->
-    <popupwin :show="show" :title="title" v-on:hideModal="hideModal" v-on:submit="submit">
-      <p>test</p>
+    <popupwin :show="show" :title="title" v-on:hideModal="hideModal" v-on:submit="submitEdit">
+      <label>categoryId:<input type="text" size="40" v-model="editForm.categoryId" placeholder="Category ID"/></label>
+      <label>categoryName:<input type="text" size="40" v-model="editForm.categoryName" placeholder="Category Name"/></label>
     </popupwin>
   </manageframe>
 </template>
@@ -79,21 +80,26 @@ export default {
   name: 'category',
   data () {
     return {
-      pagename: 'category',
-      newCatID: '', // 新category的ID
-      newCatName: '', // 新category的name
-      button1: '<i class="zmdi zmdi-edit"></i>edit',
-      account: this.$store.state.account,
-      category: null,
-      categoryList: null,
-      productList: null,
-      deleteCategoryList: [],
-      checkVal: [],
-      keyword: '',
-      title: 'edit',
-      isEdit: false, // 编辑模式
-      isNew: false, // 新建模式
-      show: false// 显示通知框
+        editForm:{
+            categoryId : '',
+            categoryName : '',
+            oldCategoryId : '',
+        },
+        pagename: 'category',
+        newCatID: '', // 新category的ID
+        newCatName: '', // 新category的name
+        button1: '<i class="zmdi zmdi-edit"></i>edit',
+        account: this.$store.state.account,
+        category: null,
+        categoryList: null,
+        productList: null,
+        deleteCategoryList: [],
+        checkVal: [],
+        keyword: '',
+        title: 'edit',
+        isEdit: false, // 编辑模式
+        isNew: false, // 新建模式
+        show: false// 显示通知框
     }
   },
   components: {
@@ -104,18 +110,49 @@ export default {
     // todo 改进建议 列表显示翻页
     hideModal () {
       // 取消弹窗回调
-      this.canScroll()
+      this.canScroll();
       this.show = false
     },
-    submit () {
+    submitEdit () {
       // 确认弹窗回调
-      this.canScroll()
-      this.show = false
-    },
-    openMask () {
-      // 打开弹窗
-      this.noScroll()
-      this.show = true
+        this.canScroll();
+        this.axios({
+            method : 'put',
+            url : '/management/categories',
+            data : this.editForm,
+            contentType : 'application/json',
+        }).then( res => {
+            if(res.data.status){
+                alert("修改成功,新Category ID:"+this.editForm.categoryId+",Name:"+this.editForm.categoryName);
+                for (let i = 0; i < this.categoryList.length; i++) {
+                    if(this.categoryList[i].categoryId === this.editForm.oldCategoryId){
+                        this.categoryList[i] = res.data.result.category;
+                        console.log(res.data.result.category);
+                        break;
+                    }
+                    // console.log(this.categoryList[i].categoryId+"     "+this.editForm.oldCategoryId);
+                }
+                this.editForm.categoryName = '';
+                this.editForm.categoryId = '';
+                this.show = false;
+            }else{
+                alert("修改失败,原因:"+res.data.msg)
+            }
+        })
+    },//提交修改
+    openMask (e) {
+        let categoryId = e.currentTarget.name;
+        // 打开弹窗
+        this.noScroll();
+        this.show = true;
+        for (let i = 0; i < this.categoryList.length; i++) {
+            if(this.categoryList[i].categoryId === categoryId){
+                this.editForm.categoryId = categoryId;
+                this.editForm.categoryName = this.categoryList[i].name;
+                this.editForm.oldCategoryId = categoryId;
+                break;
+            }
+        }
     }, // 打开编辑弹窗
     getData () {
       this.axios.get('/categories', {

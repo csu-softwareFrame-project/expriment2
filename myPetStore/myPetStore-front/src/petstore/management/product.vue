@@ -46,7 +46,7 @@
                       </td>
                       <td class="text-left"><router-link v-if="product != null" v-bind:to="'/management/item?productId='+product.productId" >{{product.productId}}</router-link></td>
                       <td class="text-left" v-if="product != null">{{product.name}}</td>
-                      <td class="text-left" v-on:click="openMask">...</td>
+                      <td class="text-left" ><a v-bind:name="product.productId" v-on:click="openMask($event)">...</a></td>
                     </tr>
                     <td v-if="productList === null || productList.length <= 0">
                       该种类还没有产品类型...
@@ -70,8 +70,9 @@
     </div>
     <!-- END MAIN CONTENT-->
     <!-- END PAGE CONTAINER-->
-    <popupwin :show="show" :title="title" v-on:hideModal="hideModal" v-on:submit="submit">
-      <p> test </p>
+    <popupwin :show="show" :title="title" v-on:hideModal="hideModal" v-on:submit="submitEdit">
+      <label>productID:<input type="text" size="40" v-model="editForm.productId" placeholder="Product ID"/></label>
+      <label>productName:<input type="text" size="40" v-model="editForm.productName" placeholder="Product Name"/></label>
     </popupwin>
   </manageframe>
 </template>
@@ -83,17 +84,22 @@ export default {
   name: 'product',
   data () {
     return {
-      pagename: 'product',
-      newPdtID: '',
-      newPdtName: '',
-      deleteProductList: [],
-      account: this.$store.state.account,
-      productList: null,
-      keyword: '',
-      title: 'edit',
-      isEdit: false,
-      isNew: false,
-      show: false
+        editForm:{
+          productId : '',
+          productName : '',
+          oldProductId : '',
+        },
+        pagename: 'product',
+        newPdtID: '',
+        newPdtName: '',
+        deleteProductList: [],
+        account: this.$store.state.account,
+        productList: null,
+        keyword: '',
+        title: 'edit',
+        isEdit: false,
+        isNew: false,
+        show: false
     }
   },
   components: {
@@ -103,18 +109,50 @@ export default {
   methods: {
     hideModal () {
       // 取消弹窗回调
-      this.canScroll()
+      this.canScroll();
       this.show = false
     },
-    submit () {
-      // 确认弹窗回调
-      this.canScroll()
-      this.show = false
+    submitEdit () {
+        // 确认弹窗回调
+        this.canScroll();
+        this.axios({
+            method : 'put',
+            url : '/management/products',
+            data : this.editForm,
+            contentType : 'application/json',
+        }).then( res => {
+            if(res.data.status){
+                alert("修改成功,新Category ID:"+this.editForm.productId+",Name:"+this.editForm.productName);
+                for (let i = 0; i < this.productList.length; i++) {
+                    if(this.productList[i].productId === this.editForm.oldProductId){
+                        this.productList[i] = res.data.result.product;
+                        console.log(res.data.result.product);
+                        break;
+                    }
+                    // console.log(this.categoryList[i].categoryId+"     "+this.editForm.oldCategoryId);
+                }
+                this.editForm.productName = '';
+                this.editForm.productId = '';
+                this.show = false;
+            }else{
+                alert("修改失败,原因:"+res.data.msg)
+            }
+        })
     },
-    openMask () {
-      // 打开弹窗
-      this.noScroll()
-      this.show = true
+    openMask (e) {
+        let productId = e.currentTarget.name;
+        // 打开弹窗
+        this.noScroll();
+        this.show = true;
+        for (let i = 0; i < this.productList.length; i++) {
+            if(this.productList[i].productId === productId){
+                this.editForm.productId = productId;
+                this.editForm.productName = this.productList[i].name;
+                this.editForm.oldProductId = productId;
+                break;
+            }
+        }
+
     }, // 打开编辑弹窗
     getData () {
       this.axios.get('/categories', {

@@ -43,6 +43,7 @@ public class CartController {
     @PostMapping("/carts")
     public ReturnPack addToCart(HttpServletRequest httpServletRequest,@RequestParam String itemId, @RequestParam String username){
         if(Constants.DEBUG_CONTROLLER) System.out.println("添加 itemId： "+itemId+" 进购物车");
+
         return cartService.addCartItem(httpServletRequest,itemId, username);
     }
 

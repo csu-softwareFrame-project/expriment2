@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +37,7 @@ public class CatalogController {
         JSONObject data = new JSONObject();
         Product product = catalogService.getProduct(productId);
         List<Item> itemList = catalogService.getItemListByProductId(productId);
+        itemList.removeIf(item -> item.getStatus().equals("S"));//排除下架的货物
         data.put("product", product);
         data.put("itemList", itemList);
         return ReturnPack.success(data);

@@ -103,7 +103,7 @@ export default {
             }
           } else {
             // 显示库存不足消息
-            alert(res.data.msg)
+            alert("添加到购物车失败,原因:"+res.data.msg)
           }
         })
       }
