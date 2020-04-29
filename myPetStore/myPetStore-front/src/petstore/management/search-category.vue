@@ -76,17 +76,15 @@
 import Manageframe from '../../components/manageframe'
 import popupwin from '../../components/popupwin.vue'
 export default {
-  name: 'category',
+  name: 'search-category',
   data () {
     return {
-      pagename: 'category',
+      pagename: 'search-category',
       newCatID: '', // 新category的ID
       newCatName: '', // 新category的name
       button1: '<i class="zmdi zmdi-edit"></i>edit',
       account: this.$store.state.account,
-      category: null,
       categoryList: null,
-      productList: null,
       deleteCategoryList: [],
       checkVal: [],
       keyword: '',
@@ -118,15 +116,13 @@ export default {
       this.show = true
     }, // 打开编辑弹窗
     getData () {
-      this.axios.get('/categories', {
+      this.axios.get('/management/categories/results', {
         params: {
-          categoryId: ''
+          keyword: this.$route.query.keyword
         }
       }).then(res => {
-        console.log(res.data.result.categoryList)
-        this.category = res.data.result.category
-        this.categoryList = res.data.result.categoryList
-        this.productList = res.data.result.productList
+        console.log(res.data.result)
+        this.categoryList = res.data.result.catalogList
         if (res.data.result.token != null) {
           // 更新token
           // 更新token
@@ -191,8 +187,8 @@ export default {
             for (let i = 0; i < this.categoryList.length; i++) {
               // console.log(this.categoryList[i]+"   "+this.deleteCategoryList.indexOf(this.categoryList[i]));
               if (this.deleteCategoryList.indexOf(this.categoryList[i].categoryId) !== -1) {
-                  this.categoryList.splice(i, 1);
-                  i = 0
+                this.categoryList.splice(i, 1)
+                i = 0
               }
             }
             this.deleteCategoryList = []
@@ -219,7 +215,7 @@ export default {
     editCategory () {
       this.isEdit = !this.isEdit
       this.isNew = false
-        if(this.isEdit === false) this.deleteCategoryList =[]
+      if (this.isEdit === false) this.deleteCategoryList = []
     }// 编辑模式来回切换
   },
   created () {

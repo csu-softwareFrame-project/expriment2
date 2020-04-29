@@ -70,8 +70,9 @@ router.beforeEach((to, from, next) => {
 // 使用 router.beforeEach 注册一个全局前置守卫，判断用户登录验证是否过期
   // 暂时使管理端可以不用验证
   var managementTest = (to.path === '/management/product_result' || to.path === '/management/mainPage' || to.path === '/management/account' ||
-    to.path === '/management/order_result' || to.path ==='/management/account_result' ||
-    to.path === '/management/order' || to.path === '/management/category' || to.path === '/management/product' || to.path === '/management/item')
+    to.path === '/management/order_result' || to.path === '/management/account_result' ||
+    to.path === '/management/order' || to.path === '/management/category' || to.path === '/management/product' || to.path === '/management/item' ||
+    to.path === '/management/history_order_result' || to.path === '/management/category_result' || to.path === '/management/item_result')
   if ((managementTest || to.path === '/' || to.path === '/account/view-sign-in' || to.path === '/main/view-main' ||
   to.path === '/viewCategory' || to.path === '/viewProduct' || to.path === '/viewItem' ||
     to.path === '/account/signup' || to.path === '/result') &&

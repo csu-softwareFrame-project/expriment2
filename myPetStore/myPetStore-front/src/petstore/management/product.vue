@@ -8,7 +8,7 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="overview-wrap">
-                  <h2 class="title-1">Search</h2>
+                  <h2 class="title-1">Product</h2>
                   <!--搜索account-->
                     <button v-if="!isNew" class="au-btn au-btn-icon au-btn--blue" v-on:click="editNewProduct">
                       <i class="zmdi zmdi-plus" ></i>add product</button>

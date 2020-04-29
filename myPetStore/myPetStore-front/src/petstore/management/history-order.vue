@@ -8,7 +8,7 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="overview-wrap">
-                  <h2 class="title-1">Search For Order</h2>
+                  <h2 class="title-1">History Order</h2>
                   <div class="form-header">
                     <label>start: &nbsp;</label>
                     <el-date-picker
@@ -26,20 +26,14 @@
                       :picker-options="pickerBeginDateAfter"
                       placeholder="">
                     </el-date-picker>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <button class="au-btn--submit"  v-on:click="search">
-                      <i class="zmdi zmdi-search"></i>
-                    </button>
                   </div>
-                  <button class="au-btn au-btn-icon au-btn--blue" v-on:click="deliverAll">
-                    <i class="zmdi zmdi-card-travel"></i>deliver all</button>
                 </div>
               </div>
             </div>
             <hr>
             <div class="row">
               <div class="col-lg-9">
-                <h2 class="title-1 m-b-25">Unfilled Orders</h2>
+                <h2 class="title-1 m-b-25">Filled Orders</h2>
                 <div class="table-responsive table--no-card m-b-55">
                   <table class="table table-borderless table-striped table-earning" id="account_table">
                     <thead>
@@ -50,20 +44,18 @@
                       <th class="text-center">Date</th>
                       <th>Total Price</th>
                       <th class="text-center">Details</th>
-                      <th></th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr v-for="order in orderList">
-                      <td class="text-left" v-if="isEdit" >
+                      <td class="text-left" v-if="isEdit && isAccord(order)" >
                         <input type="checkbox" v-bind:id="order.orderId" name="listOption" v-on:change="selectDelete($event)"/>
                       </td>
-                      <td class="text-left">{{order.username}}</td>
-                      <td class="text-left">{{order.orderId}}</td>
-                      <td class="text-left">{{order.orderDate}}</td>
-                      <td class="text-left">{{order.totalPrice}}</td>
-                      <td class="text-center" ><a v-on:click="openMask">...</a></td>
-                      <td ><button v-bind:name="order.orderId" v-on:click="deliver($event)">发货</button></td>
+                      <td class="text-left" v-if="isAccord(order)">{{order.username}}</td>
+                      <td class="text-left" v-if="isAccord(order)">{{order.orderId}}</td>
+                      <td class="text-left" v-if="isAccord(order)">{{order.orderDate}}</td>
+                      <td class="text-left" v-if="isAccord(order)">{{order.totalPrice}}</td>
+                      <td class="text-center" v-if="isAccord(order)"><a v-on:click="openMask">...</a></td>
                     </tr>
                     </tbody>
                   </table>
@@ -94,8 +86,7 @@
 import Manageframe from '../../components/manageframe'
 import Modal from '../../components/popupwin.vue'
 export default {
-  inject: ['reload'],
-  name: 'order',
+  name: 'history-order',
   props: {
     value: {},
     content: {
@@ -109,7 +100,7 @@ export default {
   },
   data () {
     return {
-      pagename: 'order',
+      pagename: 'history-order',
       isSetDate: false,
       data: '日期',
       deleteOrderList: [],
@@ -164,8 +155,13 @@ export default {
     Manageframe,
     Modal},
   methods: {
-    search () {
-      this.$router.push({path: '/management/history_order_result', query: {create_start_date: this.create_start_date, create_end_date: this.create_end_date}})
+    isAccord (order) {
+      let date = order.orderDate
+      date = new Date(date)
+      console.log(date)
+      let beginDateValB = this.filters.column.create_start_date
+      let beginDateValA = this.filters.column.create_end_date
+      return ((date >= beginDateValB || beginDateValB === '') && (date <= beginDateValA || beginDateValA === '')) || !this.isSetDate
     },
     hideModal () {
       // 取消弹窗回调
@@ -181,23 +177,8 @@ export default {
       this.noScroll()
       this.show = true
     },
-    deliverAll () {
-      for (let i = 0; i < this.orderList.length; i++) {
-        this.deliverOrderList.push(this.orderList[i].orderId)
-      }
-      this.axios({
-        method: 'put',
-        url: '/management/deliverOrders',
-        data: this.deliverOrderList,
-        contentType: 'application/json'
-      }).then(res => {
-        alert('一键发货成功')
-        this.orderList = []
-        this.deliverOrderList = []
-      })
-    },
     deleteOrder () {
-      this.reload()
+      // alert(this.checkVal)// 待添加方法
       if (this.deleteOrderList.length > 0) {
         this.axios({
           method: 'delete',
@@ -241,7 +222,7 @@ export default {
     getData () {
       this.axios.get('/management/orders', {
         params: {
-          type: '1'
+          type: '2'
         }
       }).then(res => {
         if (res.data.status) {
@@ -251,28 +232,7 @@ export default {
           // 跳到错误页面
         }
       })
-    }, // 初始化函数
-    deliver (e) {
-      this.deliverOrderList.push(e.currentTarget.name)
-      let deliverOrderIdList = this.deliverOrderList
-      this.axios({
-        method: 'put',
-        url: '/management/deliverOrders',
-        data: this.deliverOrderList,
-        contentType: 'application/json'
-      }).then(res => {
-        alert('发货成功')
-        for (let i = 0; i < this.orderList.length; i++) {
-          // console.log(this.categoryList[i]+"   "+this.deleteCategoryList.indexOf(this.categoryList[i]));
-          if (this.deliverOrderList.indexOf(this.orderList[i].orderId) !== -1) {
-            this.orderList.splice(i, 1)
-            i = 0
-          }
-        }
-      })
-      this.deliverOrderList = []
-      this.reload()
-    }// 发货
+    }
   },
   created () {
     this.getData()

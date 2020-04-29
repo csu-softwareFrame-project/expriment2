@@ -349,21 +349,41 @@ export default {
     search () {
       // alert('页面: ' + this.page + ', 关键词： ' + this.keyword)
       switch (this.page) {
-          case 'product':
-              this.$router.push({path: '/management/product_result', query: {keyword: this.keyword}});
-          // alert('comp...')
-              break;
-          case 'order':
-              this.$router.push({path: '/management/order_result', query: {keyword: this.keyword}});
-
-              break;
-          case 'account':
-              this.$router.push({path: '/management/account_result', query: {keyword: this.keyword}});
-              break;
-          case 'search-product':
-              this.reload();
-              this.$router.push({path: '/management/product_result', query: {keyword: this.keyword}})
-              break;
+        case 'category':
+          this.$router.push({path: '/management/category_result', query: {keyword: this.keyword}})
+          break
+        case 'product':
+          this.$router.push({path: '/management/product_result', query: {keyword: this.keyword}})
+          break
+        case 'item':
+          this.$router.push({path: '/management/item_result', query: {keyword: this.keyword}})
+          break
+        case 'order':
+          this.$router.push({path: '/management/order_result', query: {keyword: this.keyword}})
+          break
+        case 'account':
+          this.$router.push({path: '/management/account_result', query: {keyword: this.keyword}})
+          break
+        case 'search-category':
+          this.reload()
+          this.$router.push({path: '/management/category_result', query: {keyword: this.keyword}})
+          break
+        case 'search-product':
+          this.reload()
+          this.$router.push({path: '/management/product_result', query: {keyword: this.keyword}})
+          break
+        case 'search-item':
+          this.reload()
+          this.$router.push({path: '/management/item_result', query: {keyword: this.keyword}})
+          break
+        case 'search-order':
+          this.reload()
+          this.$router.push({path: '/management/order_result', query: {keyword: this.keyword}})
+          break
+        case 'search-account':
+          this.reload()
+          this.$router.push({path: '/management/account_result', query: {keyword: this.keyword}})
+          break
         default: alert('开发中...')
       }
     } // todo 搜索功能

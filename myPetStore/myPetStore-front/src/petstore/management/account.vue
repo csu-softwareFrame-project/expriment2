@@ -8,14 +8,8 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="overview-wrap">
-                  <h2 class="title-1">Search</h2>
+                  <h2 class="title-1">All</h2>
                   <!--搜索account-->
-                  <form class="form-header">
-                    <input class="au-input au-input--xl" type="search" name="search" placeholder="Search for accounts" v-model="keyword"/>
-                    <button class="au-btn--submit"  v-on:click="search">
-                      <i class="zmdi zmdi-search"></i>
-                    </button>
-                  </form>
                   <button class="au-btn au-btn-icon au-btn--blue" v-on:click="addAccount">
                     <i class="zmdi zmdi-plus"></i>add account</button>
                 </div>

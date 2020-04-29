@@ -8,7 +8,7 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="overview-wrap">
-                  <h2 class="title-1">Item</h2>
+                  <h2 class="title-1">Search</h2>
                   <!--搜索account-->
                   <button class="au-btn au-btn-icon au-btn--blue" v-on:click="editNewItem" v-if="!isNew">
                     <i class="zmdi zmdi-plus"></i>add item</button>
@@ -20,8 +20,6 @@
             <hr>
             <div class="row">
               <div class="col-lg-9">
-                <div align="left"><router-link v-if="product != null" v-bind:to="'/management/product?categoryId='+product.categoryId"><i class="zmdi zmdi-arrow-back"></i>&nbsp;return</router-link></div>
-                <h2 class="title-1 m-b-25">{{productId}}</h2>
                 <div class="table-responsive table--no-card m-b-55">
                   <table class="table table-borderless table-striped table-earning" id="account_table">
                     <thead>
@@ -39,7 +37,7 @@
                     <!--添加商品-->
                     <tr v-if="isNew">
                       <td class="text-left"><input type="text" placeholder="ID of Item" v-model="newItemId"/></td>
-                      <td class="text-left">{{productId}}</td>
+                      <td class="text-left">{{item.product.productId}}</td>
                       <td>弹窗添加属性</td>
                       <td class="text-left"><input type="text" placeholder="Price of Item" v-model="newItemPrice"/></td>
                       <td><button v-on:click="submitNewItem">完成</button></td>
@@ -57,7 +55,6 @@
                         <nobr v-if="item != null && item.attribute3 != null">{{item.attribute3}}</nobr>
                         <nobr v-if="item != null && item.attribute4 != null">{{item.attribute4}}</nobr>
                         <nobr v-if="item != null && item.attribute5 != null">{{item.attribute5}}</nobr>
-                        <nobr v-if="product != null && product.name != null">{{product.name}}</nobr>
                       </td>
                       <td v-if="item != null" class="text-left">{{item.listPrice}}</td>
                       <td class="text-left" v-on:click="openMask">...</td>
@@ -99,11 +96,10 @@
 import Manageframe from '../../components/manageframe'
 import popupwin from '../../components/popupwin.vue'
 export default {
-  name: 'item',
+  name: 'search-item',
   data () {
     return {
-      pagename: 'item',
-      productId: this.$route.query.productId,
+      pagename: 'search-item',
       newItemId: '',
       newItemPrice: '',
       newAttr1: '',
@@ -142,13 +138,13 @@ export default {
       this.show = true
     }, // 打开编辑弹窗
     getData () {
-      this.axios.get('/products', {
+      this.axios.get('/management/items/results', {
         params: {
-          productId: this.$route.query.productId
+          keyword: this.$route.query.keyword
         }
       }).then(res => {
+        console.log(res.data.result)
         this.itemList = res.data.result.itemList
-        this.product = res.data.result.product
         if (res.data.result.token != null) {
           if (typeof (res.data.result.token) !== 'undefined') {
             this.$store.commit('changeLogin', { Authorization: res.data.result.token })
@@ -172,7 +168,7 @@ export default {
     submitNewItem () {
       let params = {
         itemId: this.newItemId,
-        productId: this.productId,
+        productId: this.item.product.productId,
         listPrice: this.newItemPrice
       }
       this.axios({
@@ -235,48 +231,48 @@ export default {
       console.log('当前选中' + this.deleteItemList)
     }, // 选中的item的id加入list
     editItem () {
-      this.isEdit = !this.isEdit;
-      this.isNew = false;
-        if(this.isEdit === false) this.deleteItemList =[]
+      this.isEdit = !this.isEdit
+      this.isNew = false
+      if (this.isEdit === false) this.deleteItemList = []
     }, // 编辑来回切换
     putOnSale (e) {
       let data = {
-          itemId : e.currentTarget.id
-      };
+        itemId: e.currentTarget.id
+      }
       this.axios({
-          method : 'put',
-          url : '/management/items/P',
-          data : data ,
-      }).then( res => {
-          if(res.data.status){
-              console.log(" 上架成功")
-              this.itemList = res.data.result.itemList;
-              console.log(res.data.result.itemList)
-          }else{
-              console.log("上架失败,原因:"+res.data.msg)
-          }
-      }).catch( err => {
-          console.log("服务器错误")
+        method: 'put',
+        url: '/management/items/P',
+        data: data
+      }).then(res => {
+        if (res.data.status) {
+          console.log(' 上架成功')
+          this.itemList = res.data.result.itemList
+          console.log(res.data.result.itemList)
+        } else {
+          console.log('上架失败,原因:' + res.data.msg)
+        }
+      }).catch(err => {
+        console.log('服务器错误')
       })
     }, // 上架商品
     pullOffShelves (e) {
-        let data = {
-            itemId : e.currentTarget.id
-        }
+      let data = {
+        itemId: e.currentTarget.id
+      }
       this.axios({
-          method : 'put',
-          url : '/management/items/S',
-          data : data ,
-          contentType : 'application/json'
-      }).then( res => {
-          if(res.data.status){
-              console.log(" 下架成功")
-              this.itemList = res.data.result.itemList;
-          }else{
-              console.log("下架失败,原因:"+res.data.msg)
-          }
-      }).catch( err => {
-          console.log("服务器错误")
+        method: 'put',
+        url: '/management/items/S',
+        data: data,
+        contentType: 'application/json'
+      }).then(res => {
+        if (res.data.status) {
+          console.log(' 下架成功')
+          this.itemList = res.data.result.itemList
+        } else {
+          console.log('下架失败,原因:' + res.data.msg)
+        }
+      }).catch(err => {
+        console.log('服务器错误')
       })
     }// 下架商品
 

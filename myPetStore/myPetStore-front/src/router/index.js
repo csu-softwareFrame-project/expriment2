@@ -17,6 +17,26 @@ export default new Router({
       component: () => import('../components/Hello')
     },
     {
+      path: '/management/history_order_result',
+      name: '历史订单',
+      // 渲染是否可见
+      hidden: true,
+      meta: {
+        title: 'myPetStore - 历史订单'
+      },
+      component: () => import('../petstore/management/history-order')
+    },
+    {
+      path: '/management/category_result',
+      name: '搜索产品目录',
+      // 渲染是否可见
+      hidden: true,
+      meta: {
+        title: 'myPetStore - 搜索产品目录'
+      },
+      component: () => import('../petstore/management/search-category')
+    },
+    {
       path: '/management/product_result',
       name: '搜索产品',
       // 渲染是否可见
@@ -25,6 +45,16 @@ export default new Router({
         title: 'myPetStore - 搜索产品'
       },
       component: () => import('../petstore/management/search-product')
+    },
+    {
+      path: '/management/item_result',
+      name: '搜索物件',
+      // 渲染是否可见
+      hidden: true,
+      meta: {
+        title: 'myPetStore - 搜索物件'
+      },
+      component: () => import('../petstore/management/search-item')
     },
     {
       path: '/management/account_result',
