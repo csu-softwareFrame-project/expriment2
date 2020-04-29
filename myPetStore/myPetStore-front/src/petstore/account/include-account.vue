@@ -65,6 +65,7 @@
         <!--                <option th:each="${categories}">categories</option>-->
         <select name="favouriteCategoryId" id="favouriteCategoryId" v-model="editForm.favouriteCategoryId">
           <option >NOBANNER</option>
+          <option v-for="category in categoryList">{{category.name}}</option>
         </select>*
       </label>
       <div class="cleaner h10"></div>
@@ -107,13 +108,35 @@ export default {
         state: this.$store.state.account.state,
         zip: this.$store.state.zip,
         country: this.$store.state.country
-      }
+      },
+      categoryList: []
     }
   },
   components: {
     editAccount
   },
   methods: {
+    getData () {
+      this.axios.get('/categories', {
+        params: {
+          categoryId: ''
+        }
+      }).then(res => {
+        console.log(res.data.result.categoryList)
+        this.categoryList = res.data.result.categoryList
+        if (res.data.result.token != null) {
+          // 更新token
+          // 更新token
+          if (typeof (res.data.result.token) !== 'undefined') {
+            this.$store.commit('changeLogin', { Authorization: res.data.result.token })
+            this.$store.commit('changeFail', {failToken: res.data.result.failToken})
+          }
+        }
+        console.log('搜到了列表')
+      }).catch(err => {
+        window.console.error(err)
+      })
+    },
     editAccount () {
       let account = {
         email: this.editForm.email,
@@ -146,6 +169,7 @@ export default {
     }
   },
   created () {
+    this.getData()
     console.log('type:' + typeof (this.account) + '  ' + this.account)
     // console.log("当前listOption:"+this.editForm.listOption)
     if (this.account === null) {

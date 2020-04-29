@@ -53,6 +53,7 @@
               <div class="form-group">
 <!--                <a href="/useraccess/view_sign_up" th:text="#{signon.signup}">Register Now!</a>-->
                 <router-link to="/account/signup">Register Now!</router-link>
+                <br>Forget password? <a @click="forgetPassword" href="#">Click here!</a>
               </div>
             </div>
           </div>
@@ -90,6 +91,9 @@ export default {
     pageFrame
   },
   methods: {
+    forgetPassword () {
+      this.$router.push({path: '/account/forget_password', query: {username: this.signInForm.username, email: this.signInForm.email}})
+    },
     change () {
       if (!this.isShow) {
         this.type = 'text'

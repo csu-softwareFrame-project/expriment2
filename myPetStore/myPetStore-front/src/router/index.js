@@ -135,6 +135,16 @@ export default new Router({
       component: () => import('../petstore/management/item')
     },
     {
+      path: '/account/forget_password',
+      name: '重置密码',
+      // 渲染是否可见
+      hidden: true,
+      meta: {
+        title: 'myPetStore - 重置密码'
+      },
+      component: () => import('../petstore/account/forget-password')
+    },
+    {
       path: '/account/edit',
       name: '修改用户信息',
       // 渲染是否可见

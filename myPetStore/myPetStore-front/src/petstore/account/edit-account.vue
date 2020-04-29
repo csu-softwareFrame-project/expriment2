@@ -1,8 +1,7 @@
-d<template>
-  <div id="templatemo_main" align="center">
+<template>
     <page-frame>
 <!--    <form  action="/account/edit_account" method="post">-->
-
+      <div id="templatemo_main" align="center">
       <h3>User Information</h3>
 
       <label >User ID: &nbsp;</label>
@@ -27,56 +26,54 @@ d<template>
 <!--      <div th:replace="account/includeAccountFields">-->
       <slot></slot>
 
-
 <!--    </form>-->
     <br>
     <div><a href="/order/viewOrderList">
 <!--      <font size="3" th:text="'My Orders'">My Orders</font>-->
       <font size="3" >My Orders</font>
     </a></div>
+      </div>
     </page-frame>
-  </div>
 </template>
 
 <script>
-  import pageFrame from '../../components/pageframe'
-  export default {
-      data(){
-          return {
-              msg: '',
-              resultMsg: '',
-              password: '',
-              repeatedPassword: '',
-              account: this.$store.state.account,
+import pageFrame from '../../components/pageframe'
+export default {
+  data () {
+    return {
+      msg: '',
+      resultMsg: '',
+      password: '',
+      repeatedPassword: '',
+      account: this.$store.state.account
+    }
+  },
+  components: {
+    pageFrame
+  },
+  methods: {
+    changePassword () {
+      if (this.password.trim() !== this.repeatedPassword.trim()) { this.msg = '前后两次密码不一致' } else {
+        if (this.account === null) {
+          alert('请先登录')
+          this.$router.push('/account/view-sign-in')
+        } else {
+          let account = {
+            password: this.password
           }
-      },
-    components:{
-      pageFrame,
-    },methods:{
-          changePassword(){
-              if(this.password.trim() !== this.repeatedPassword.trim())
-                  this.msg = "前后两次密码不一致";
-              else{
-                  if(this.account === null){
-                      alert("请先登录");
-                      this.$router.push('/account/view-sign-in')
-                  }else {
-                      let account = {
-                          password: this.password
-                      };
-                      this.axios.put('/passwords',account)
-                          .then(res => {
-                              if(res.data.status){
-                                 this.resultMsg = "修改成功"
-                              }else {
-                                  this.resultMsg = "服务器错误"
-                              }
-                          })
-                  }
+          this.axios.put('/passwords', account)
+            .then(res => {
+              if (res.data.status) {
+                this.resultMsg = '修改成功'
+              } else {
+                this.resultMsg = '服务器错误'
               }
-          }
+            })
+        }
       }
+    }
   }
+}
 </script>
 
 <style>

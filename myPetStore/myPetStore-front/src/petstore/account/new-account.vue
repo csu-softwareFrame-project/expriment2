@@ -56,18 +56,15 @@
         <label for="country">Country:<input type="text" size="30" v-model="signUpForm.country" class="required input_field" id="country"/></label>
         <br>
 
-
-
         <h3>Profile Information</h3>
 <!--        <script type="text/javascript" src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>-->
 <!--        <script type="text/javascript" src="js/optionChecked.js"></script>-->
-
 
         <label>Language Preference:<div class="cleaner h10"></div>
           <!--          <select name="languagePreference" id="languagePreference" th:each="languages:${session.languages}">-->
           <!--            <option th:text="${languages}">languages</option>-->
           <select v-model="signUpForm.languagePreference" id="languagePreference">
-            <option >languages</option>
+            <option >English</option>
           </select>
         </label>
 
@@ -75,8 +72,8 @@
         <label>Favourite Category:<div class="cleaner h10"></div>
           <!--          <select name="favouriteCategoryId" id="favouriteCategoryId" th:each="categories:${session.categories}">-->
           <!--            <option th:each="${categories}">categories</option>-->
-          <select v-model="signUpForm.favouriteCategoryId" id="favouriteCategoryId" >
-            <option >categories</option>
+          <select v-model="signUpForm.favouriteCategoryId" id="favouriteCategoryId">
+            <option v-for="category in categoryList">{{category.name}}</option>
           </select>
         </label>
         <div class="cleaner h10"></div>
@@ -100,77 +97,102 @@
 </template>
 
 <script>
-  import pageFrame from '../../components/pageframe'
-  export default {
-    data(){
-      return {
-        signUpForm: {
-          username: '',
-          password: '',
-          repeatedPassword: '',
-          firstName: '',
-          lastName: '',
-          email: '',
-          phone: '',
-          address1: '',
-          address2: '',
-          city: '',
-          state: '',
-          zip: '',
-          country: '',
-          languagePreference: '',
-          favouriteCategoryId: '',
-          listOption: '',
-          bannerOption: '',
-        },
-        usernameMsg: '',
-        passwordMsg: '',
-        repeatedPasswordMsg: ''
-      }
+import pageFrame from '../../components/pageframe'
+export default {
+  data () {
+    return {
+      signUpForm: {
+        username: '',
+        password: '',
+        repeatedPassword: '',
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        address1: '',
+        address2: '',
+        city: '',
+        state: '',
+        zip: '',
+        country: '',
+        languagePreference: '',
+        favouriteCategoryId: '',
+        listOption: '',
+        bannerOption: ''
+      },
+      usernameMsg: '',
+      passwordMsg: '',
+      repeatedPasswordMsg: '',
+      categoryList: []
+    }
+  },
+  components: {
+    pageFrame
+  },
+  methods: {
+    getData () {
+      this.axios.get('/categories', {
+        params: {
+          categoryId: ''
+        }
+      }).then(res => {
+        console.log(res.data.result.categoryList)
+        this.categoryList = res.data.result.categoryList
+        if (res.data.result.token != null) {
+          // 更新token
+          // 更新token
+          if (typeof (res.data.result.token) !== 'undefined') {
+            this.$store.commit('changeLogin', { Authorization: res.data.result.token })
+            this.$store.commit('changeFail', {failToken: res.data.result.failToken})
+          }
+        }
+        console.log('搜到了列表')
+      }).catch(err => {
+        window.console.error(err)
+      })
     },
-    components:{
-      pageFrame,
-    },
-    methods:{
-      signUp(form){
-          let postData = this.$qs.stringify({
-              username: this.signUpForm.username,
-              password: this.signUpForm.password,
-              repeatedPassword: this.signUpForm.repeatedPassword,
-              firstName: this.signUpForm.firstName,
-              lastName: this.signUpForm.lastName,
-              email: this.signUpForm.email,
-              phone: this.signUpForm.phone,
-              address1: this.signUpForm.address1,
-              address2: this.signUpForm.address2,
-              city: this.signUpForm.city,
-              state: this.signUpForm.state,
-              zip: this.signUpForm.zip,
-              country: this.signUpForm.country,
-              languagePreference: this.signUpForm.languagePreference,
-              favouriteCategoryId: this.signUpForm.favouriteCategoryId,
-              listOption: this.signUpForm.listOption,
-              bannerOption: this.signUpForm.bannerOption,
-          })
-        this.axios({
-            method: 'post',
-            url: '/accounts/'+this.signUpForm.username,
-            data: postData,
-        })
-            .then(res => {
-          if(res.data.status){
-            //注册成功返回登录页面
-            this.$router.push("/account/view-sign-in")
-          }else {
-            //注册失败，返回失败原因
-            this.usernameMsg = res.data.result.usernameMsg;
-            this.passwordMsg = res.data.result.passwordMsg;
-            this.repeatedPasswordMsg = res.data.result.repeatedPasswordMsg;
+    signUp (form) {
+      let postData = this.$qs.stringify({
+        username: this.signUpForm.username,
+        password: this.signUpForm.password,
+        repeatedPassword: this.signUpForm.repeatedPassword,
+        firstName: this.signUpForm.firstName,
+        lastName: this.signUpForm.lastName,
+        email: this.signUpForm.email,
+        phone: this.signUpForm.phone,
+        address1: this.signUpForm.address1,
+        address2: this.signUpForm.address2,
+        city: this.signUpForm.city,
+        state: this.signUpForm.state,
+        zip: this.signUpForm.zip,
+        country: this.signUpForm.country,
+        languagePreference: this.signUpForm.languagePreference,
+        favouriteCategoryId: this.signUpForm.favouriteCategoryId,
+        listOption: this.signUpForm.listOption,
+        bannerOption: this.signUpForm.bannerOption
+      })
+      this.axios({
+        method: 'post',
+        url: '/accounts/' + this.signUpForm.username,
+        data: postData
+      })
+        .then(res => {
+          if (res.data.status) {
+            // 注册成功返回登录页面
+            this.$router.push('/account/view-sign-in')
+          } else {
+            // 注册失败，返回失败原因
+            this.usernameMsg = res.data.result.usernameMsg
+            this.passwordMsg = res.data.result.passwordMsg
+            this.repeatedPasswordMsg = res.data.result.repeatedPasswordMsg
           }
         })
-      }
     }
+  },
+  created () {
+    this.getData()
   }
+}
 </script>
 
 <style>

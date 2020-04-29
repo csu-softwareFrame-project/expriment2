@@ -75,7 +75,7 @@ router.beforeEach((to, from, next) => {
     to.path === '/management/history_order_result' || to.path === '/management/category_result' || to.path === '/management/item_result')
   if ((managementTest || to.path === '/' || to.path === '/account/view-sign-in' || to.path === '/main/view-main' ||
   to.path === '/viewCategory' || to.path === '/viewProduct' || to.path === '/viewItem' ||
-    to.path === '/account/signup' || to.path === '/result') &&
+    to.path === '/account/signup' || to.path === '/result' || to.path === '/account/forget_password') &&
     store.state.account === null) { // 不用验证的路由范围
     // 如果token不为空，更新token
     // 是登录，继续路由
