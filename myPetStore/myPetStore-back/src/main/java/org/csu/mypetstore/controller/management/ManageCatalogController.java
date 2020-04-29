@@ -164,12 +164,12 @@ public class ManageCatalogController {
         return ReturnPack.success(data);
     }
 
-//    //todo 上架下架
-//    @PutMapping("/management/s")
-//    public ReturnPack sold(@RequestBody String itemId){
-//        if(DEBUG) System.out.println("上架产品");
-//        if(DEBUG) System.out.println(itemId);
-//        JSONObject data = new JSONObject();
-//        return ReturnPack.success(data);
-//    }
+    //todo 上架下架
+    @PutMapping("/management/items/{status}")
+    public ReturnPack sold(@PathVariable("status") String status,@RequestBody String itemId){
+        if(DEBUG) System.out.println("上架下架产品");
+        if(DEBUG) System.out.println(status+"   "+itemId);
+        JSONObject data = new JSONObject();
+        return ReturnPack.success(data);
+    }
 }

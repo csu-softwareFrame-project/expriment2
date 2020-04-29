@@ -39,7 +39,6 @@
                       <th>List Price</th>
                       <th>edit</th>
                       <th></th>
-                      <th></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -68,8 +67,10 @@
                       </td>
                       <td v-if="item != null" class="text-left">{{item.listPrice}}</td>
                       <td class="text-left" v-on:click="openMask">...</td>
-                      <td><button v-if="item.status === 'S'" v-bind:id="item.itemId" v-on:click="putOnSale($evnet)">上架</button></td>
-                      <td><button v-if="item.status === 'P'" v-bind:id="item.itemId" v-on:click="pullOffShelves($event)">下架</button></td>
+                      <td>
+                        <button v-if="item.status === 'S'" v-bind:id="item.itemId" v-on:click="putOnSale($event)">上架</button>
+                        <button v-if="item.status === 'P'" v-bind:id="item.itemId" v-on:click="pullOffShelves($event)">下架</button>
+                      </td>
                     </tr>
                     <td v-if="itemList === null || itemList.length <= 0">
                       该产品类型似乎没有产品...</td>
@@ -278,6 +279,7 @@ export default {
       //     console.log("服务器错误")
       // })
     }// 下架商品
+
   },
   created () {
     this.getData()
