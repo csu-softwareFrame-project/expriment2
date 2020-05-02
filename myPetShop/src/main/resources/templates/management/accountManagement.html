@@ -61,26 +61,26 @@
                                 <!--                      <td class="text-right"><a @click="openMask">...</a></td>-->
                                 <!--                      <td class="text-right" v-if="isEdit"><input type="checkbox" value="2" name="listOption" v-model="checkVal"/></td>-->
                                 <!--                    </tr>-->
-                                <tr v-if="accountList!=null &&accountList.length >0" v-for="account in accountList">
+                                <tr th:each="account:${accountList}" th:if="${accountList!=null && accountList.size() >0}">
                                     <td class="text-right" v-if="isEdit">
-                                        <input type="checkbox" name="listOption" v-bind:id="account.username" v-on:change="selectDelete($event)"/>
+                                        <input type="checkbox" name="listOption" th:id="account.username" th:change="selectDelete($event)"/>
                                     </td>
-                                    <td class="text-left" v-bind:name="account.username">{{account.username}}</td>
-                                    <td class="text-left" v-bind:name="account.email">{{account.email}}</td>
-                                    <td class="text-left" v-bind:name="account.firstName">{{account.firstName}}</td>
-                                    <td class="text-left" v-bind:name="account.lastName">{{account.lastName}}</td>
-                                    <td class="text-right" v-bind:name="account.city">{{account.city}}</td>
-                                    <td class="text-right" v-bind:name="account.country">{{account.country}}</td>
-                                    <td class="text-right" v-bind:name="account.phone">{{account.phone}}</td>
-                                    <td class="text-right" ><a v-bind:name="account.username" v-on:click="openMask($event)">...</a></td>
+                                    <td class="text-left" th:text="${account.username}">{{account.username}}</td>
+                                    <td class="text-left" th:text="${account.email}">{{account.email}}</td>
+                                    <td class="text-left" th:text="${account.firstName}">{{account.firstName}}</td>
+                                    <td class="text-left" th:text="${account.lastName}">{{account.lastName}}</td>
+                                    <td class="text-right" th:text="${account.city}">{{account.city}}</td>
+                                    <td class="text-right" th:text="${account.country}">{{account.country}}</td>
+                                    <td class="text-right" th:text="${account.phone}">{{account.phone}}</td>
+                                    <td class="text-right" ><a th:id="account.username" th:click="openMask($event)">...</a></td>
                                 </tr>
                                 <tr v-if="accountList=== null || accountList.length <= 0"> 你的网站似乎没有用户... </tr>
                                 </tbody>
                             </table>
                         </div>
-                        <button class="au-btn au-btn-icon au-btn--blue" id="delete_button" v-on:click="deleteAccount" v-if="isEdit">
+                        <button class="au-btn au-btn-icon au-btn--blue" id="delete_button" th:click="deleteAccount" v-if="isEdit">
                             <i class="zmdi zmdi-delete"></i>delete</button>
-                        <button v-on:click="editAccounts" class="au-btn au-btn-icon au-btn--blue"
+                        <button th:click="editAccounts" class="au-btn au-btn-icon au-btn--blue"
                                 id="edit_button" v-html="button1">
                         </button>
 
@@ -141,6 +141,22 @@
         </div>
     </div>
 </div>
+
+<script>
+    function selectDelete (e) { // 选中Account加入List
+        let acc = e.currentTarget.id;
+        if (e.target.checked) {
+            this.deleteAccountList.push(username)
+        } else {
+            for (let i = 0; i < this.deleteAccountList.length; i++) {
+                if (this.deleteAccountList[i] === username) {
+                    this.deleteAccountList.splice(i, 1)
+                }
+            }
+        }
+        console.log('当前选中:' + this.deleteAccountList)
+    } // 选中的账户加入list
+</script>
 
 <div th:replace="common/manage_bottom">
 
