@@ -161,240 +161,240 @@ export default {
   },
   data () {
     return {
-        pagename: 'account',
-        type: 'password',
-        src: '../../../static/images/eye2.png',
-        time: 0, // 计时器
-        noticeMsg: '',
-        button1: '<i class="zmdi zmdi-edit"></i>edit account',
-        accountList: null,
-        keyword: '',
-        username: 'master', // 示例使用变量
-        deleteAccountList: [],
-        isEdit: false,
-        titlewin: 'user details', // 弹窗控制数据
-        accountTitle: 'New Account',
-        showAccount: false,
-        show: false,
-        editForm: { // 暂时用来显示弹窗内容的数据
-            account: '#',
-            languagePreference: 'English',
-            favouriteCategoryId: 'NOBANNER',
-            listOption: '#',
-            bannerOption: '#',
-            firstName: '#',
-            lastName: '#',
-            email: '#',
-            phone: '#',
-            address1: '#',
-            address2: '#',
-            city: '#',
-            state: '#',
-            zip: '#',
-            country: '#'
-        },
-        newAccountForm:{
-            username : '',
-            email : '',
-            password : '',
-            msg : '',
-        }
+      pagename: 'account',
+      type: 'password',
+      src: '../../../static/images/eye2.png',
+      time: 0, // 计时器
+      noticeMsg: '',
+      button1: '<i class="zmdi zmdi-edit"></i>edit account',
+      accountList: null,
+      keyword: '',
+      username: 'master', // 示例使用变量
+      deleteAccountList: [],
+      isEdit: false,
+      titlewin: 'user details', // 弹窗控制数据
+      accountTitle: 'New Account',
+      showAccount: false,
+      show: false,
+      editForm: { // 暂时用来显示弹窗内容的数据
+        account: '#',
+        languagePreference: 'English',
+        favouriteCategoryId: 'NOBANNER',
+        listOption: '#',
+        bannerOption: '#',
+        firstName: '#',
+        lastName: '#',
+        email: '#',
+        phone: '#',
+        address1: '#',
+        address2: '#',
+        city: '#',
+        state: '#',
+        zip: '#',
+        country: '#'
+      },
+      newAccountForm: {
+        username: '',
+        email: '',
+        password: '',
+        msg: ''
+      }
     }
   },
   components: {
     Manageframe,
     popupwin},
   methods: {
-      change () { // 切换密码是否可见
-          if (!this.isShow) {
-              this.type = 'text'
-              this.src = '../../../static/images/eye1.png'
+    change () { // 切换密码是否可见
+      if (!this.isShow) {
+        this.type = 'text'
+        this.src = '../../../static/images/eye1.png'
+      } else {
+        this.type = 'password'
+        this.src = '../../../static/images/eye2.png'
+      }
+      this.isShow = !this.isShow
+    },
+    hideAccountWin () {
+      // 取消弹窗回调
+      this.canScroll()
+      this.showAccount = false
+    },
+    submitNewAccount () {
+      // 确认弹窗回调
+      this.canScroll()
+      if (this.newAccountForm.username === '') this.newAccountForm.msg = '用户名不能为空'
+      else if (this.newAccountForm.email === '') this.newAccountForm.msg = '邮箱不能为空'
+      else if (this.newAccountForm.password === '') this.newAccountForm.msg = '密码不能为空'
+      else {
+        this.axios({
+          url: '/management/accounts',
+          method: 'post',
+          data: this.newAccountForm,
+          contentType: 'application/json'
+        }).then(res => {
+          if (res.data.status) {
+            this.showAccount = false
+            this.newAccountForm.username = ''
+            this.newAccountForm.password = ''
+            this.newAccountForm.email = ''
+            this.newAccountForm.msg = ''
+            this.accountList.push(res.data.result.account)
+            alert('添加成功')
           } else {
-              this.type = 'password'
-              this.src = '../../../static/images/eye2.png'
+            this.newAccountForm.msg = res.data.msg
           }
-          this.isShow = !this.isShow
-      },
-      hideAccountWin () {
-          // 取消弹窗回调
-          this.canScroll()
-          this.showAccount = false
-      },
-      submitNewAccount () {
-          // 确认弹窗回调
-          this.canScroll()
-          if(this.newAccountForm.username === '') this.newAccountForm.msg = '用户名不能为空';
-          else if(this.newAccountForm.email === '') this.newAccountForm.msg = '邮箱不能为空';
-          else if(this.newAccountForm.password === '') this.newAccountForm.msg = '密码不能为空';
-          else{
-              this.axios({
-                  url : '/management/accounts',
-                  method : 'post',
-                  data : this.newAccountForm,
-                  contentType : 'application/json'
-              }).then( res => {
-                  if(res.data.status){
-                      this.showAccount = false;
-                      this.newAccountForm.username = '';
-                      this.newAccountForm.password = '';
-                      this.newAccountForm.email = '';
-                      this.newAccountForm.msg = '';
-                      this.accountList.push(res.data.result.account);
-                      alert('添加成功')
-                  }else {
-                      this.newAccountForm.msg = res.data.msg;
-                  }
-              })
-          }
-      },//提交新用户到后台
-      hideNotice () {
-          this.showNotice = false
-          clearInterval(this.time)// 暂停计时器
-      },
-      search () {
-          alert('关键词： ' + this.keyword)
-          // this.reload()
-          // this.$router.push({path: '/result', query: {keyword: this.keyword}})
-      },//搜索
-      hideModal () {
-          // 取消弹窗回调
-          this.canScroll()
-          this.show = false
-      },
-      submit () {
-          // 确认弹窗回调
-          this.canScroll()
-          this.show = false
-          console.log(this.editForm.listOption)
-          let account = {
-              username: this.editForm.username,
-              languagePreference: this.editForm.languagePreference,
-              favouriteCategoryId: this.editForm.favouriteCategoryId,
-              listOption: this.editForm.listOption,
-              bannerOption: this.editForm.bannerOption,
-              firstName: this.editForm.firstName,
-              lastName: this.editForm.lastName,
-              email: this.editForm.email,
-              phone: this.editForm.phone,
-              address1: this.editForm.address1,
-              address2: this.editForm.address2,
-              city: this.editForm.city,
-              state: this.editForm.state,
-              zip: this.editForm.zip,
-              country: this.editForm.country
-          }
-          this.axios.put('/management/accounts', account).then(res => {
-              if (res.data.status) {
-                  this.noticeMsg = '修改成功.'
-                  this.time = setInterval(this.hideNotice, 1000)
-              } else {
-                  this.noticeMsg = '服务器异常,修改失败'
-                  this.time = setInterval(this.hideNotice, 1000)
+        })
+      }
+    }, // 提交新用户到后台
+    hideNotice () {
+      this.showNotice = false
+      clearInterval(this.time)// 暂停计时器
+    },
+    search () {
+      alert('关键词： ' + this.keyword)
+      // this.reload()
+      // this.$router.push({path: '/result', query: {keyword: this.keyword}})
+    }, // 搜索
+    hideModal () {
+      // 取消弹窗回调
+      this.canScroll()
+      this.show = false
+    },
+    submit () {
+      // 确认弹窗回调
+      this.canScroll()
+      this.show = false
+      console.log(this.editForm.listOption)
+      let account = {
+        username: this.editForm.username,
+        languagePreference: this.editForm.languagePreference,
+        favouriteCategoryId: this.editForm.favouriteCategoryId,
+        listOption: this.editForm.listOption,
+        bannerOption: this.editForm.bannerOption,
+        firstName: this.editForm.firstName,
+        lastName: this.editForm.lastName,
+        email: this.editForm.email,
+        phone: this.editForm.phone,
+        address1: this.editForm.address1,
+        address2: this.editForm.address2,
+        city: this.editForm.city,
+        state: this.editForm.state,
+        zip: this.editForm.zip,
+        country: this.editForm.country
+      }
+      this.axios.put('/management/accounts', account).then(res => {
+        if (res.data.status) {
+          this.noticeMsg = '修改成功.'
+          this.time = setInterval(this.hideNotice, 1000)
+        } else {
+          this.noticeMsg = '服务器异常,修改失败'
+          this.time = setInterval(this.hideNotice, 1000)
+        }
+      })
+    }, // 提交修改信息到后台
+    openAccount () {
+      this.noScroll()
+      this.showAccount = true
+    },
+    openMask (e) {
+      this.noScroll()
+      let acc = e.currentTarget.name
+      // console.log(acc)
+      // 打开弹窗
+      for (let i = 0; i < this.accountList.length; i++) {
+        if (acc === this.accountList[i].username) {
+          this.editForm.account = this.accountList[i]
+          this.editForm.username = this.editForm.account.username
+          this.editForm.languagePreference = this.editForm.account.languagePreference
+          this.editForm.favouriteCategoryId = this.editForm.account.favouriteCategoryId
+          this.editForm.listOption = this.editForm.account.listOption
+          this.editForm.bannerOption = this.editForm.account.bannerOption
+          this.editForm.firstName = this.editForm.account.firstName
+          this.editForm.lastName = this.editForm.account.lastName
+          this.editForm.email = this.editForm.account.email
+          this.editForm.phone = this.editForm.account.phone
+          this.editForm.address1 = this.editForm.account.address1
+          this.editForm.address2 = this.editForm.account.address2
+          this.editForm.city = this.editForm.account.city
+          this.editForm.state = this.editForm.account.state
+          this.editForm.zip = this.editForm.account.zip
+          this.editForm.country = this.editForm.account.country
+          break
+        }
+      }
+      this.show = true
+    }, // 打开用户详细信息
+    addAccount () {
+      this.openAccount()
+    }, // 打开添加新用户
+    deleteAccount () {
+      console.log('本次删除账户:' + this.deleteAccountList)
+      let accountList = this.deleteAccountList
+      if (this.deleteAccountList.length > 0) {
+        this.axios({
+          method: 'delete',
+          url: '/management/accounts',
+          data: accountList,
+          contentType: 'application/json'
+        }).then(res => {
+          if (res.data.status) {
+            alert('删除成功')
+            for (let i = 0; i < this.accountList.length; i++) {
+              // console.log(this.categoryList[i]+"   "+this.deleteCategoryList.indexOf(this.categoryList[i]));
+              if (this.deleteAccountList.indexOf(this.accountList[i].username) !== -1) {
+                this.accountList.splice(i, 1)
+                i = 0
               }
-          })
-      }, // 提交修改信息到后台
-      openAccount () {
-          this.noScroll()
-          this.showAccount = true
-      },
-      openMask (e) {
-          this.noScroll()
-          let acc = e.currentTarget.name
-          // console.log(acc)
-          // 打开弹窗
-          for (let i = 0; i < this.accountList.length; i++) {
-              if (acc === this.accountList[i].username) {
-                  this.editForm.account = this.accountList[i]
-                  this.editForm.username = this.editForm.account.username
-                  this.editForm.languagePreference = this.editForm.account.languagePreference
-                  this.editForm.favouriteCategoryId = this.editForm.account.favouriteCategoryId
-                  this.editForm.listOption = this.editForm.account.listOption
-                  this.editForm.bannerOption = this.editForm.account.bannerOption
-                  this.editForm.firstName = this.editForm.account.firstName
-                  this.editForm.lastName = this.editForm.account.lastName
-                  this.editForm.email = this.editForm.account.email
-                  this.editForm.phone = this.editForm.account.phone
-                  this.editForm.address1 = this.editForm.account.address1
-                  this.editForm.address2 = this.editForm.account.address2
-                  this.editForm.city = this.editForm.account.city
-                  this.editForm.state = this.editForm.account.state
-                  this.editForm.zip = this.editForm.account.zip
-                  this.editForm.country = this.editForm.account.country
-                  break
-              }
-          }
-          this.show = true
-      }, // 打开用户详细信息
-      addAccount () {
-          this.openAccount();
-      }, // 打开添加新用户
-      deleteAccount () {
-          console.log('本次删除账户:' + this.deleteAccountList)
-          let accountList = this.deleteAccountList
-          if (this.deleteAccountList.length > 0) {
-              this.axios({
-                  method: 'delete',
-                  url: '/management/accounts',
-                  data: accountList,
-                  contentType: 'application/json'
-              }).then(res => {
-                  if (res.data.status) {
-                      alert('删除成功')
-                      for (let i = 0; i < this.accountList.length; i++) {
-                          // console.log(this.categoryList[i]+"   "+this.deleteCategoryList.indexOf(this.categoryList[i]));
-                          if (this.deleteAccountList.indexOf(this.accountList[i].username) !== -1) {
-                              this.accountList.splice(i, 1);
-                              i = 0
-                          }
-                      }
-                      this.deleteAccountList = []
-                  } else {
-                      alert('删除失败,原因:' + res.data.msg)
-                  }
-              })
-          }
-      }, // 删除选中账户
-      selectDelete (e) { // 选中Account加入List
-          let username = e.currentTarget.id;
-          if (e.target.checked) {
-              this.deleteAccountList.push(username)
+            }
+            this.deleteAccountList = []
           } else {
-              for (let i = 0; i < this.deleteAccountList.length; i++) {
-                  if (this.deleteAccountList[i] === username) {
-                      this.deleteAccountList.splice(i, 1)
-                  }
-              }
+            alert('删除失败,原因:' + res.data.msg)
           }
-          console.log('当前选中:' + this.deleteAccountList)
-      }, // 选中的账户加入list
-      editAccounts () {
-          this.isEdit = !this.isEdit
-          if(this.isEdit === false) this.deleteAccountList =[]
-      },//修改模式来回切换
-      getData () {
-          this.axios.get('/management/accounts', {
-              params: {}
-          }).then(res => {
-              this.accountList = res.data.result.accountList
-          })
-      },//初始化函数
-      resetPwd(e){
-          let data = {
-              username : e.currentTarget.name,
+        })
+      }
+    }, // 删除选中账户
+    selectDelete (e) { // 选中Account加入List
+      let username = e.currentTarget.id
+      if (e.target.checked) {
+        this.deleteAccountList.push(username)
+      } else {
+        for (let i = 0; i < this.deleteAccountList.length; i++) {
+          if (this.deleteAccountList[i] === username) {
+            this.deleteAccountList.splice(i, 1)
           }
-          this.axios({
-              url : "/management/accounts/passwords",
-              method : 'put',
-              data :  data,
-              contentType : 'application/json'
-          }).then( res => {
-              if(res.data.status){
-                  alert("重置成功")
-              }else{
-                  alert("服务器错误")
-              }
-          })
-      }//重置密码
+        }
+      }
+      console.log('当前选中:' + this.deleteAccountList)
+    }, // 选中的账户加入list
+    editAccounts () {
+      this.isEdit = !this.isEdit
+      if (this.isEdit === false) this.deleteAccountList = []
+    }, // 修改模式来回切换
+    getData () {
+      this.axios.get('/management/accounts', {
+        params: {}
+      }).then(res => {
+        this.accountList = res.data.result.accountList
+      })
+    }, // 初始化函数
+    resetPwd (e) {
+      let data = {
+        username: e.currentTarget.name
+      }
+      this.axios({
+        url: '/management/accounts/passwords',
+        method: 'put',
+        data: data,
+        contentType: 'application/json'
+      }).then(res => {
+        if (res.data.status) {
+          alert('重置成功')
+        } else {
+          alert('服务器错误')
+        }
+      })
+    }// 重置密码
   },
   created () {
     this.getData()

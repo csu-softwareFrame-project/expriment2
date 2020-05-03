@@ -17,15 +17,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="overview-wrap">
-                            <h2 class="title-1">Search</h2>
-                            <!--搜索account-->
-                            <form class="form-header">
-                                <input class="au-input au-input--xl" type="search" name="search" placeholder="Search for accounts" v-model="keyword"/>
-                                <button class="au-btn--submit"  @click="search">
-                                    <i class="zmdi zmdi-search"></i>
-                                </button>
-                            </form>
-                            <button class="au-btn au-btn-icon au-btn--blue" @click="addAccount">
+                            <button class="au-btn au-btn-icon au-btn--blue">
                                 <i class="zmdi zmdi-plus"></i>add account</button>
                         </div>
                     </div>
@@ -34,11 +26,11 @@
                 <div class="row">
                     <div class="col-lg-9">
                         <h2 class="title-1 m-b-25">Accounts</h2>
-                        <div class="table-responsive table--no-card m-b-55">
+                        <div class="table--no-card m-b-20">
                             <table class="table table-borderless table-striped table-earning" id="account_table">
                                 <thead>
                                 <tr>
-                                    <th class="text-right" v-if="isEdit">del</th>
+                                    <th class="text-right" id="edit_head" style="visibility: hidden">del</th>
                                     <th>username</th>
                                     <th>email</th>
                                     <th>first name</th>
@@ -50,20 +42,9 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <!--                    <tr>-->
-                                <!--                      <td class="text-left">master</td>-->
-                                <!--                      <td class="text-left">Software1801@csu.cn</td>-->
-                                <!--                      <td class="text-left">a</td>-->
-                                <!--                      <td class="text-left">a</td>-->
-                                <!--                      <td class="text-right">CS</td>-->
-                                <!--                      <td class="text-right">CN</td>-->
-                                <!--                      <td class="text-right">211241231</td>-->
-                                <!--                      <td class="text-right"><a @click="openMask">...</a></td>-->
-                                <!--                      <td class="text-right" v-if="isEdit"><input type="checkbox" value="2" name="listOption" v-model="checkVal"/></td>-->
-                                <!--                    </tr>-->
                                 <tr th:each="account:${accountList}" th:if="${accountList!=null && accountList.size() >0}">
-                                    <td class="text-right" v-if="isEdit">
-                                        <input type="checkbox" name="listOption" th:id="account.username" th:change="selectDelete($event)"/>
+                                    <td class="text-right" th:name="edit_body" style="visibility: hidden">
+                                        <input type="checkbox" name="listOption" th:id="${account.username}" onclick="selectDelete(event)"/>
                                     </td>
                                     <td class="text-left" th:text="${account.username}">{{account.username}}</td>
                                     <td class="text-left" th:text="${account.email}">{{account.email}}</td>
@@ -72,17 +53,16 @@
                                     <td class="text-right" th:text="${account.city}">{{account.city}}</td>
                                     <td class="text-right" th:text="${account.country}">{{account.country}}</td>
                                     <td class="text-right" th:text="${account.phone}">{{account.phone}}</td>
-                                    <td class="text-right" ><a th:id="account.username" th:click="openMask($event)">...</a></td>
+                                    <td class="text-right" ><a th:id="account.username" >...</a></td>
                                 </tr>
-                                <tr v-if="accountList=== null || accountList.length <= 0"> 你的网站似乎没有用户... </tr>
+                                <tr th:if="${accountList==null || accountList.size() <= 0}"> 你的网站似乎没有用户... </tr>
                                 </tbody>
                             </table>
                         </div>
-                        <button class="au-btn au-btn-icon au-btn--blue" id="delete_button" th:click="deleteAccount" v-if="isEdit">
-                            <i class="zmdi zmdi-delete"></i>delete</button>
-                        <button th:click="editAccounts" class="au-btn au-btn-icon au-btn--blue"
-                                id="edit_button" v-html="button1">
-                        </button>
+
+                        <button id="delete_button" onclick="deleteAccount()" class="au-btn au-btn-icon au-btn--blue"></button>
+
+                        <button id="control_button" onclick="control()" class="au-btn au-btn-icon au-btn--blue"><i class="zmdi zmdi-edit"></i>edit</button>
 
                         <!--弹窗-->
                         <!--<popupwin :show="show" :title="titlewin" @hideModal="hideModal" @submit="submit">-->
@@ -142,19 +122,47 @@
     </div>
 </div>
 
-<script>
+<script type="text/javascript">
+    var isEdit = false
+    var deleteAccountList = []
+    function control() {
+        var controlButton = document.getElementById("control_button")
+        var deleteButton = document.getElementById("delete_button")
+        var editHead = document.getElementById("edit_head")
+        var editBodys = document.getElementsByName("edit_body")
+        if (isEdit){
+            editHead.style.visibility = "hidden"
+            for (var i = 0; i < editBodys.length; i++){
+                editBodys.item(i).style.visibility = "hidden"
+            }
+            controlButton.innerHTML = '<i class="zmdi zmdi-edit"></i>edit'
+            deleteButton.innerHTML = ''
+        }else {
+            editHead.style.visibility = "visible"
+            for (var ii = 0; ii < editBodys.length; ii++){
+                editBodys.item(ii).style.visibility = "visible"
+            }
+            // editBody.item(0).style.visibility = "visible"
+            controlButton.innerHTML = '<i class="zmdi zmdi-check"></i>complete'
+            deleteButton.innerHTML = '<i class="zmdi zmdi-delete"></i>delete'
+        }
+        isEdit = !isEdit
+    }
+    function deleteAccount() {
+        alert(deleteAccountList)
+    }
     function selectDelete (e) { // 选中Account加入List
-        let acc = e.currentTarget.id;
+        var username = e.currentTarget.id
         if (e.target.checked) {
-            this.deleteAccountList.push(username)
+            deleteAccountList.push(username)
         } else {
-            for (let i = 0; i < this.deleteAccountList.length; i++) {
-                if (this.deleteAccountList[i] === username) {
-                    this.deleteAccountList.splice(i, 1)
+            for (var i = 0; i < deleteAccountList.length; i++) {
+                if (deleteAccountList[i] === username) {
+                    deleteAccountList.splice(i, 1)
                 }
             }
         }
-        console.log('当前选中:' + this.deleteAccountList)
+        console.log('当前选中:' + deleteAccountList)
     } // 选中的账户加入list
 </script>
 
