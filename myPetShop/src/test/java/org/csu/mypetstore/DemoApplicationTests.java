@@ -123,26 +123,28 @@ class DemoApplicationTests {
     @Test
     void testAccountInsert()  //测试通过
     {
-        Account account = new Account();
-        account.setUsername("66");
-        account.setPassword("abaaba");
-        account.setLanguagePreference("English");
-        account.setEmail("777");
-        account.setFirstName("Z");
-        account.setLastName("J");
-        account.setStatus("55");
-        account.setBannerOption("1");
-        account.setListOption("0");
-        account.setFavouriteCategoryId("BIRDS");
-        account.setCountry("China");
-        account.setZip("FJ");
-        account.setState("FZ");
-        account.setCity("FZ");
-        account.setAddress2("FZYZ");
-        account.setAddress1("CSU");
-        account.setPhone("8848");
-        account.setBannerName("CATS");
-        accountService.insertAccount(account);
+        for(int i=0;i<10;i++){
+            Account account = new Account();
+            account.setUsername(Integer.toString((i+1)*11));
+            account.setPassword("abaaba");
+            account.setLanguagePreference("English");
+            account.setEmail("777");
+            account.setFirstName("Z");
+            account.setLastName("J");
+            account.setStatus("55");
+            account.setBannerOption("1");
+            account.setListOption("0");
+            account.setFavouriteCategoryId("BIRDS");
+            account.setCountry("China");
+            account.setZip("FJ");
+            account.setState("FZ");
+            account.setCity("FZ");
+            account.setAddress2("FZYZ");
+            account.setAddress1("CSU");
+            account.setPhone("8848");
+            account.setBannerName("CATS");
+            accountService.insertAccount(account);
+        }
     }
 
     @Test

@@ -42,7 +42,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="account:${accountList}" th:if="${accountList!=null && accountList.size() >0}">
+                                <tr th:each="account:${accountList}" th:if="${accountList!=null && accountList.size() >0}" id="${account.username}">
                                     <td class="text-right" th:name="edit_body" style="visibility: hidden">
                                         <input type="checkbox" name="listOption" th:id="${account.username}" onclick="selectDelete(event)"/>
                                     </td>
@@ -53,7 +53,7 @@
                                     <td class="text-right" th:text="${account.city}">{{account.city}}</td>
                                     <td class="text-right" th:text="${account.country}">{{account.country}}</td>
                                     <td class="text-right" th:text="${account.phone}">{{account.phone}}</td>
-                                    <td class="text-right" ><a th:id="account.username" >...</a></td>
+                                    <td class="text-right" ><a th:id="account.username" onclick="openWin()">...</a></td>
                                 </tr>
                                 <tr th:if="${accountList==null || accountList.size() <= 0}"> 你的网站似乎没有用户... </tr>
                                 </tbody>
@@ -63,57 +63,6 @@
                         <button id="delete_button" onclick="deleteAccount()" class="au-btn au-btn-icon au-btn--blue"></button>
 
                         <button id="control_button" onclick="control()" class="au-btn au-btn-icon au-btn--blue"><i class="zmdi zmdi-edit"></i>edit</button>
-
-                        <!--弹窗-->
-                        <!--<popupwin :show="show" :title="titlewin" @hideModal="hideModal" @submit="submit">-->
-                            <!--<label for="firstName">First name: &nbsp;-->
-                                <!--<input type="text" size="40" name="firstName" v-model="editForm.firstName" class="required input_field" id="firstName" /></label>-->
-                            <!--<div class="cleaner h10"></div>-->
-                            <!--<label for="lastName">Last name: &nbsp;-->
-                                <!--<input type="text" size="40" name="lastName" v-model="editForm.lastName" class="required input_field" id="lastName"/></label>-->
-                            <!--<div class="cleaner h10"></div>-->
-                            <!--<label for="email">Email: &nbsp;-->
-                                <!--<input type="text" size="40" name="email" v-model="editForm.email" class="required input_field" id="email"/></label>-->
-                            <!--<div class="cleaner h10"></div>-->
-                            <!--<label for="phone">Phone: &nbsp;-->
-                                <!--<input type="text" size="40" name="phone" v-model="editForm.phone" class="required input_field" id="phone"/></label>-->
-                            <!--<div class="cleaner h10"></div>-->
-                            <!--<label for="address1">Address 1: &nbsp;-->
-                                <!--<input type="text" size="40" name="address1" v-model="editForm.address1" class="required input_field" id="address1"/></label>-->
-                            <!--<div class="cleaner h10"></div>-->
-                            <!--<label for="address2">Address 2: &nbsp;-->
-                                <!--<input type="text" size="40" name="address2" v-model="editForm.address2" class="required input_field" id="address2"/></label>-->
-                            <!--<div class="cleaner h10"></div>-->
-                            <!--<label for="city">City: &nbsp;-->
-                                <!--<input type="text" size="40" name="city" v-model="editForm.city" class="required input_field" id="city"/></label>-->
-                            <!--<div class="cleaner h10"></div>-->
-                            <!--<label for="state">State: &nbsp;-->
-                                <!--<input type="text" size="40"  name="state" v-model="editForm.state" class="required input_field" id="state"/></label>-->
-                            <!--<div class="cleaner h10"></div>-->
-                            <!--<label for="zip">Zip: &nbsp;-->
-                                <!--<input type="text" size="40"  name="zip" v-model="editForm.zip" class="required input_field" id="zip"/></label>-->
-                            <!--<div class="cleaner h10"></div>-->
-                            <!--<label for="country">Country: &nbsp;-->
-                                <!--<input type="text" size="40"  name="country" v-model="editForm.country" class="required input_field" id="country"/></label>-->
-                            <!--<div class="cleaner h10"></div>-->
-                            <!--<hr>-->
-                            <!--<h4>Profile Information</h4><br>-->
-                            <!--<label>Language Preference: &nbsp;-->
-                                <!--<select name="languagePreference" id="languagePreference" v-model="editForm.languagePreference">-->
-                                    <!--<option>English</option>-->
-                                <!--</select>-->
-                            <!--</label>-->
-                            <!--<div class="cleaner h10"></div>-->
-                            <!--<label>Favourite Category: &nbsp;-->
-                                <!--<select name="favouriteCategoryId" id="favouriteCategoryId" v-model="editForm.favouriteCategoryId">-->
-                                    <!--<option >NOBANNER</option>-->
-                                <!--</select>-->
-                            <!--</label>-->
-                            <!--<div class="cleaner h10"></div>-->
-                            <!--<label>Enable MyList &nbsp;<input type="checkbox" id="listOption" v-model="editForm.listOption" name="listOption" /></label>-->
-                            <!--<div class="cleaner h10"></div>-->
-                            <!--<label>Enable MyBanner &nbsp;<input type="checkbox" id="bannerOption" v-model="editForm.bannerOption" name="bannerOption" /></label>-->
-                        <!--</popupwin>-->
                     </div>
                 </div>
             </div>
@@ -149,7 +98,21 @@
         isEdit = !isEdit
     }
     function deleteAccount() {
-        alert(deleteAccountList)
+        //alert(deleteAccountList)
+        var usernameList = deleteAccountList[0]
+        for(var i=1;i<deleteAccountList.length;i++){
+            usernameList = usernameList + "," + deleteAccountList[i]
+        }
+        var table = document.getElementById("account_table");
+        var row;
+        for(var i=0;i<deleteAccountList.length;i++){
+            row = document.getElementById(deleteAccountList[i]);
+            row.parentNode.parentNode.parentNode.removeChild(row.parentNode.parentNode);
+        }
+        $.ajax({
+            url:"/management/removeAccount?usernameList="+usernameList,
+            type:"get"
+        });
     }
     function selectDelete (e) { // 选中Account加入List
         var username = e.currentTarget.id
@@ -164,6 +127,10 @@
         }
         console.log('当前选中:' + deleteAccountList)
     } // 选中的账户加入list
+
+    function openWin(){
+        window.open ("static/help.html", "newwindow", "height=100, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no")
+    }
 </script>
 
 <div th:replace="common/manage_bottom">
