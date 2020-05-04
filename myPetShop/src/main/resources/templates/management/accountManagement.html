@@ -53,7 +53,7 @@
                                     <td class="text-right" th:text="${account.city}">{{account.city}}</td>
                                     <td class="text-right" th:text="${account.country}">{{account.country}}</td>
                                     <td class="text-right" th:text="${account.phone}">{{account.phone}}</td>
-                                    <td class="text-right" ><a th:id="account.username" onclick="openWin()">...</a></td>
+                                    <td class="text-right" ><a href="#" th:id="${account.username}" onclick="dianwo()">...</a></td>
                                 </tr>
                                 <tr th:if="${accountList==null || accountList.size() <= 0}"> 你的网站似乎没有用户... </tr>
                                 </tbody>
@@ -68,6 +68,36 @@
             </div>
 
         </div>
+    </div>
+</div>
+
+<!--弹窗代码-->
+<div class="popWin-bg" id='popWin'>
+    <div class="popWin-container">
+        <div class="popWin-header">
+            <!--标题-->
+            <span>User Info</span>
+            <button id="popWin-header-right" onclick="hidder()">x</button>
+        </div>
+        <!--正文-->
+        <div class="popWin-main">
+            <h6>此处添加用户信息表单，注意传入值，例子如下</h6>
+            <!--例子-->
+            <h3>User Information</h3>
+            <label >User ID: &nbsp;</label>
+            <input type="text" name="username" id="username" th:value="Lee" onblur="usernameIsExist();"/>
+            <label id="usernameMsg"></label>
+            <div class="cleaner h10"></div>
+            <div id="changePasswordButton"><label>password: &nbsp;</label><a href="#" onclick="changePassword()">change password</a></div>
+            <div id="changePassword">
+
+            </div>
+        </div>
+    <div class="popWin-footer">
+        <button onclick="hidder()"><i class="fa fa-ban"></i>&nbsp;cancel</button>
+        <!--提交按钮-->
+        <button ><i class="fa fa-check"></i>&nbsp;confirm</button>
+    </div>
     </div>
 </div>
 
@@ -99,20 +129,22 @@
     }
     function deleteAccount() {
         //alert(deleteAccountList)
-        var usernameList = deleteAccountList[0]
-        for(var i=1;i<deleteAccountList.length;i++){
-            usernameList = usernameList + "," + deleteAccountList[i]
+        if (deleteAccountList.length>0){
+            var usernameList = deleteAccountList[0]
+            for(var i=1;i<deleteAccountList.length;i++){
+                usernameList = usernameList + "," + deleteAccountList[i]
+            }
+            var table = document.getElementById("account_table");
+            var row;
+            for(var i=0;i<deleteAccountList.length;i++){
+                row = document.getElementById(deleteAccountList[i]);
+                row.parentNode.parentNode.parentNode.removeChild(row.parentNode.parentNode);
+            }
+            $.ajax({
+                url:"/management/removeAccount?usernameList="+usernameList,
+                type:"get"
+            });
         }
-        var table = document.getElementById("account_table");
-        var row;
-        for(var i=0;i<deleteAccountList.length;i++){
-            row = document.getElementById(deleteAccountList[i]);
-            row.parentNode.parentNode.parentNode.removeChild(row.parentNode.parentNode);
-        }
-        $.ajax({
-            url:"/management/removeAccount?usernameList="+usernameList,
-            type:"get"
-        });
     }
     function selectDelete (e) { // 选中Account加入List
         var username = e.currentTarget.id
@@ -129,7 +161,7 @@
     } // 选中的账户加入list
 
     function openWin(){
-        window.open ("static/help.html", "newwindow", "height=100, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no")
+        window.open ("/help.html", "newwindow", "height=100, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no")
     }
 </script>
 
