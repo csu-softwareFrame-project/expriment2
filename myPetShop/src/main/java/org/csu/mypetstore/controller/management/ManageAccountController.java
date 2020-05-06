@@ -65,4 +65,35 @@ public class ManageAccountController {
         System.out.println(info);
         return info;
     }
+
+    @GetMapping("/updateAccount")
+    public void updateAccount(String accountInfo){
+        System.out.println("success");
+        System.out.println(accountInfo);
+        String[] accountInfoList = accountInfo.split(",");
+
+        Account account = new Account();
+        account.setUsername(accountInfoList[0]);
+        account.setFirstName(accountInfoList[1]);
+        account.setLastName(accountInfoList[2]);
+        account.setEmail(accountInfoList[3]);
+        account.setPhone(accountInfoList[4]);
+        account.setAddress1(accountInfoList[5]);
+        account.setAddress2(accountInfoList[6]);
+        account.setCity(accountInfoList[7]);
+        account.setState(accountInfoList[8]);
+        account.setZip(accountInfoList[9]);
+        account.setCountry(accountInfoList[10]);
+        account.setLanguagePreference(accountInfoList[11]);
+        account.setFavouriteCategoryId(accountInfoList[12]);
+        account.setBooleanListOption(accountInfoList[13].equals("true"));
+        account.setBooleanBannerOption(accountInfoList[14].equals("true"));
+        if(accountInfoList.length == 15){
+            account.setPassword(null);
+        }
+        else{
+            account.setPassword(accountInfoList[15]);
+        }
+        accountService.updateAccount(account);
+    }
 }

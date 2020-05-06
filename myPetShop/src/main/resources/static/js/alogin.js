@@ -21,6 +21,7 @@ function createXMLHttpRequest()
 }
 
 function notChange() {
+    passwordUpdate = false;
     var block = document.getElementById("changePasswordButton");
     var block2 = document.getElementById("changePassword");
     block.innerHTML = "<label>password: &nbsp;</label><a href='#' onclick=\"changePassword()\">change password</a>"
@@ -29,6 +30,7 @@ function notChange() {
 
 function changePassword() {
     // alert("a")
+    passwordUpdate = true;
     var block1 = document.getElementById("changePasswordButton");
     var block2 = document.getElementById("changePassword");
     block1.innerHTML = ""

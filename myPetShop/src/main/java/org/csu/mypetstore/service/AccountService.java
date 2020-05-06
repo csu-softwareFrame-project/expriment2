@@ -50,7 +50,7 @@ public class AccountService {
         accountMapper.updateProfile(account);
 
         if (account.getPassword() != null && account.getPassword().length() > 0) {
-            accountMapper.updateSignon(account);
+            updatePassword(account.getUsername(),account.getPassword());
         }
     }
 

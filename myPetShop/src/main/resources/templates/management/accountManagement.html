@@ -149,17 +149,17 @@
             </label>
             <div class="cleaner h10"></div>
 
-            <label>Enable MyList &nbsp;<input type="checkbox" id="listOption" name="listOption" th:value="listOption" /></label>
+            <label>Enable MyList &nbsp;<input type="checkbox" id="listOption" name="listOption" th:value="listOption" onclick="listChecked()"/></label>
             <div class="cleaner h10"></div>
 
-            <label>Enable MyBanner &nbsp;<input type="checkbox" id="bannerOption" name="bannerOption" th:value="bannerOption" /></label>
+            <label>Enable MyBanner &nbsp;<input type="checkbox" id="bannerOption" name="bannerOption" th:value="bannerOption" onclick="bannerChecked()"/></label>
 
         </div>
 
     <div class="popWin-footer">
         <button onclick="hidder()"><i class="fa fa-ban"></i>&nbsp;cancel</button>
         <!--提交按钮-->
-        <button ><i class="fa fa-check"></i>&nbsp;confirm</button>
+        <button onclick="confirm()"><i class="fa fa-check"></i>&nbsp;confirm</button>
 
     </div>
     </div>
@@ -168,6 +168,11 @@
 <script type="text/javascript">
     var isEdit = false
     var deleteAccountList = []
+    document.getElementById('popWin').style.display="none";
+    var listOption = false;
+    var bannerOption = false;
+    var passwordUpdate = false;
+
     function control() {
         var controlButton = document.getElementById("control_button")
         var deleteButton = document.getElementById("delete_button")
@@ -224,7 +229,6 @@
         console.log('当前选中:' + deleteAccountList)
     } // 选中的账户加入list
 
-    document.getElementById('popWin').style.display="none";
     function dianwo(e){
         document.getElementById('popWin').style.display="";
         var username = e.currentTarget.id;
@@ -264,6 +268,88 @@
     }
     function hidder(){
         document.getElementById('popWin').style.display="none";
+    }
+
+    function confirm(){
+        var edit_username = document.getElementById("edit_username");
+        var edit_firstName = document.getElementById("edit_firstName");
+        var edit_lastName = document.getElementById("edit_lastName");
+        var edit_email = document.getElementById("edit_email");
+        var edit_phone = document.getElementById("edit_phone");
+        var edit_address1 = document.getElementById("edit_address1");
+        var edit_address2 = document.getElementById("edit_address2");
+        var edit_city = document.getElementById("edit_city");
+        var edit_state = document.getElementById("edit_state");
+        var edit_zip = document.getElementById("edit_zip");
+        var edit_country = document.getElementById("edit_country");
+
+        var username = edit_username.value;
+        var firstName = edit_firstName.value;
+        var lastName = edit_lastName.value;
+        var email = edit_email.value;
+        var phone = edit_phone.value;
+        var address1 = edit_address1.value;
+        var address2 = edit_address2.value;
+        var city = edit_city.value;
+        var state = edit_state.value;
+        var zip = edit_zip.value;
+        var country = edit_country.value;
+
+        var accountInfo = username;
+        accountInfo = accountInfo + ',' + firstName;
+        accountInfo = accountInfo + ',' + lastName;
+        accountInfo = accountInfo + ',' + email;
+        accountInfo = accountInfo + ',' + phone;
+        accountInfo = accountInfo + ',' + address1;
+        accountInfo = accountInfo + ',' + address2;
+        accountInfo = accountInfo + ',' + city;
+        accountInfo = accountInfo + ',' + state;
+        accountInfo = accountInfo + ',' + zip;
+        accountInfo = accountInfo + ',' + country;
+
+        var language = document.getElementById("languagePreference");
+        var index1 = language.selectedIndex;
+        var languagePreference = language.options[index1].value;
+
+        var favorite = document.getElementById("favouriteCategoryId");
+        var index2 = favorite.selectedIndex;
+        var favoriteCategory = favorite.options[index2].value;
+
+        accountInfo = accountInfo + ',' + languagePreference;
+        accountInfo = accountInfo + ',' + favoriteCategory;
+
+        if(listOption){
+            accountInfo = accountInfo + ',' + "true";
+        }
+        else{
+            accountInfo = accountInfo + ',' + "false";
+        }
+
+        if(bannerOption){
+            accountInfo = accountInfo + ',' + "true";
+        }
+        else{
+            accountInfo = accountInfo + ',' + "false";
+        }
+
+        if(passwordUpdate){
+            var password = document.getElementById("password").value;
+            accountInfo = accountInfo + ',' + password;
+        }
+        alert(accountInfo);
+
+        $.ajax({
+            url:"/management/updateAccount?accountInfo="+accountInfo,
+            type:"get"
+        });
+    }
+
+    function listChecked(){
+        listOption = !listOption;
+    }
+
+    function bannerChecked(){
+        bannerOption = !bannerOption;
     }
 </script>
 
