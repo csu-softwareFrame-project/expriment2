@@ -53,7 +53,7 @@
                                     <td class="text-right" th:text="${account.city}">{{account.city}}</td>
                                     <td class="text-right" th:text="${account.country}">{{account.country}}</td>
                                     <td class="text-right" th:text="${account.phone}">{{account.phone}}</td>
-                                    <td class="text-right" ><a href="#" th:id="${account.username}" onclick="dianwo()">...</a></td>
+                                    <td class="text-right" ><a href="#" th:id="${account.getUsername()}" onclick="dianwo(event)">...</a></td>
                                 </tr>
                                 <tr th:if="${accountList==null || accountList.size() <= 0}"> 你的网站似乎没有用户... </tr>
                                 </tbody>
@@ -81,22 +81,86 @@
         </div>
         <!--正文-->
         <div class="popWin-main">
-            <h6>此处添加用户信息表单，注意传入值，例子如下</h6>
-            <!--例子-->
-            <h3>User Information</h3>
             <label >User ID: &nbsp;</label>
-            <input type="text" name="username" id="username" th:value="Lee" onblur="usernameIsExist();"/>
+            <input type="text" name="edit_username" id="edit_username" th:id="edit_username" th:value="00" onblur="usernameIsExist();"/>
             <label id="usernameMsg"></label>
+
+
+
             <div class="cleaner h10"></div>
             <div id="changePasswordButton"><label>password: &nbsp;</label><a href="#" onclick="changePassword()">change password</a></div>
             <div id="changePassword">
 
             </div>
+
+            <h3>Account Information</h3>
+
+
+            <label for="edit_firstName">First name: &nbsp;<input type="text" name="firstName" class="required input_field" id="edit_firstName"/></label>
+            <div class="cleaner h10"></div>
+
+            <label for="edit_lastName">Last name: &nbsp;<input type="text" name="lastName" class="required input_field" id="edit_lastName"/></label>
+            <div class="cleaner h10"></div>
+
+            <label for="edit_email">Email: &nbsp;<input type="text" size="40" name="email" class="required input_field" id="edit_email"/></label>
+            <div class="cleaner h10"></div>
+
+            <label for="edit_phone">Phone: &nbsp;<input type="text" name="phone" class="required input_field" id="edit_phone"/></label>
+            <div class="cleaner h10"></div>
+
+            <label for="edit_address1">Address 1: &nbsp;<input type="text" size="40" name="address1" class="required input_field" id="edit_address1"/></label>
+            <div class="cleaner h10"></div>
+
+            <label for="edit_address2">Address 2: &nbsp;<input type="text" size="40" name="address2" class="required input_field" id="edit_address2"/></label>
+            <div class="cleaner h10"></div>
+
+            <label for="edit_city">City: &nbsp;<input type="text" name="city" class="required input_field" id="edit_city"/></label>
+            <div class="cleaner h10"></div>
+
+            <label for="edit_state">State: &nbsp;<input type="text" size="4" name="state" class="required input_field" id="edit_state"/></label>
+            <div class="cleaner h10"></div>
+
+            <label for="edit_zip">Zip: &nbsp;<input type="text" size="10" name="zip" class="required input_field" id="edit_zip"/></label>
+            <div class="cleaner h10"></div>
+
+            <label for="edit_country">Country: &nbsp;<input type="text" size="15" name="country" class="required input_field" id="edit_country"/></label>
+            <div class="cleaner h10"></div>
+
+            <h3>Profile Information</h3>
+            <script type="text/javascript" src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+            <script type="text/javascript" src="js/optionChecked.js"></script>
+
+
+            <label>Language Preference: &nbsp;
+                <!--            <select name="languagePreference" id="languagePreference" th:each="languages:${session.languages}">-->
+                <!--            <option th:text="${languages}">languages</option>-->
+                <select name="languagePreference" id="languagePreference">
+                    <option>English</option>
+                </select>
+            </label>
+
+            <div class="cleaner h10"></div>
+            <label>Favourite Category: &nbsp;
+                <!--            <select name="favouriteCategoryId" id="favouriteCategoryId" th:each="categories:${session.categories}">-->
+                <!--                <option th:each="${categories}">categories</option>-->
+                <select name="favouriteCategoryId" id="favouriteCategoryId">
+                    <option >NOBANNER</option>
+                </select>
+            </label>
+            <div class="cleaner h10"></div>
+
+            <label>Enable MyList &nbsp;<input type="checkbox" id="listOption" name="listOption" th:value="listOption" /></label>
+            <div class="cleaner h10"></div>
+
+            <label>Enable MyBanner &nbsp;<input type="checkbox" id="bannerOption" name="bannerOption" th:value="bannerOption" /></label>
+
         </div>
+
     <div class="popWin-footer">
         <button onclick="hidder()"><i class="fa fa-ban"></i>&nbsp;cancel</button>
         <!--提交按钮-->
         <button ><i class="fa fa-check"></i>&nbsp;confirm</button>
+
     </div>
     </div>
 </div>
@@ -160,8 +224,46 @@
         console.log('当前选中:' + deleteAccountList)
     } // 选中的账户加入list
 
-    function openWin(){
-        window.open ("/help.html", "newwindow", "height=100, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no")
+    document.getElementById('popWin').style.display="none";
+    function dianwo(e){
+        document.getElementById('popWin').style.display="";
+        var username = e.currentTarget.id;
+        $.ajax({
+            url:"/management/getAccount?username="+username,
+            type:"get",
+            success:function (text) {
+                var message= JSON.stringify(text);
+                var info = message.split('#');
+                var username = info[0].substr(1,info[0].length-1);
+
+                var edit_username = document.getElementById("edit_username");
+                edit_username.value = username;
+                var edit_firstName = document.getElementById("edit_firstName");
+                edit_firstName.value = info[1];
+                var edit_lastName = document.getElementById("edit_lastName");
+                edit_lastName.value = info[2];
+                var edit_email = document.getElementById("edit_email");
+                edit_email.value = info[3];
+                var edit_phone = document.getElementById("edit_phone");
+                edit_phone.value = info[4];
+                var edit_address1 = document.getElementById("edit_address1");
+                edit_address1.value = info[5];
+                var edit_address2 = document.getElementById("edit_address2");
+                edit_address2.value = info[6];
+                var edit_city = document.getElementById("edit_city");
+                edit_city.value = info[7];
+                var edit_state = document.getElementById("edit_state");
+                edit_state.value = info[8];
+                var edit_zip = document.getElementById("edit_zip");
+                edit_zip.value = info[9];
+                var edit_country = document.getElementById("edit_country");
+                var country = info[10].substr(0,info[10].length-1);
+                edit_country.value = country;
+            }
+        })
+    }
+    function hidder(){
+        document.getElementById('popWin').style.display="none";
     }
 </script>
 
