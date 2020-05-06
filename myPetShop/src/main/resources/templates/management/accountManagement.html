@@ -17,7 +17,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="overview-wrap">
-                            <button class="au-btn au-btn-icon au-btn--blue">
+                            <button class="au-btn au-btn-icon au-btn--blue" onclick="addAccount()">
                                 <i class="zmdi zmdi-plus"></i>add account</button>
                         </div>
                     </div>
@@ -82,7 +82,7 @@
         <!--正文-->
         <div class="popWin-main">
             <label >User ID: &nbsp;</label>
-            <input type="text" name="edit_username" id="edit_username" th:id="edit_username" th:value="00" onblur="usernameIsExist();"/>
+            <input type="text" name="edit_username" id="edit_username" th:id="edit_username" onblur="usernameIsExist();"/>
             <label id="usernameMsg"></label>
 
 
@@ -350,6 +350,22 @@
 
     function bannerChecked(){
         bannerOption = !bannerOption;
+    }
+
+    function addAccount(){
+        document.getElementById('popWin').style.display="";
+
+        passwordUpdate = true;
+        var block1 = document.getElementById("changePasswordButton");
+        var block2 = document.getElementById("changePassword");
+        block1.innerHTML = ""
+        block2.innerHTML = "<label for=\"password\">Password: &nbsp;</label><input type=\"password\" name=\"password\" id=\"password\" onblur=\"isPasswordNull();\"/>\n" +
+            "            <label id=\"usernameMsg2\"></label>\n" +
+            "            <div class=\"cleaner h10\"></div>\n" +
+            "\n" +
+            "            <label for=\"repeatedPassword\">Repeat password: &nbsp;</label><input type=\"password\" name=\"repeatedPassword\" id=\"repeatedPassword\" onblur=\"isPasswordTheSame();\"/>\n" +
+            "            <label id=\"usernameMsg3\"></label>\n" +
+            "            <div class=\"cleaner h10\"></div>\n"
     }
 </script>
 

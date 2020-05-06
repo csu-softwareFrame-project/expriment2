@@ -39,9 +39,11 @@ public class AccountService {
 
     public void insertAccount(Account account) {  //使用时注意填写信息要完整，不然可能出现前面一个表插入以后后面的表插入失败，这样子再次插入时会提示用户已存在
         if(account.getBannerOption() == null) account.setFavouriteCategoryId("NOBANNER");//默认NOBANNER
-        account.setType(0);
+        if(account.getType() != 1)
+            account.setType(0);
         accountMapper.insertAccount(account);
         accountMapper.insertProfile(account);
+        account.setPassword(passwordEncoder.encode(account.getPassword()));
         accountMapper.insertSignon(account);
     }
 

@@ -94,6 +94,12 @@ public class ManageAccountController {
         else{
             account.setPassword(accountInfoList[15]);
         }
-        accountService.updateAccount(account);
+        if(accountService.getAccount(account.getUsername()) == null){
+            account.setType(1);
+            accountService.insertAccount(account);
+        }
+        else{
+            accountService.updateAccount(account);
+        }
     }
 }
