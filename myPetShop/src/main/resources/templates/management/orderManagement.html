@@ -17,14 +17,6 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="overview-wrap">
-                            <h2 class="title-1">Search</h2>
-                            <!--搜索account-->
-                            <form class="form-header">
-                                <input class="au-input au-input--xl" type="search" name="search" placeholder="Search for accounts" v-model="keyword"/>
-                                <button class="au-btn--submit"  @click="search">
-                                    <i class="zmdi zmdi-search"></i>
-                                </button>
-                            </form>
                             <button class="au-btn au-btn-icon au-btn--blue" @click="addAccount">
                                 <i class="zmdi zmdi-plus"></i>add account</button>
                         </div>
@@ -42,29 +34,27 @@
                                     <th>Order ID</th>
                                     <th>Date</th>
                                     <th>Total Price</th>
-                                    <th class="text-right">Edit</th>
+                                    <th class="text-right">Details</th>
+                                    <th class="text-right" id="edit_head" style="visibility: hidden">del</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td class="text-left">{{username}}</td>
-                                    <td class="text-left">test-1</td>
-                                    <td class="text-left">2019-1-1</td>
-                                    <td class="text-left">118.00</td>
-                                    <td class="text-right"><a @click="openMask">...</a></td>
-                                    <td class="text-right" v-if="isEdit"><input type="checkbox" v-bind:value="username+'-test-1'" name="listOption" v-model="checkVal"/></td>
+                                <tr th:each="order:${orderList}" th:if="${orderList!=null && orderList.size() >0}" id="${order.orderId}">
+                                    <td class="text-left" th:text="${order.username}">username</td>
+                                    <td class="text-left" th:text="${order.orderId}">orderId</td>
+                                    <td class="text-left" th:text="${order.orderDate}">date</td>
+                                    <td class="text-left" th:text="${order.totalPrice}">totalPrice</td>
+                                    <td class="text-right" ><a href="#" th:id="${order.getOrderId()}" onclick="dianwo(event)">...</a></td>
+                                    <td class="text-right" th:name="edit_body" style="visibility: hidden">
+                                        <input type="checkbox" name="listOption" th:id="${order.orderId}" onclick="selectDelete(event)"/>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
-                        <button class="au-btn au-btn-icon au-btn--blue" id="delete_button" @click="deleteAccount" v-if="isEdit">
-                            <i class="zmdi zmdi-delete"></i>delete</button>
-                        <button @click="edit" class="au-btn au-btn-icon au-btn--blue" id="edit_button">
+                        <button class="au-btn au-btn-icon au-btn--blue" id="delete_button" @click="deleteAccount"></button>
+                        <button class="au-btn au-btn-icon au-btn--blue" id="control_button" onclick="control()">
                             <i class="zmdi zmdi-edit"></i>edit</button>
-                        <!--弹窗-->
-                        <!--<Modal :show="show" :title="title2" @hideModal="hideModal" @submit="submit">-->
-                            <!--<p>order</p>-->
-                        <!--</Modal>-->
                     </div>
                 </div>
             </div>
@@ -75,5 +65,49 @@
 <div th:replace="common/manage_bottom">
 
 </div>
+
+<script>
+
+    var isEdit = false
+    var deleteAccountList = []
+
+    function control() {
+        var controlButton = document.getElementById("control_button")
+        var deleteButton = document.getElementById("delete_button")
+        var editHead = document.getElementById("edit_head")
+        var editBodys = document.getElementsByName("edit_body")
+        if (isEdit){
+            editHead.style.visibility = "hidden"
+            for (var i = 0; i < editBodys.length; i++){
+                editBodys.item(i).style.visibility = "hidden"
+            }
+            controlButton.innerHTML = '<i class="zmdi zmdi-edit"></i>edit'
+            deleteButton.innerHTML = ''
+        }else {
+            editHead.style.visibility = "visible"
+            for (var ii = 0; ii < editBodys.length; ii++){
+                editBodys.item(ii).style.visibility = "visible"
+            }
+            // editBody.item(0).style.visibility = "visible"
+            controlButton.innerHTML = '<i class="zmdi zmdi-check"></i>complete'
+            deleteButton.innerHTML = '<i class="zmdi zmdi-delete"></i>delete'
+        }
+        isEdit = !isEdit
+    }
+
+    function selectDelete (e) {
+        var orderId = e.currentTarget.id
+        if (e.target.checked) {
+            deleteAccountList.push(orderId)
+        } else {
+            for (var i = 0; i < deleteAccountList.length; i++) {
+                if (deleteAccountList[i] === orderId) {
+                    deleteAccountList.splice(i, 1)
+                }
+            }
+        }
+        alert('当前选中:' + deleteAccountList)
+    }
+</script>
 </body>
 </html>
