@@ -2,27 +2,206 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>common</title>
+    <title>Management</title>
 </head>
 <body>
 <div th:replace="common/manage_top">
 
 </div>
 
-<div id="templatemo_slider">
-    <!-- This is the container for the carousel. -->
-    <div id = "carousel1">
-        <!-- All ../images with class of "cloudcarousel" will be turned into carousel items -->
-        <!-- You can place links around these ../images -->
-        <a href="/management/accountManagement" rel="lightbox">用户管理</a>
-        <a href="/management/categoryManagement" rel="lightbox">品类管理</a>
-        <a href="/management/productManagement" rel="lightbox">产品管理</a>
-        <a href="/management/itemManagement" rel="lightbox">商品管理</a>
-        <a href="/management/orderManagement" rel="lightbox">订单管理</a>
+<div class="page-container">
+    <div class="main-content">
+        <div class="section__content section__content--p30">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="overview-wrap">
+                            <button class="au-btn au-btn-icon au-btn--blue" onclick="addCategory()">
+                                <i class="zmdi zmdi-plus"></i>add category</button>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-lg-9">
+                        <h2 class="title-1 m-b-25">Category</h2>
+                        <div class="table--no-card m-b-20">
+                            <table class="table table-borderless table-striped table-earning" id="category_table">
+                                <thead>
+                                <tr>
+                                    <th>Category ID</th>
+                                    <th>name</th>
+                                    <th class="text-right">details</th>
+                                    <th class="text-right" id="edit_head" style="visibility: hidden">del</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="category:${categoryList}" th:if="${categoryList!=null && categoryList.size() >0}" id="${category.catId}">
+                                    <td class="text-left"><a th:href="@{'/management/viewProduct?categoryId='+${category.getCategoryId()}}" th:text="${category.getCategoryId()}">{{category.getCategoryId}}</a></td>
+                                    <td class="text-left" th:text="${category.getName()}">{{category.getName()}}</td>
+                                    <td class="text-right" ><a href="#" th:id="${category.getCategoryId()}" onclick="dianwo(event)">...</a></td>
+                                    <td class="text-right" th:name="edit_body" style="visibility: hidden">
+                                        <input type="checkbox" name="listOption" th:id="${category.getCategoryId()}" onclick="selectDelete(event)"/>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <button id="delete_button" onclick="deleteCategory()" class="au-btn au-btn-icon au-btn--blue"></button>
+
+                        <button id="control_button" onclick="control()" class="au-btn au-btn-icon au-btn--blue"><i class="zmdi zmdi-edit"></i>edit</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
 </div>
 
-<div th:replace="management/manage_bottom">
+<div class="popWin-bg" id='popWin'>
+    <div class="popWin-container">
+        <div class="popWin-header">
+            <!--标题-->
+            <span>Category Info</span>
+            <button id="popWin-header-right" onclick="hidder()">x</button>
+        </div>
+        <!--正文-->
+        <div class="popWin-main">
+            <label >Category ID: &nbsp;</label>
+            <input type="text" name="edit_categoryId" id="edit_categoryId"/>
+
+            <label for="edit_name">Name: &nbsp;<input type="text" name="edit_name" class="required input_field" id="edit_name"/></label>
+
+        <div class="popWin-footer">
+            <button onclick="hidder()"><i class="fa fa-ban"></i>&nbsp;cancel</button>
+            <!--提交按钮-->
+            <button onclick="confirm()"><i class="fa fa-check"></i>&nbsp;confirm</button>
+        </div>
+    </div>
+</div>
+</div>
+
+<script type="text/javascript">
+    var isEdit = false
+    var deleteCategoryList = []
+    var currentId = null;
+    document.getElementById('popWin').style.display="none";
+
+    function control() {
+        var controlButton = document.getElementById("control_button")
+        var deleteButton = document.getElementById("delete_button")
+        var editHead = document.getElementById("edit_head")
+        var editBodys = document.getElementsByName("edit_body")
+        if (isEdit){
+            editHead.style.visibility = "hidden"
+            for (var i = 0; i < editBodys.length; i++){
+                editBodys.item(i).style.visibility = "hidden"
+            }
+            controlButton.innerHTML = '<i class="zmdi zmdi-edit"></i>edit'
+            deleteButton.innerHTML = ''
+        }else {
+            editHead.style.visibility = "visible"
+            for (var ii = 0; ii < editBodys.length; ii++){
+                editBodys.item(ii).style.visibility = "visible"
+            }
+            // editBody.item(0).style.visibility = "visible"
+            controlButton.innerHTML = '<i class="zmdi zmdi-check"></i>complete'
+            deleteButton.innerHTML = '<i class="zmdi zmdi-delete"></i>delete'
+        }
+        isEdit = !isEdit
+    }
+
+    function selectDelete (e) { // 选中Account加入List
+        var username = e.currentTarget.id
+        if (e.target.checked) {
+            deleteCategoryList.push(username)
+        } else {
+            for (var i = 0; i < deleteCategoryList.length; i++) {
+                if (deleteCategoryList[i] === username) {
+                    deleteCategoryList.splice(i, 1)
+                }
+            }
+        }
+        console.log('当前选中:' + deleteCategoryList)
+    } // 选中的账户加入list
+
+    function deleteCategory() {
+        alert(deleteCategoryList)
+        if (deleteCategoryList.length>0){
+            var categoryList = deleteCategoryList[0]
+            for(var i=1;i<deleteCategoryList.length;i++){
+                categoryList = categoryList + "," + deleteCategoryList[i]
+            }
+            var row;
+            for(var i=0;i<deleteCategoryList.length;i++){
+                row = document.getElementById(deleteCategoryList[i]);
+                row.parentNode.parentNode.parentNode.removeChild(row.parentNode.parentNode);
+            }
+            $.ajax({
+                url:"/management/removeCategory?categoryList="+categoryList,
+                type:"get"
+            });
+        }
+        alert("delete success！");
+    }
+
+    function dianwo(e){
+        document.getElementById('popWin').style.display="";
+        currentId = e.currentTarget.id;
+        var categoryId = e.currentTarget.id;
+        $.ajax({
+            url:"/management/getCategory?categoryId="+categoryId,
+            type:"get",
+            success:function (text) {
+                var message= JSON.stringify(text);
+                var info = message.split('#');
+                var categoryId = info[0].substr(1,info[0].length-1);
+                var name = info[1].substr(0,info[1].length-1);
+
+                var edit_categoryId = document.getElementById("edit_categoryId");
+                var edit_name = document.getElementById("edit_name");
+
+                edit_categoryId.value = categoryId;
+                edit_name.value = name;
+            }
+        })
+    }
+
+    function hidder(){
+        document.getElementById('popWin').style.display="none";
+        currentId = null;
+    }
+
+    function confirm(){
+        var edit_categoryId = document.getElementById("edit_categoryId");
+        var edit_name = document.getElementById("edit_name");
+        var categoryId = edit_categoryId.value;
+        var name = edit_name.value;
+        var info = categoryId + "," + name;
+        if(currentId != null){
+            info = info + "," + currentId;
+            alert("change success！");
+        }else{
+            alert("insert success！");
+        }
+        $.ajax({
+            url:"/management/updateCategory?categoryInfo="+info,
+            type:"get"
+        });
+    }
+
+    function addCategory(){
+        document.getElementById('popWin').style.display="";
+        var edit_categoryId = document.getElementById("edit_categoryId");
+        var edit_name = document.getElementById("edit_name");
+        edit_categoryId.value = "";
+        edit_name.value = "";
+    }
+
+</script>
+
+<div th:replace="common/manage_bottom">
 
 </div>
 </body>

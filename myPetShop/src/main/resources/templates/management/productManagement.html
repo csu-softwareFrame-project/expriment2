@@ -17,15 +17,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="overview-wrap">
-                            <h2 class="title-1">Search</h2>
-                            <!--搜索account-->
-                            <form class="form-header">
-                                <input class="au-input au-input--xl" type="search" name="search" placeholder="Search for product" v-model="keyword"/>
-                                <button class="au-btn--submit"  @click="search">
-                                    <i class="zmdi zmdi-search"></i>
-                                </button>
-                            </form>
-                            <button class="au-btn au-btn-icon au-btn--blue" @click="addCategory">
+                            <button class="au-btn au-btn-icon au-btn--blue" @click="addProduct">
                                 <i class="zmdi zmdi-plus"></i>add to product</button>
                         </div>
                     </div>
@@ -33,43 +25,75 @@
                 <hr>
                 <div class="row">
                     <div class="col-lg-9">
-                        <!--待完善路径-->
-                        <div align="left"><router-link v-bind:to="'/management/category'"><i class="zmdi zmdi-arrow-back"></i>&nbsp;return</router-link></div>
-                        <!--{{product.name}}-->
-                        <h2 class="title-1 m-b-25">test-a</h2>
-                        <div class="table-responsive table--no-card m-b-55">
-                            <table class="table table-borderless table-striped table-earning" id="account_table">
+                        <h2 class="title-1 m-b-25">Product</h2>
+                        <div class="table--no-card m-b-20">
+                            <table class="table table-borderless table-striped table-earning" id="product_table">
                                 <thead>
                                 <tr>
                                     <th>Product ID</th>
                                     <th>Name</th>
-                                    <th>edit</th>
+                                    <th>Category</th>
+                                    <th class="text-right">details</th>
+                                    <th class="text-right" id="edit_head" style="visibility: hidden">del</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="product in productList" v-if="productList != null">
-                                    <td class="text-left"><router-link v-bind:to="'/management/item?productId='+product.productId" >{{product.productId}}</router-link></td>
-                                    <td class="text-left">{{product.name}}</td>
-                                    <td class="text-left" @click="openMask">...</td>
-                                    <td v-if="isEdit" class="text-right"><input type="checkbox" v-bind:value="product.productId" name="listOption" v-model="checkVal"/></td>
+                                <tr th:each="product:${productList}" th:if="${productList!=null && productList.size() >0}">
+                                    <td class="text-left"><a th:href="@{'/management/viewItem?productId='+${product.getProductId()}}" th:text="${product.getProductId()}">{{product.getProductId}}</a></td>
+                                    <td class="text-left" th:text="${product.getName()}">{{product.getName()}}</td>
+                                    <td class="text-left" th:text="${product.getCategoryId()}">{{product.getCategoryId()}}</td>
+                                    <td class="text-right" ><a href="#" th:id="${product.getProductId()}" onclick="dianwo(event)">...</a></td>
+                                    <td class="text-right" th:name="edit_body" style="visibility: hidden">
+                                        <input type="checkbox" name="listOption" th:id="${product.getProductId()}" onclick="selectDelete(event)"/>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
-                        <button class="au-btn au-btn-icon au-btn--blue" id="delete_button" @click="deleteAccount" v-if="isEdit">
-                            <i class="zmdi zmdi-delete"></i>delete</button>
-                        <button @click="edit" class="au-btn au-btn-icon au-btn--blue" id="edit_button">
-                            <i class="zmdi zmdi-edit"></i>edit</button>
+
+                        <button id="delete_button" onclick="deleteCategory()" class="au-btn au-btn-icon au-btn--blue"></button>
+
+                        <button id="control_button" onclick="control()" class="au-btn au-btn-icon au-btn--blue"><i class="zmdi zmdi-edit"></i>edit</button>
                     </div>
-                    <!--<popupwin :show="show" :title="title" @hideModal="hideModal" @submit="submit">-->
-                        <!--<p> test </p>-->
-                    <!--</popupwin>-->
                 </div>
             </div>
 
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    var isEdit = false
+    var deleteProductList = []
+    var currentId = null;
+    //document.getElementById('popWin').style.display="none";
+
+    function control() {
+        var controlButton = document.getElementById("control_button")
+        var deleteButton = document.getElementById("delete_button")
+        var editHead = document.getElementById("edit_head")
+        var editBodys = document.getElementsByName("edit_body")
+        if (isEdit){
+            editHead.style.visibility = "hidden"
+            for (var i = 0; i < editBodys.length; i++){
+                editBodys.item(i).style.visibility = "hidden"
+            }
+            controlButton.innerHTML = '<i class="zmdi zmdi-edit"></i>edit'
+            deleteButton.innerHTML = ''
+        }else {
+            editHead.style.visibility = "visible"
+            for (var ii = 0; ii < editBodys.length; ii++){
+                editBodys.item(ii).style.visibility = "visible"
+            }
+            // editBody.item(0).style.visibility = "visible"
+            controlButton.innerHTML = '<i class="zmdi zmdi-check"></i>complete'
+            deleteButton.innerHTML = '<i class="zmdi zmdi-delete"></i>delete'
+        }
+        isEdit = !isEdit
+    }
+
+</script>
+
 <div th:replace="common/manage_bottom">
 
 </div>
