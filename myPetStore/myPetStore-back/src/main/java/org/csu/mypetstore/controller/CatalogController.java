@@ -34,6 +34,7 @@ public class CatalogController {
     //product目录跳转
     @GetMapping("/products")
     public ReturnPack viewProduct(HttpServletRequest httpServletRequest,@RequestParam String productId){
+        System.out.println("success");
         JSONObject data = new JSONObject();
         Product product = catalogService.getProduct(productId);
         List<Item> itemList = catalogService.getItemListByProductId(productId);

@@ -52,7 +52,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <button class="au-btn au-btn-icon au-btn--blue" id="delete_button" @click="deleteAccount"></button>
+                        <button class="au-btn au-btn-icon au-btn--blue" id="delete_button" onclick="deleteOrder()"></button>
                         <button class="au-btn au-btn-icon au-btn--blue" id="control_button" onclick="control()">
                             <i class="zmdi zmdi-edit"></i>edit</button>
                     </div>
@@ -62,6 +62,105 @@
         </div>
     </div>
 </div>
+
+<!--弹窗代码-->
+<div class="popWin-bg" id='popWin'>
+    <div class="popWin-container">
+        <div class="popWin-header">
+            <!--标题-->
+            <span>Order Info</span>
+            <button id="popWin-header-right" onclick="hidder()">x</button>
+        </div>
+        <!--正文-->
+        <div class="popWin-main">
+            <label >Order ID: &nbsp;</label>
+            <input type="text" name="edit_orderId" id="edit_orderId"/>
+
+            <label for="edit_username">User Name: &nbsp;<input type="text" name="username" class="required input_field" id="edit_username"/></label>
+            <div class="cleaner h10"></div>
+
+            <label for="edit_orderDate">Order Date: &nbsp;<input type="text" name="orderDate" class="required input_field" id="edit_orderDate"/></label>
+            <div class="cleaner h10"></div>
+
+            <label for="edit_shipAddress1">Ship Address1: &nbsp;<input type="text" size="40" name="shipAddress1" class="required input_field" id="edit_shipAddress1"/></label>
+            <div class="cleaner h10"></div>
+
+            <label for="edit_shipAddress2">Ship Address2: &nbsp;<input type="text" name="shipAddress2" class="required input_field" id="edit_shipAddress2"/></label>
+            <div class="cleaner h10"></div>
+
+            <label for="edit_shipCity">Ship City: &nbsp;<input type="text" size="40" name="shipCity" class="required input_field" id="edit_shipCity"/></label>
+            <div class="cleaner h10"></div>
+
+            <label for="edit_shipState">Ship State: &nbsp;<input type="text" size="40" name="shipState" class="required input_field" id="edit_shipState"/></label>
+            <div class="cleaner h10"></div>
+
+            <label for="edit_shipZip">Ship Zip: &nbsp;<input type="text" name="shipZip" class="required input_field" id="edit_shipZip"/></label>
+            <div class="cleaner h10"></div>
+
+            <label for="edit_shipCountry">Ship Country: &nbsp;<input type="text" size="4" name="shipCountry" class="required input_field" id="edit_shipCountry"/></label>
+            <div class="cleaner h10"></div>
+
+            <label for="edit_shipToFirstName">Ship To First Name: <input type="text" size="4" name="shipToFirstName" class="required input_field" id="edit_shipToFirstName"/></label>
+            <div class="cleaner h10"></div>
+
+            <label for="edit_shipToLastName">Ship To Last Name: <input type="text" size="4" name="shipToLastName" class="required input_field" id="edit_shipToLastName"/></label>
+            <div class="cleaner h10"></div>
+
+            <label for="edit_billAddress1">Bill Address1: &nbsp;<input type="text" size="10" name="billAddress1" class="required input_field" id="edit_billAddress1"/></label>
+            <div class="cleaner h10"></div>
+
+            <label for="edit_billAddress2">Bill Address2: &nbsp;<input type="text" size="15" name="billAddress2" class="required input_field" id="edit_billAddress2"/></label>
+            <div class="cleaner h10"></div>
+
+            <label for="edit_billCity">Bill City: <input type="text" size="40" name="billCity" class="required input_field" id="edit_billCity"/></label>
+            <div class="cleaner h10"></div>
+
+            <label for="edit_billState">Bill State: <input type="text" size="40" name="billState" class="required input_field" id="edit_billState"/></label>
+            <div class="cleaner h10"></div>
+
+            <label for="edit_billZip">Bill Zip: <input type="text" name="billZip" class="required input_field" id="edit_billZip"/></label>
+            <div class="cleaner h10"></div>
+
+            <label for="edit_billCountry">Bill Country: <input type="text" size="4" name="billCountry" class="required input_field" id="edit_billCountry"/></label>
+            <div class="cleaner h10"></div>
+
+            <label for="edit_billToFirstName">Bill To First Name: <input type="text" size="4" name="billToFirstName" class="required input_field" id="edit_billToFirstName"/></label>
+            <div class="cleaner h10"></div>
+
+            <label for="edit_billToLastName">Bill To Last Name: <input type="text" size="4" name="billToLastName" class="required input_field" id="edit_billToLastName"/></label>
+            <div class="cleaner h10"></div>
+
+            <label for="edit_courier">Courier: <input type="text" size="4" name="courier" class="required input_field" id="edit_courier"/></label>
+            <div class="cleaner h10"></div>
+
+            <label for="edit_totalPrice">Total Price: <input type="text" size="4" name="totalPrice" class="required input_field" id="edit_totalPrice"/></label>
+            <div class="cleaner h10"></div>
+
+            <label for="edit_creditCardId">Credit Card ID: <input type="text" size="4" name="creditCardId" class="required input_field" id="edit_creditCardId"/></label>
+            <div class="cleaner h10"></div>
+
+            <label for="edit_cardType">Card Type: <input type="text" size="4" name="cardType" class="required input_field" id="edit_cardType"/></label>
+            <div class="cleaner h10"></div>
+
+            <label for="edit_expiryDate">Expiry Date: <input type="text" size="4" name="expiryDate" class="required input_field" id="edit_expiryDate"/></label>
+            <div class="cleaner h10"></div>
+
+            <label for="edit_locale">Locale: <input type="text" size="4" name="locale" class="required input_field" id="edit_locale"/></label>
+            <div class="cleaner h10"></div>
+
+            <label for="edit_status">Status: <input type="text" size="4" name="status" class="required input_field" id="edit_status"/></label>
+            <div class="cleaner h10"></div>
+        </div>
+
+        <div class="popWin-footer">
+            <button onclick="hidder()"><i class="fa fa-ban"></i>&nbsp;cancel</button>
+            <!--提交按钮-->
+            <button onclick="confirm()"><i class="fa fa-check"></i>&nbsp;confirm</button>
+
+        </div>
+    </div>
+</div>
+
 <div th:replace="common/manage_bottom">
 
 </div>
@@ -69,7 +168,8 @@
 <script>
 
     var isEdit = false
-    var deleteAccountList = []
+    var deleteOrderList = []
+    document.getElementById('popWin').style.display="none";
 
     function control() {
         var controlButton = document.getElementById("control_button")
@@ -98,16 +198,112 @@
     function selectDelete (e) {
         var orderId = e.currentTarget.id
         if (e.target.checked) {
-            deleteAccountList.push(orderId)
+            deleteOrderList.push(orderId)
         } else {
-            for (var i = 0; i < deleteAccountList.length; i++) {
-                if (deleteAccountList[i] === orderId) {
-                    deleteAccountList.splice(i, 1)
+            for (var i = 0; i < deleteOrderList.length; i++) {
+                if (deleteOrderList[i] === orderId) {
+                    deleteOrderList.splice(i, 1)
                 }
             }
         }
-        alert('当前选中:' + deleteAccountList)
+        alert('当前选中:' + deleteOrderList)
     }
+
+    function deleteOrder(){
+        alert("delete");
+        if(deleteOrderList.length > 0){
+            var orderIdList = deleteOrderList[0];
+            for(var i=1;i<deleteOrderList.length;i++){
+                orderIdList = orderIdList + "," + deleteOrderList[i];
+            }
+            var row;
+            for(var i=0;i<deleteOrderList.length;i++){
+                row = document.getElementById(deleteOrderList[i]);
+                row.parentNode.parentNode.parentNode.removeChild(row.parentNode.parentNode);
+            }
+            $.ajax({
+                url:"/management/removeOrder?orderIdList="+orderIdList,
+                type:"get"
+            });
+        }
+    }
+
+    function dianwo(e){
+        document.getElementById('popWin').style.display="";
+        var orderId = e.currentTarget.id;
+        $.ajax({
+            url:"/management/getOrder?orderId="+orderId,
+            type:"get",
+            success:function (text) {
+                var message= JSON.stringify(text);
+                var info = message.split('#');
+                var getOrderId = info[0].substr(1,info[0].length-1);
+
+                var edit_orderId = document.getElementById("edit_orderId");
+                edit_orderId.value = getOrderId;
+                var edit_username = document.getElementById("edit_username");
+                edit_username.value = info[1];
+                var edit_orderDate = document.getElementById("edit_orderDate");
+                edit_orderDate.value = info[2].substr(0,info[2].length-1);
+                var edit_shipAddress1 = document.getElementById("edit_shipAddress1");
+                edit_shipAddress1.value = info[3];
+                var edit_shipAddress2 = document.getElementById("edit_shipAddress2");
+                edit_shipAddress2.value = info[4];
+                var edit_shipCity = document.getElementById("edit_shipCity");
+                edit_shipCity.value = info[5];
+                var edit_shipState = document.getElementById("edit_shipState");
+                edit_shipState.value = info[6];
+                var edit_shipZip = document.getElementById("edit_shipZip");
+                edit_shipZip.value = info[7];
+                var edit_shipCountry = document.getElementById("edit_shipCountry");
+                edit_shipCountry.value = info[8];
+                var edit_shipToFirstName = document.getElementById("edit_shipToFirstName");
+                edit_shipToFirstName.value = info[9];
+                var edit_shipToLastName = document.getElementById("edit_shipToLastName");
+                edit_shipToLastName.value = info[10];
+                var edit_shipAddress1 = document.getElementById("edit_shipAddress1");
+                edit_billAddress1.value = info[11];
+                var edit_billAddress2 = document.getElementById("edit_billAddress2");
+                edit_billAddress2.value = info[12];
+                var edit_billCity = document.getElementById("edit_billCity");
+                edit_billCity.value = info[13];
+                var edit_billState = document.getElementById("edit_billState");
+                edit_billState.value = info[14];
+                var edit_billZip = document.getElementById("edit_billZip");
+                edit_billZip.value = info[15];
+                var edit_billCountry = document.getElementById("edit_billCountry");
+                edit_billCountry.value = info[16];
+                var edit_billToFirstName = document.getElementById("edit_billToFirstName");
+                edit_billToFirstName.value = info[17];
+                var edit_billToLastName = document.getElementById("edit_billToLastName");
+                edit_billToLastName.value = info[18];
+                var edit_courier = document.getElementById("edit_courier");
+                edit_courier.value = info[19];
+                var edit_totalPrice = document.getElementById("edit_totalPrice");
+                edit_totalPrice.value = info[20];
+                var edit_creditCardId = document.getElementById("edit_creditCardId");
+                edit_creditCardId.value = info[21];
+                var edit_cardType = document.getElementById("edit_cardType");
+                edit_cardType.value = info[22];
+                var edit_expiryDate = document.getElementById("edit_expiryDate");
+                edit_expiryDate.value = info[23];
+                var edit_locale = document.getElementById("edit_locale");
+                edit_locale.value = info[24];
+                var edit_status = document.getElementById("edit_status");
+                alert(info[25]);
+                if(info[25].substr(0,info[25].length-1) == "0"){
+                    edit_status.value = "not arrival";
+                }else{
+                    edit_status.value = "arrival"
+                }
+            }
+        })
+    }
+
+    function hidder(){
+        document.getElementById('popWin').style.display="none";
+    }
+
 </script>
 </body>
 </html>
