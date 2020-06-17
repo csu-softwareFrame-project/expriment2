@@ -13,7 +13,7 @@ public class Order implements Serializable {
 
     private int orderId;
     private String username;
-    private Date orderDate;
+    private String orderDate;
     private String shipAddress1;
     private String shipAddress2;
     private String shipCity;
@@ -55,11 +55,11 @@ public class Order implements Serializable {
         this.username = username;
     }
 
-    public Date getOrderDate() {
+    public String getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(Date orderDate) {
+    public void setOrderDate(String orderDate) {
         this.orderDate = orderDate;
     }
 
@@ -258,7 +258,7 @@ public class Order implements Serializable {
     public void initOrder(Account account,List<CartItem> cartItemList,Payment payment) {
 
         username = account.getUsername();
-        orderDate = new Date();
+        orderDate = new Date().toString();
 
         shipToFirstName = account.getFirstName();
         shipToLastName = account.getLastName();

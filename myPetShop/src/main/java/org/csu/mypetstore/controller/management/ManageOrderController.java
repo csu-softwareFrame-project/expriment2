@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -71,5 +73,51 @@ public class ManageOrderController {
         info = info + '#' + order.getStatus();
         System.out.println(info);
         return info;
+    }
+
+    @GetMapping("/updateOrder")
+    public void updateOrder(String orderInfo){
+        String[] orderInfoList = orderInfo.split(",");
+        Order order = new Order();
+        
+        order.setOrderId(Integer.parseInt(orderInfoList[0]));
+        order.setUsername(orderInfoList[1]);
+        order.setOrderDate(orderInfoList[2]);
+        order.setShipAddress1(orderInfoList[3]);
+        order.setShipAddress2(orderInfoList[4]);
+        order.setShipCity(orderInfoList[5]);
+        order.setShipState(orderInfoList[6]);
+        order.setShipZip(orderInfoList[7]);
+        order.setShipCountry(orderInfoList[8]);
+        order.setShipToFirstName(orderInfoList[9]);
+        order.setShipToLastName(orderInfoList[10]);
+        order.setBillAddress1(orderInfoList[11]);
+        order.setBillAddress2(orderInfoList[12]);
+        order.setBillCity(orderInfoList[13]);
+        order.setBillState(orderInfoList[14]);
+        order.setBillZip(orderInfoList[15]);
+        order.setBillCountry(orderInfoList[16]);
+        order.setBillToFirstName(orderInfoList[17]);
+        order.setBillToLastName(orderInfoList[18]);
+        order.setCourier(orderInfoList[19]);
+        order.setTotalPrice(new BigDecimal(orderInfoList[20]));
+        order.setCreditCard(orderInfoList[21]);
+        order.setCardType(orderInfoList[22]);
+        order.setExpiryDate(orderInfoList[23]);
+        order.setLocale(orderInfoList[24]);
+        if(orderInfoList[25].equals("not send")){
+            order.setStatus("1");
+        }else{
+            order.setStatus("0");
+        }
+        order.setLineItems(orderService.getOrder(order.getOrderId()).getLineItems());
+        System.out.println(order.getLineItems().get(0).getItem().getProduct().getProductId());
+
+        orderService.updateOrder(order);
+    }
+
+    @GetMapping("/sendOrder")
+    public void sendOrder(String orderId){
+        orderService.sendOrder(Integer.parseInt(orderId));
     }
 }

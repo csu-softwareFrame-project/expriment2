@@ -485,7 +485,7 @@ class DemoApplicationTests {
         order.setShipToLastName("J");
         order.setTotalPrice(new BigDecimal("998"));
         order.setUsername("5545");
-        order.setOrderDate(new Date());
+        order.setOrderDate(new Date().toString());
         order.setBillCountry("China");
         order.setBillZip("FJ");
         order.setBillState("FZ");

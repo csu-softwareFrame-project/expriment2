@@ -15,15 +15,6 @@
         <div class="section__content section__content--p30">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-12">
-                        <div class="overview-wrap">
-                            <button class="au-btn au-btn-icon au-btn--blue" @click="addAccount">
-                                <i class="zmdi zmdi-plus"></i>add account</button>
-                        </div>
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
                     <div class="col-lg-9">
                         <h2 class="title-1 m-b-25">Orders</h2>
                         <div class="table-responsive table--no-card m-b-55">
@@ -35,6 +26,7 @@
                                     <th>Date</th>
                                     <th>Total Price</th>
                                     <th class="text-right">Details</th>
+                                    <th class="text-right" id="edit_head2">send</th>
                                     <th class="text-right" id="edit_head" style="visibility: hidden">del</th>
                                 </tr>
                                 </thead>
@@ -45,6 +37,9 @@
                                     <td class="text-left" th:text="${order.orderDate}">date</td>
                                     <td class="text-left" th:text="${order.totalPrice}">totalPrice</td>
                                     <td class="text-right" ><a href="#" th:id="${order.getOrderId()}" onclick="dianwo(event)">...</a></td>
+                                    <td class="text-right" th:name="edit_body2">
+                                        <button onclick="sendOrder(event)" th:id="${order.getOrderId()}">send order</button>
+                                    </td>
                                     <td class="text-right" th:name="edit_body" style="visibility: hidden">
                                         <input type="checkbox" name="listOption" th:id="${order.orderId}" onclick="selectDelete(event)"/>
                                     </td>
@@ -74,7 +69,7 @@
         <!--正文-->
         <div class="popWin-main">
             <label >Order ID: &nbsp;</label>
-            <input type="text" name="edit_orderId" id="edit_orderId"/>
+            <input type="text" name="edit_orderId" id="edit_orderId" readonly/>
 
             <label for="edit_username">User Name: &nbsp;<input type="text" name="username" class="required input_field" id="edit_username"/></label>
             <div class="cleaner h10"></div>
@@ -170,6 +165,7 @@
     var isEdit = false
     var deleteOrderList = []
     document.getElementById('popWin').style.display="none";
+    document.getElementById("edit_orderId").disable();
 
     function control() {
         var controlButton = document.getElementById("control_button")
@@ -206,7 +202,6 @@
                 }
             }
         }
-        alert('当前选中:' + deleteOrderList)
     }
 
     function deleteOrder(){
@@ -244,7 +239,7 @@
                 var edit_username = document.getElementById("edit_username");
                 edit_username.value = info[1];
                 var edit_orderDate = document.getElementById("edit_orderDate");
-                edit_orderDate.value = info[2].substr(0,info[2].length-1);
+                edit_orderDate.value = info[2];
                 var edit_shipAddress1 = document.getElementById("edit_shipAddress1");
                 edit_shipAddress1.value = info[3];
                 var edit_shipAddress2 = document.getElementById("edit_shipAddress2");
@@ -261,7 +256,7 @@
                 edit_shipToFirstName.value = info[9];
                 var edit_shipToLastName = document.getElementById("edit_shipToLastName");
                 edit_shipToLastName.value = info[10];
-                var edit_shipAddress1 = document.getElementById("edit_shipAddress1");
+                var edit_billAddress1 = document.getElementById("edit_billAddress1");
                 edit_billAddress1.value = info[11];
                 var edit_billAddress2 = document.getElementById("edit_billAddress2");
                 edit_billAddress2.value = info[12];
@@ -290,11 +285,10 @@
                 var edit_locale = document.getElementById("edit_locale");
                 edit_locale.value = info[24];
                 var edit_status = document.getElementById("edit_status");
-                alert(info[25]);
                 if(info[25].substr(0,info[25].length-1) == "0"){
-                    edit_status.value = "not arrival";
+                    edit_status.value = "not send";
                 }else{
-                    edit_status.value = "arrival"
+                    edit_status.value = "on the way"
                 }
             }
         })
@@ -302,6 +296,104 @@
 
     function hidder(){
         document.getElementById('popWin').style.display="none";
+    }
+
+    function confirm(){
+        var edit_orderId = document.getElementById("edit_orderId");
+        var edit_username = document.getElementById("edit_username");
+        var edit_orderDate = document.getElementById("edit_orderDate");
+        var edit_shipAddress1 = document.getElementById("edit_shipAddress1");
+        var edit_shipAddress2 = document.getElementById("edit_shipAddress2");
+        var edit_shipCity = document.getElementById("edit_shipCity");
+        var edit_shipState = document.getElementById("edit_shipState");
+        var edit_shipZip = document.getElementById("edit_shipZip");
+        var edit_shipCountry = document.getElementById("edit_shipCountry");
+        var edit_shipToFirstName = document.getElementById("edit_shipToFirstName");
+        var edit_shipToLastName = document.getElementById("edit_shipToLastName");
+        var edit_billAddress1 = document.getElementById("edit_billAddress1");
+        var edit_billAddress2 = document.getElementById("edit_billAddress2");
+        var edit_billCity = document.getElementById("edit_billCity");
+        var edit_billState = document.getElementById("edit_billState");
+        var edit_billZip = document.getElementById("edit_billZip");
+        var edit_billCountry = document.getElementById("edit_billCountry");
+        var edit_billToFirstName = document.getElementById("edit_billToFirstName");
+        var edit_billToLastName = document.getElementById("edit_billToLastName");
+        var edit_courier = document.getElementById("edit_courier");
+        var edit_totalPrice = document.getElementById("edit_totalPrice");
+        var edit_creditCardId = document.getElementById("edit_creditCardId");
+        var edit_cardType = document.getElementById("edit_cardType");
+        var edit_expiryDate = document.getElementById("edit_expiryDate");
+        var edit_locale = document.getElementById("edit_locale");
+        var edit_status = document.getElementById("edit_status");
+        
+        var orderId = edit_orderId.value;
+        var username = edit_username.value;
+        var orderDate = edit_orderDate.value;
+        var orderShipAddress1 = edit_shipAddress1.value;
+        var orderShipAddress2 = edit_shipAddress2.value;
+        var orderShipCity = edit_shipCity.value;
+        var orderShipState = edit_shipState.value;
+        var orderShipZip = edit_shipZip.value;
+        var orderShipCountry = edit_shipCountry.value;
+        var orderShipToFirstName = edit_shipToFirstName.value;
+        var orderShipToLastName = edit_shipToLastName.value;
+        var orderBillAddress1 = edit_billAddress1.value;
+        var orderBillAddress2 = edit_billAddress2.value;
+        var orderBillCity = edit_billCity.value;
+        var orderBillState = edit_billState.value;
+        var orderBillZip = edit_billZip.value;
+        var orderBillCountry = edit_billCountry.value;
+        var orderBillToFirstName = edit_billToFirstName.value;
+        var orderBillToLastName = edit_billToLastName.value;
+        var courier = edit_courier.value;
+        var totalPrice = edit_totalPrice.value;
+        var creditCardId = edit_creditCardId.value;
+        var cardType = edit_cardType.value;
+        var expiryDate = edit_expiryDate.value;
+        var locale = edit_locale.value;
+        var status = edit_status.value;
+
+        var orderInfo = orderId;
+        orderInfo = orderInfo + "," + username;
+        orderInfo = orderInfo + "," + orderDate;
+        orderInfo = orderInfo + "," + orderShipAddress1;
+        orderInfo = orderInfo + "," + orderShipAddress2;
+        orderInfo = orderInfo + "," + orderShipCity;
+        orderInfo = orderInfo + "," + orderShipState;
+        orderInfo = orderInfo + "," + orderShipZip;
+        orderInfo = orderInfo + "," + orderShipCountry;
+        orderInfo = orderInfo + "," + orderShipToFirstName;
+        orderInfo = orderInfo + "," + orderShipToLastName;
+        orderInfo = orderInfo + "," + orderBillAddress1;
+        orderInfo = orderInfo + "," + orderBillAddress2;
+        orderInfo = orderInfo + "," + orderBillCity;
+        orderInfo = orderInfo + "," + orderBillState;
+        orderInfo = orderInfo + "," + orderBillZip;
+        orderInfo = orderInfo + "," + orderBillCountry;
+        orderInfo = orderInfo + "," + orderBillToFirstName;
+        orderInfo = orderInfo + "," + orderBillToLastName;
+        orderInfo = orderInfo + "," + courier;
+        orderInfo = orderInfo + "," + totalPrice;
+        orderInfo = orderInfo + "," + creditCardId;
+        orderInfo = orderInfo + "," + cardType;
+        orderInfo = orderInfo + "," + expiryDate;
+        orderInfo = orderInfo + "," + locale;
+        orderInfo = orderInfo + "," + status;
+
+        $.ajax({
+            url:"/management/updateOrder?orderInfo="+orderInfo,
+            type:"get"
+        });
+        alert("edit success！");
+    }
+
+    function sendOrder(e){
+        var orderId = e.currentTarget.id;
+        $.ajax({
+            url:"/management/sendOrder?orderId="+orderId,
+            type:"get"
+        });
+        alert("send success!")
     }
 
 </script>
