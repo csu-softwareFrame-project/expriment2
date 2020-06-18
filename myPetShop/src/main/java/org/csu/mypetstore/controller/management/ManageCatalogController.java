@@ -99,4 +99,20 @@ public class ManageCatalogController {
         info = info + "#" + product.getName() + "#" + product.getCategoryId();
         return info;
     }
+
+    @GetMapping("/updateProduct")
+    public void updateProduct(String productInfo){
+        String[] info = productInfo.split(",");
+        Product product = new Product();
+        product.setProductId(info[0]);
+        product.setName(info[1]);
+        product.setCategoryId(info[2]);
+        if(info.length>3){
+            product.setDescription(catalogService.getProduct(info[3]).getDescription());
+            catalogService.updateProduct(product,info[3]);
+        }else{
+            product.setDescription("");
+            catalogService.insertProduct(product);
+        }
+    }
 }

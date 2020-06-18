@@ -17,7 +17,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="overview-wrap">
-                            <button class="au-btn au-btn-icon au-btn--blue" @click="addProduct">
+                            <button class="au-btn au-btn-icon au-btn--blue" onclick="addProduct()">
                                 <i class="zmdi zmdi-plus"></i>add to product</button>
                         </div>
                     </div>
@@ -185,6 +185,34 @@
                 edit_category.selected = true;
             }
         })
+    }
+
+    function confirm(){
+        var edit_productId = document.getElementById("edit_productId");
+        var edit_name = document.getElementById("edit_name");
+        var edit_category = document.getElementById("edit_category");
+        var category = edit_category.options[edit_category.selectedIndex].text;
+        var productId = edit_productId.value;
+        var name = edit_name.value;
+        var info = productId + "," + name + "," + category;
+        if(currentId != null){
+            info = info + "," + currentId;
+            alert("change success！");
+        }else{
+            alert("insert success！");
+        }
+        $.ajax({
+            url:"/management/updateProduct?productInfo="+info,
+            type:"get"
+        });
+    }
+
+    function addProduct(){
+        document.getElementById('popWin').style.display="";
+        var edit_productId = document.getElementById("edit_productId");
+        var edit_name = document.getElementById("edit_name");
+        edit_productId.value = "";
+        edit_name.value = "";
     }
 
 </script>
