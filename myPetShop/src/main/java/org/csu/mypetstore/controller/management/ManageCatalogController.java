@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -131,6 +132,51 @@ public class ManageCatalogController {
         String[] info = itemList.split(",");
         for(int i=0;i<info.length;i++){
             catalogService.removeItem(info[i]);
+        }
+    }
+
+    @GetMapping("/getItem")
+    @ResponseBody
+    public String getItem(String itemId){
+        Item item = catalogService.getItem(itemId);
+        String info = item.getItemId();
+        info = info + "#" + item.getProduct().getProductId();
+        info = info + "#" + item.getQuantity();
+        info = info + "#" + item.getListPrice();
+        info = info + "#" + item.getUnitCost();
+        info = info + "#" + item.getSupplierId();
+        info = info + "#" + item.getStatus();
+        info = info + "#" + item.getAttribute1();
+        info = info + "#" + item.getAttribute2();
+        info = info + "#" + item.getAttribute3();
+        info = info + "#" + item.getAttribute4();
+        info = info + "#" + item.getAttribute5();
+        return info;
+    }
+
+    @GetMapping("/updateItem")
+    public void updateItem(String itemInfo){
+        String[] info = itemInfo.split(",");
+        System.out.println(info.length);
+        Item item = new Item();
+        item.setItemId(info[0]);
+        item.setProductId(info[1]);
+        item.setProduct(catalogService.getProduct(info[1]));
+        item.setQuantity(Integer.parseInt(info[2]));
+        item.setListPrice(new BigDecimal(info[3]));
+        item.setUnitCost(new BigDecimal(info[4]));
+        item.setSupplierId(Integer.parseInt(info[5]));
+        item.setStatus(info[6]);
+        item.setAttribute1(info[7]);
+        item.setAttribute2(info[8]);
+        item.setAttribute3(info[9]);
+        item.setAttribute4(info[10]);
+        item.setAttribute5(info[11]);
+
+        if(info.length>12){
+            catalogService.updateItem(item,info[12]);
+        }else{
+            catalogService.insertItem(item);
         }
     }
 }
