@@ -42,6 +42,16 @@ public class ManageCatalogController {
     public String viewItem(Model model,String productId){
         List<Item> itemList = catalogService.getItemListByProductId(productId);
         model.addAttribute("itemList",itemList);
+        List<Product> productList = new ArrayList<>();
+        List<Product> temp = new ArrayList<>();
+        List<Category> categoryList = catalogService.getCategoryList();
+        for(int i=0;i<categoryList.size();i++){
+            temp = catalogService.getProductListByCategory(categoryList.get(i).getCategoryId());
+            for(int j=0;j<temp.size();j++){
+                productList.add(temp.get(j));
+            }
+        }
+        model.addAttribute("productList",productList);
         return "management/itemManagement";
     }
 
@@ -113,6 +123,14 @@ public class ManageCatalogController {
         }else{
             product.setDescription("");
             catalogService.insertProduct(product);
+        }
+    }
+
+    @GetMapping("/removeItem")
+    public void removeItem(String itemList){
+        String[] info = itemList.split(",");
+        for(int i=0;i<info.length;i++){
+            catalogService.removeItem(info[i]);
         }
     }
 }

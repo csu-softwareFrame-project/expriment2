@@ -410,8 +410,8 @@ class DemoApplicationTests {
     @Test
     void testProductInsert(){
         Product product = new Product();
-        product.setProductId("999");
-        product.setName("Black Pig");
+        product.setProductId("777");
+        product.setName("Small Pig");
         product.setCategoryId("PIGS");
         product.setDescription("233");
         catalogService.insertProduct(product);
@@ -438,7 +438,7 @@ class DemoApplicationTests {
     void testItemInsert(){
         Item item = new Item();
         item.setQuantity(10000);
-        item.setItemId("EST-99");
+        item.setItemId("EST-97");
         item.setProductId("777");
         item.setUnitCost(new BigDecimal("15"));
         item.setListPrice(new BigDecimal("25"));
