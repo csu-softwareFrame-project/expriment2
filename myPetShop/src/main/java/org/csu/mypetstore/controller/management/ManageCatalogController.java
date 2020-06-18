@@ -33,6 +33,8 @@ public class ManageCatalogController {
         System.out.println("success");
         List<Product> productList = catalogService.getProductListByCategory(categoryId);
         model.addAttribute("productList",productList);
+        List<Category> categoryList = catalogService.getCategoryList();
+        model.addAttribute("categoryList",categoryList);
         return "management/productManagement";
     }
 
@@ -75,5 +77,26 @@ public class ManageCatalogController {
             category.setDescription("");
             catalogService.insertCategory(category);
         }
+    }
+
+    @GetMapping("/removeProduct")
+    public void removeProduct(String productList){
+        System.out.println("success");
+        System.out.println(productList);
+        String[] info = productList.split(",");
+        for(int i=0;i<info.length;i++){
+            catalogService.removeProduct(info[i]);
+        }
+    }
+
+    @GetMapping("/getProduct")
+    @ResponseBody
+    public String getProduct(String productId){
+        System.out.println("success");
+        System.out.println(productId);
+        Product product = catalogService.getProduct(productId);
+        String info = product.getProductId();
+        info = info + "#" + product.getName() + "#" + product.getCategoryId();
+        return info;
     }
 }

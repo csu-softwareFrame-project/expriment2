@@ -410,8 +410,8 @@ class DemoApplicationTests {
     @Test
     void testProductInsert(){
         Product product = new Product();
-        product.setProductId("777");
-        product.setName("Pink Pig");
+        product.setProductId("999");
+        product.setName("Black Pig");
         product.setCategoryId("PIGS");
         product.setDescription("233");
         catalogService.insertProduct(product);

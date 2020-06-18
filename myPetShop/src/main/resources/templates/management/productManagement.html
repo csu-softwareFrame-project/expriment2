@@ -51,7 +51,7 @@
                             </table>
                         </div>
 
-                        <button id="delete_button" onclick="deleteCategory()" class="au-btn au-btn-icon au-btn--blue"></button>
+                        <button id="delete_button" onclick="deleteProduct()" class="au-btn au-btn-icon au-btn--blue"></button>
 
                         <button id="control_button" onclick="control()" class="au-btn au-btn-icon au-btn--blue"><i class="zmdi zmdi-edit"></i>edit</button>
                     </div>
@@ -62,11 +62,42 @@
     </div>
 </div>
 
+<div class="popWin-bg" id='popWin'>
+    <div class="popWin-container">
+        <div class="popWin-header">
+            <!--标题-->
+            <span>Product Info</span>
+            <button id="popWin-header-right" onclick="hidder()">x</button>
+        </div>
+        <!--正文-->
+        <div class="popWin-main">
+            <label >Product ID: &nbsp;</label>
+            <input type="text" name="edit_productId" id="edit_productId"/>
+            <div class="cleaner h10"></div>
+
+            <label for="edit_name">Name: &nbsp;<input type="text" name="edit_name" class="required input_field" id="edit_name"/></label>
+            <div class="cleaner h10"></div>
+
+            <label for="edit_category">Category: &nbsp;
+                <select id="edit_category">
+                    <option th:each="category:${categoryList}" th:text="${category.getCategoryId()}" th:id="${category.getCategoryId()}">categoryId</option>
+                </select>
+            </label>
+
+            <div class="popWin-footer">
+                <!--提交按钮-->
+                <button onclick="confirm()"><i class="fa fa-check"></i>&nbsp;confirm</button>
+                <button onclick="hidder()"><i class="fa fa-ban"></i>&nbsp;cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
     var isEdit = false
     var deleteProductList = []
     var currentId = null;
-    //document.getElementById('popWin').style.display="none";
+    document.getElementById('popWin').style.display="none";
 
     function control() {
         var controlButton = document.getElementById("control_button")
@@ -90,6 +121,70 @@
             deleteButton.innerHTML = '<i class="zmdi zmdi-delete"></i>delete'
         }
         isEdit = !isEdit
+    }
+
+    function selectDelete (e) { // 选中Account加入List
+        var productId = e.currentTarget.id
+        if (e.target.checked) {
+            deleteProductList.push(productId)
+        } else {
+            for (var i = 0; i < deleteProductList.length; i++) {
+                if (deleteProductList[i] === productId) {
+                    deleteProductList.splice(i, 1)
+                }
+            }
+        }
+        console.log('当前选中:' + deleteProductList)
+    } // 选中的账户加入list
+
+    function deleteProduct() {
+        alert(deleteProductList);
+        if (deleteProductList.length>0){
+            var productList = deleteProductList[0]
+            for(var i=1;i<deleteProductList.length;i++){
+                productList = productList + "," + deleteProductList[i]
+            }
+            var row;
+            for(var i=0;i<deleteProductList.length;i++){
+                row = document.getElementById(deleteProductList[i]);
+                row.parentNode.parentNode.parentNode.removeChild(row.parentNode.parentNode);
+            }
+            $.ajax({
+                url:"/management/removeProduct?productList="+productList,
+                type:"get"
+            });
+        }
+        alert("delete success！");
+    }
+
+    function hidder(){
+        document.getElementById('popWin').style.display="none";
+        currentId = null;
+    }
+
+    function dianwo(e){
+        document.getElementById('popWin').style.display="";
+        currentId = e.currentTarget.id;
+        var productId = e.currentTarget.id;
+        $.ajax({
+            url:"/management/getProduct?productId="+productId,
+            type:"get",
+            success:function (text) {
+                var message= JSON.stringify(text);
+                var info = message.split('#');
+                var getProductId = info[0].substr(1,info[0].length-1);
+                var name = info[1];
+                var category = info[2].substr(0,info[2].length-1);
+
+                var edit_productId = document.getElementById("edit_productId");
+                var edit_name = document.getElementById("edit_name");
+                var edit_category = document.getElementById(category);
+
+                edit_productId.value = getProductId;
+                edit_name.value = name;
+                edit_category.selected = true;
+            }
+        })
     }
 
 </script>
