@@ -67,6 +67,8 @@ public class AccountService {
             map.put("msg","用户名不存在");
             pswd = "";
         }
+        System.out.println(pswd);
+        System.out.println(passwordEncoder.encode(username));
         if(passwordEncoder.matches(password,pswd)) {
             String right = (String)session.getAttribute("checkCode");//从服务器获取正确验证码
             if(checkCode != null && right != null){
@@ -93,12 +95,9 @@ public class AccountService {
             Account account = getAccount(username);
             model.addAttribute("loginUser",account);//登录成功把用户信息放进session
             System.out.println(username+"  "+account);
-            if(account.getType() == 0)
-            {
+            if(account.getType() == 0) {
                 return 1;
-            }
-            else
-            {
+            } else {
                 return 2;
             }
         }else {
@@ -158,9 +157,6 @@ public class AccountService {
             }else if(account.getLanguagePreference().equals("")){
                 account.setLanguagePreference("English");
             }
-            //加密
-            String password = passwordEncoder.encode(account.getPassword());
-            account.setPassword(password);
 
             insertAccount(account);//插入数据库
         }

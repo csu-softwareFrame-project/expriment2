@@ -151,6 +151,7 @@ public class ManageCatalogController {
         info = info + "#" + item.getAttribute3();
         info = info + "#" + item.getAttribute4();
         info = info + "#" + item.getAttribute5();
+        System.out.println(info);
         return info;
     }
 
@@ -178,5 +179,37 @@ public class ManageCatalogController {
         }else{
             catalogService.insertItem(item);
         }
+    }
+
+    @GetMapping("/productManagement")
+    public String viewAllProduct(Model model){
+        List<Product> productList = new ArrayList<>();
+        List<Product> temp = new ArrayList<>();
+        List<Category> categoryList = catalogService.getCategoryList();
+        for(int i=0;i<categoryList.size();i++){
+            temp = catalogService.getProductListByCategory(categoryList.get(i).getCategoryId());
+            for(int j=0;j<temp.size();j++){
+                productList.add(temp.get(j));
+            }
+        }
+        model.addAttribute("productList",productList);
+        model.addAttribute("categoryList",categoryList);
+        return "management/productManagement";
+    }
+
+    @GetMapping("/itemManagement")
+    public String viewAllItem(Model model){
+        List<Item> itemList = new ArrayList<>();
+        List<Product> productList = catalogService.searchProductList("");
+        List<Item> temp = new ArrayList<>();
+        for(int i=0;i<productList.size();i++){
+            temp = catalogService.getItemListByProductId(productList.get(i).getProductId());
+            for(int j=0;j<temp.size();j++){
+                itemList.add(temp.get(j));
+            }
+        }
+        model.addAttribute("itemList",itemList);
+        model.addAttribute("productList",productList);
+        return "management/itemManagement";
     }
 }

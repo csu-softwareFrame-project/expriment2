@@ -42,6 +42,7 @@ public class UserAccessController {
         System.out.println(username);
         System.out.println(password);
         System.out.println(email);
+        System.out.println(accountService.userAccessService(username, password,checkCode,session,map, model));
         if(accountService.userAccessService(username, password,checkCode,session,map, model) == 1){
             session.removeAttribute("checkCode");
             System.out.println("登录成功");

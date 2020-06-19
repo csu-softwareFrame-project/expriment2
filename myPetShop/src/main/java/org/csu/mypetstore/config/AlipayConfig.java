@@ -17,7 +17,7 @@ public class AlipayConfig {
     public static String notify_url = "http://localhost:8080/alipay.trade.page.pay-JAVA-UTF-8/notify_url.jsp";
 
     // 页面跳转同步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问(其实就是支付成功后返回的页面)
-    public static String return_url = "http://2d5785.natappfree.cc/main/view_main";
+    public static String return_url = "http://3r9a4x.natappfree.cc/catalog/main";
     //http://localhost:8080/order/view_order?orderId=1013
 
     // 签名方式

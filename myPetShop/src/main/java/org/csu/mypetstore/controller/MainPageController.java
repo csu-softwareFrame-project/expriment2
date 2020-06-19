@@ -27,7 +27,7 @@ public class MainPageController {
     //进入主页
     @GetMapping("/view_main")
     public String viewMain(){
-        return "redirect:/main/view_managementPage";
+        return "catalog/main";
     }
 
     //进入管理主页

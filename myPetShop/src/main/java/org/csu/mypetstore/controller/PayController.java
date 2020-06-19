@@ -10,6 +10,7 @@ import org.csu.mypetstore.domain.Payment;
 import org.csu.mypetstore.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +27,7 @@ public class PayController {
 
     //未填写
     @RequestMapping("/order/final_confirm_order")
-    public void payController(HttpServletRequest request, HttpServletResponse response, HttpSession session, Payment payment, Order order) throws IOException
+    public void payController(HttpServletRequest request, HttpServletResponse response, HttpSession session, Payment payment, Order order, Model model) throws IOException
     {
         //初始化AlipayClient
         AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.gatewayUrl, AlipayConfig.APP_ID, AlipayConfig.APP_PRIVATE_KEY, "json", AlipayConfig.CHARSET, AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.sign_type);
@@ -38,6 +39,7 @@ public class PayController {
 
         Order order1 = orderService.generateOrder(session, payment, order);
         session.setAttribute("orderId",order1.getOrderId());
+        model.addAttribute("order",order);
 
         //商户订单号，商户网站订单系统中唯一订单号，必填
         String out_trade_no = String.valueOf(order1.getOrderId());
@@ -66,6 +68,5 @@ public class PayController {
         response.getWriter().flush();
         response.getWriter().close();
         orderService.confirmOrder(session);
-
     }
 }

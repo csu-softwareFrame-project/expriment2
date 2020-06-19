@@ -109,7 +109,7 @@ class DemoApplicationTests {
     @Test
     void testAccountByUsername()  //测试通过
     {
-        Account account = accountService.getAccount("233");
+        Account account = accountService.getAccount("7777");
     }
 
     @Test

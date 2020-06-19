@@ -30,7 +30,6 @@
                             <table class="table table-borderless table-striped table-earning" id="account_table">
                                 <thead>
                                 <tr>
-                                    <th class="text-right" id="edit_head" style="visibility: hidden">del</th>
                                     <th>username</th>
                                     <th>email</th>
                                     <th>first name</th>
@@ -39,13 +38,11 @@
                                     <th class="text-right">country</th>
                                     <th class="text-right">phone</th>
                                     <th class="text-right">details</th>
+                                    <th class="text-right" id="edit_head" style="visibility: hidden">del</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr th:each="account:${accountList}" th:if="${accountList!=null && accountList.size() >0}" id="${account.username}">
-                                    <td class="text-right" th:name="edit_body" style="visibility: hidden">
-                                        <input type="checkbox" name="listOption" th:id="${account.username}" onclick="selectDelete(event)"/>
-                                    </td>
                                     <td class="text-left" th:text="${account.username}">{{account.username}}</td>
                                     <td class="text-left" th:text="${account.email}">{{account.email}}</td>
                                     <td class="text-left" th:text="${account.firstName}">{{account.firstName}}</td>
@@ -54,6 +51,9 @@
                                     <td class="text-right" th:text="${account.country}">{{account.country}}</td>
                                     <td class="text-right" th:text="${account.phone}">{{account.phone}}</td>
                                     <td class="text-right" ><a href="#" th:id="${account.getUsername()}" onclick="dianwo(event)">...</a></td>
+                                    <td class="text-right" th:name="edit_body" style="visibility: hidden">
+                                        <input type="checkbox" name="listOption" th:id="${account.username}" onclick="selectDelete(event)"/>
+                                    </td>
                                 </tr>
                                 <tr th:if="${accountList==null || accountList.size() <= 0}"> 你的网站似乎没有用户... </tr>
                                 </tbody>
@@ -157,10 +157,9 @@
         </div>
 
     <div class="popWin-footer">
-        <button onclick="hidder()"><i class="fa fa-ban"></i>&nbsp;cancel</button>
         <!--提交按钮-->
         <button onclick="confirm()"><i class="fa fa-check"></i>&nbsp;confirm</button>
-
+        <button onclick="hidder()"><i class="fa fa-ban"></i>&nbsp;cancel</button>
     </div>
     </div>
 </div>

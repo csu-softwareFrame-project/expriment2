@@ -25,7 +25,7 @@
                 <hr>
                 <div class="row">
                     <div class="col-lg-9">
-                        <h2 class="title-1 m-b-25">Product</h2>
+                        <h2 class="title-1 m-b-25">Item</h2>
                         <div class="table--no-card m-b-20">
                             <table class="table table-borderless table-striped table-earning" id="item_table">
                                 <thead>
@@ -95,7 +95,12 @@
             <label for="edit_supplier">Supplier ID: <input type="text" name="edit_supplier" class="required input_field" id="edit_supplier"/></label>
             <div class="cleaner h10"></div>
 
-            <label for="edit_status">Status: <input type="text" name="edit_status" class="required input_field" id="edit_status"/></label>
+            <label for="edit_status">Status:
+                <select id="edit_status">
+                    <option id="onSale">on sale</option>
+                    <option id="offSale">off sale</option>
+                </select>
+            </label>
             <div class="cleaner h10"></div>
 
             <label for="edit_attribute1">Attribute1: <input type="text" name="edit_attribute1" class="required input_field" id="edit_attribute1"/></label>
@@ -208,7 +213,6 @@
                 var edit_listPrice = document.getElementById("edit_listPrice");
                 var edit_unitCost = document.getElementById("edit_unitCost");
                 var edit_supplier = document.getElementById("edit_supplier");
-                var edit_status = document.getElementById("edit_status");
                 var edit_attribute1 = document.getElementById("edit_attribute1");
                 var edit_attribute2 = document.getElementById("edit_attribute2");
                 var edit_attribute3 = document.getElementById("edit_attribute3");
@@ -221,12 +225,18 @@
                 edit_listPrice.value = info[3];
                 edit_unitCost.value = info[4];
                 edit_supplier.value = info[5];
-                edit_status.value = info[6];
+                if(info[6] == "P"){
+                    var onSale = document.getElementById("onSale");
+                    onSale.selected = true;
+                }else{
+                    var offSale = document.getElementById("offSale");
+                    offSale.selected = true;
+                }
                 edit_attribute1.value = info[7];
                 edit_attribute2.value = info[8];
                 edit_attribute3.value = info[9];
                 edit_attribute4.value = info[10];
-                edit_attribute5.value = info[11].substr(0,info[11].length-1);
+                edit_attribute5.value = info[11].substr(0,info[11].length-2);
             }
         })
     }
@@ -251,7 +261,13 @@
         var listPrice = edit_listPrice.value;
         var unitCost = edit_unitCost.value;
         var supplier = edit_supplier.value;
-        var status = edit_status.value;
+        var isSale = edit_status.options[edit_status.selectedIndex].text;
+        var status;
+        if(isSale == "onSale"){
+            status = "P";
+        }else{
+            status = "S";
+        }
         var attribute1 = edit_attribute1.value;
         var attribute2 = edit_attribute2.value;
         var attribute3 = edit_attribute3.value;
@@ -277,6 +293,7 @@
         }else{
             alert("insert success！");
         }
+        alert(info);
         $.ajax({
             url:"/management/updateItem?itemInfo="+info,
             type:"get"
@@ -290,7 +307,7 @@
         var edit_listPrice = document.getElementById("edit_listPrice");
         var edit_unitCost = document.getElementById("edit_unitCost");
         var edit_supplier = document.getElementById("edit_supplier");
-        var edit_status = document.getElementById("edit_status");
+        //var edit_status = document.getElementById("edit_status");
         var edit_attribute1 = document.getElementById("edit_attribute1");
         var edit_attribute2 = document.getElementById("edit_attribute2");
         var edit_attribute3 = document.getElementById("edit_attribute3");
@@ -303,7 +320,7 @@
         edit_unitCost.value = "";
         edit_supplier.value = "";
         edit_supplier.value = "";
-        edit_status.value = "";
+        //edit_status.value = "";
         edit_attribute1.value = "";
         edit_attribute2.value = "";
         edit_attribute3.value = "";
