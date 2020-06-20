@@ -39,25 +39,14 @@
        </div>
      </div>
     <br><br><br><br>
-    <div>
-      <router-link to="/management/mainPage"><font color="#dc143c" size="5px">test</font></router-link>
-    </div>
-    <div>
-      <button class="au-btn--submit"  v-on:click="openMask">
-        <i class="zmdi zmdi-search"> test2</i>
-      </button>
-    </div>
     <br><br><br>
-    <botwin :show="show" v-on:hideModal="hideModal" v-on:submit="submit"></botwin>
   </div>
 </template>
 
 <script>
-import botwin from '../components/botwin'
 export default {
   data () {
     return {
-      show: false,
       note: {
         backgroundImage: 'url(' + require('../../static/images/image.jpg') + ')',
         // backgroundRepeat: 'no-repeat',
@@ -66,24 +55,7 @@ export default {
       }
     }
   },
-  components: {
-    botwin},
-  methods: {
-    hideModal () {
-      // 取消弹窗回调
-      this.canScroll()
-      this.show = false
-    },
-    submit () {
-      // 确认弹窗回调
-      this.canScroll()
-      this.show = false
-    },
-    openMask () {
-      this.noScroll()
-      this.show = true
-    }// 打开编辑弹窗
-  }
+  methods: {}
 }
 </script>
 

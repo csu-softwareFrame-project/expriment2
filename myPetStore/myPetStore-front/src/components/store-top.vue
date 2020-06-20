@@ -10,11 +10,12 @@
         <ul>
 
           <li><router-link to="/main/view-main" class="selected">Home</router-link></li>
-          <li ><router-link to="/account/view-sign-in" v-if="account === null">Sign In</router-link></li>
-          <li > <router-link to="/account/edit" v-if="account != null">Account</router-link></li>
+          <li><router-link to="/account/view-sign-in" v-if="account === null">Sign In</router-link></li>
+          <li><a href="#" @click="openAdminSign" v-if="account === null">Admin</a></li>
+          <li> <router-link to="/account/edit" v-if="account != null">Account</router-link></li>
           <li><router-link to="/order/viewOrderList" v-if="account != null">orders</router-link></li>
           <li><a href="javascript:void(0);" v-on:click="signOut('')" v-if="account != null">sign out</a></li>
-
+          <li><a href="#" @click="openBot" v-if="account === null">Bot</a></li>
           <li><a href="../../static/help.html">help</a></li>
 
           <li><router-link to="/viewCart"><img align="middle" name="img_cart" src="../assets/static/images/cart.gif" /></router-link></li>
@@ -42,6 +43,16 @@
     </div>
     </header>
 <!--  </body>-->
+    <popupwin :show="show" :title="titleAdmin" v-on:hideModal="hideModal" v-on:submit="submit">
+      <label >Admin ID: &nbsp;</label><br>
+      <input v-model="adminId"/>
+      <div id="changePassword">
+        <label>password: &nbsp;</label><br>
+        <input v-model="password"/><br>
+        <p v-if="resultMsg !== ''">{{resultMsg}}</p>
+      </div>
+    </popupwin>
+    <botwin :show="showBot" v-on:hideModal="hideModalBot" v-on:submit="submitBot"></botwin>
   </div>
 </template>
 
@@ -56,17 +67,74 @@
 // import '../../static/css/hover.css'
 // import '../../static/css/templatemo_style.css'
 // import '../../static/css/login.css'
-
+import popupwin from '../components/popupwin.vue'
+import botwin from '../components/botwin'
 export default {
   inject: ['reload'],
+  props: {
+    value: {},
+    content: {
+      type: String,
+      default: ''
+    },
+    title: {
+      type: String,
+      default: ''
+    }
+  },
   data () {
     return {
       keyword: '',
       token: this.$store.state.Authorization,
-      account: this.$store.state.account
+      account: this.$store.state.account,
+      show: false,
+      showBot: false,
+      titleAdmin: 'admin sign',
+      adminId: '',
+      password: '',
+      resultMsg: ''
     }
   },
+  components: {
+    popupwin,
+    botwin
+  },
   methods: {
+    openBot () {
+      this.noScroll()
+      this.showBot = true
+    },
+    hideModalBot () {
+      // 取消弹窗回调
+      this.canScroll()
+      this.showBot = false
+    },
+    submitBot () {
+      // 确认弹窗回调
+      this.canScroll()
+      this.showBot = false
+    },
+    openAdminSign () {
+      this.noScroll()
+      this.show = true
+    },
+    hideModal () {
+      // 取消弹窗回调
+      this.canScroll()
+      this.show = false
+    },
+    submit () {
+      // 确认弹窗回调
+      if (this.adminId === 'admin' && this.password === '123') {
+        this.canScroll()
+        this.show = false
+        this.$router.push({path: '/management/mainPage'})
+      } else if (this.adminId !== 'admin') {
+        this.resultMsg = 'admin id false!'
+      } else {
+        this.resultMsg = 'password false!'
+      }
+    },
     signOut () {
       console.log('登出')
       this.$store.commit('removeAccount')
