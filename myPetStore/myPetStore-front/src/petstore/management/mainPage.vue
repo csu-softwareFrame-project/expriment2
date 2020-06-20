@@ -41,7 +41,7 @@
                       </div>
                       <div class="text">
                         <h2>{{orderList.length}}</h2>
-                        <span>items solid</span>
+                        <span>order filled</span>
                       </div>
                     </div>
                     <div class="overview-chart">

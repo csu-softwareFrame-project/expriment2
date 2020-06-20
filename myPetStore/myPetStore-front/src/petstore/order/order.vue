@@ -103,7 +103,8 @@
           </tr>
           <tr>
             <td>status</td>
-            <td colspan="2" v-if="order != null">{{order.status}}</td>
+            <td colspan="2" v-if="order != null && order.status === '1'">已发货</td>
+            <td colspan="2" v-if="order != null && order.status === '0'">未发货</td>
           </tr>
           <tr>
             <td colspan="2">

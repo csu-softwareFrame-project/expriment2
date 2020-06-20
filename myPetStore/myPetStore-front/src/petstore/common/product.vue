@@ -18,13 +18,13 @@
           <th>&nbsp;</th>
         </tr>
         <tr v-for="item in itemList">
-          <td>
+          <td v-if="item.status === 'P'">
             <router-link v-if="item != null" v-bind:to="'/viewItem?itemId='+item.itemId">{{item.itemId}}</router-link>
           </td>
-          <td v-if="item != null">
+          <td v-if="item != null && item.status === 'P'">
            {{item.product.productId}}
           </td>
-          <td>
+          <td v-if="item.status === 'P'">
             <nobr v-if="item != null && item.attribute1 != null">{{item.attribute1}}</nobr>
             <nobr v-if="item != null && item.attribute2 != null">{{item.attribute2}}</nobr>
             <nobr v-if="item != null && item.attribute3 != null">{{item.attribute3}}</nobr>
@@ -32,11 +32,11 @@
             <nobr v-if="item != null && item.attribute5 != null">{{item.attribute5}}</nobr>
             <nobr v-if="product != null && product.name != null">{{product.name}}</nobr>
           </td>
-          <td v-if="item != null">{{item.listPrice}}</td>
-          <td>
-            <!--添加到购物车-->
+          <td v-if="item != null && item.status === 'P'">{{item.listPrice}}</td>
+<!--          <td>-->
+<!--            &lt;!&ndash;添加到购物车&ndash;&gt;-->
 <!--            <a class="Button" @click="@{'/cart/add_item_to_cart?itemId='+${item.itemId}+'&productId='+${product.productId}}" th:text="'Add to Cart'">Add to Cart</a>-->
-          </td>
+<!--          </td>-->
         </tr>
         <!--不知道有什么用-->
 <!--        <p th:text="${msg}" th:if="${#msg != null}"></pth>-->

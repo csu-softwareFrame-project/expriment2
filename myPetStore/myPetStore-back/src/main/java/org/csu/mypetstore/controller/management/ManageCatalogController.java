@@ -1,5 +1,6 @@
 package org.csu.mypetstore.controller.management;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.csu.mypetstore.Constants;
 import org.csu.mypetstore.domain.Category;
@@ -14,10 +15,12 @@ import org.csu.mypetstore.util.ReturnPack;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
+import redis.clients.jedis.Jedis;
 
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class ManageCatalogController {
@@ -38,6 +41,11 @@ public class ManageCatalogController {
                 if(ORIGIN.contains(categoryIdList.get(i))) continue;
             }
             catalogService.removeCategory(categoryIdList.get(i));
+            if(Constants.REDIS_MODE){
+                Jedis jedis = new Jedis("localhost", 6379);
+                jedis.select(1);
+                jedis.hdel("category",categoryIdList.get(i));
+            }
         }
         JSONObject data = new JSONObject();
         return ReturnPack.success(data);
@@ -58,6 +66,13 @@ public class ManageCatalogController {
             return ReturnPack.fail("name不能为空");
 
         catalogService.insertCategory(category);
+        if(Constants.REDIS_MODE){
+            Jedis jedis = new Jedis("localhost", 6379);
+            jedis.select(1);
+            Map<String,String> categoryMap = jedis.hgetAll("category");
+            categoryMap.put(category.getCategoryId(), JSON.toJSONString(category));
+            jedis.hmset("category",categoryMap);
+        }
         JSONObject data = new JSONObject();
         data.put("category",category);
         return ReturnPack.success(data);
@@ -73,6 +88,14 @@ public class ManageCatalogController {
         category.setName(receiveCategory.getCategoryName());
         try{
             catalogService.updateCategory(category,receiveCategory.getOldCategoryId());
+            if(Constants.REDIS_MODE){
+                Jedis jedis = new Jedis("localhost", 6379);
+                jedis.select(1);
+                jedis.hdel("category", receiveCategory.getOldCategoryId());
+                Map<String,String> categoryMap = jedis.hgetAll("category");
+                categoryMap.put(category.getCategoryId(), JSON.toJSONString(category));
+                jedis.hmset("category",categoryMap);
+            }
         }catch (Exception e){
             e.printStackTrace();
             return ReturnPack.fail("服务器错误");
@@ -89,6 +112,11 @@ public class ManageCatalogController {
         if(DEBUG) System.out.println(productIdList);
         for (int i = 0; i < productIdList.size(); i++) {
             catalogService.removeProduct(productIdList.get(i));
+            if(Constants.REDIS_MODE){
+                Jedis jedis = new Jedis("localhost", 6379);
+                jedis.select(1);
+                jedis.hdel("product",productIdList.get(i));
+            }
         }
         JSONObject data = new JSONObject();
         return ReturnPack.success(data);
@@ -111,6 +139,13 @@ public class ManageCatalogController {
             return ReturnPack.fail("categoryId不能为空");
 
         catalogService.insertProduct(product);
+        if(Constants.REDIS_MODE){
+            Jedis jedis = new Jedis("localhost", 6379);
+            jedis.select(1);
+            Map<String,String> categoryMap = jedis.hgetAll("product");
+            categoryMap.put(product.getProductId(), JSON.toJSONString(product));
+            jedis.hmset("product",categoryMap);
+        }
         JSONObject data = new JSONObject();
         System.out.println(product);
         data.put("product",product);
@@ -127,6 +162,14 @@ public class ManageCatalogController {
         product.setName(receiveProduct.getProductName());
         try{
             catalogService.updateProduct(product,receiveProduct.getOldProductId());
+            if(Constants.REDIS_MODE){
+                Jedis jedis = new Jedis("localhost", 6379);
+                jedis.select(1);
+                jedis.hdel("product", receiveProduct.getOldProductId());
+                Map<String,String> productMap = jedis.hgetAll("product");
+                productMap.put(product.getProductId(), JSON.toJSONString(product));
+                jedis.hmset("product",productMap);
+            }
         }catch (Exception e){
             e.printStackTrace();
             return ReturnPack.fail("服务器错误");
@@ -143,6 +186,11 @@ public class ManageCatalogController {
         if(DEBUG) System.out.println(itemList);
         for (int i = 0; i < itemList.size(); i++) {
             catalogService.removeItem(itemList.get(i));
+            if(Constants.REDIS_MODE){
+                Jedis jedis = new Jedis("localhost", 6379);
+                jedis.select(1);
+                jedis.hdel("item",itemList.get(i));
+            }
         }
         JSONObject data = new JSONObject();
         return ReturnPack.success(data);
@@ -166,12 +214,20 @@ public class ManageCatalogController {
 
         }
         Item item = new Item();
+        item.setAttribute1("no description");
         item.setItemId(receiveItem.getItemId());
         item.setProductId(receiveItem.getProductId());
         item.setListPrice(price);
         item.setStatus("S");
         item.setProduct(catalogService.getProduct(receiveItem.getProductId()));
         catalogService.insertItem(item);
+        if(Constants.REDIS_MODE){
+            Jedis jedis = new Jedis("localhost", 6379);
+            jedis.select(1);
+            Map<String,String> itemMap = jedis.hgetAll("item");
+            itemMap.put(item.getItemId(), JSON.toJSONString(item));
+            jedis.hmset("item",itemMap);
+        }
         JSONObject data = new JSONObject();
         data.put("item",item);
         return ReturnPack.success(data);
@@ -183,15 +239,26 @@ public class ManageCatalogController {
         if(DEBUG) System.out.println("修改产品");
         if(DEBUG) System.out.println(receiveItem);
         Item item = catalogService.getItem(receiveItem.getOldItemId());
-        item.setItemId(receiveItem.getOldItemId());
+        item.setProductId(item.getProduct().getProductId());
+        item.setItemId(receiveItem.getItemId());
         item.setListPrice(new BigDecimal(receiveItem.getListPrice()));
         item.setAttribute1(receiveItem.getAttribute1());
         item.setAttribute2(receiveItem.getAttribute2());
         item.setAttribute3(receiveItem.getAttribute3());
         item.setAttribute4(receiveItem.getAttribute4());
         item.setAttribute5(receiveItem.getAttribute5());
+        item.setQuantity(receiveItem.getQuantity());
+        System.out.println(item);
         try{
             catalogService.updateItem(item,receiveItem.getOldItemId());
+            if(Constants.REDIS_MODE){
+                Jedis jedis = new Jedis("localhost", 6379);
+                jedis.select(1);
+                jedis.hdel("item",receiveItem.getOldItemId());
+                Map<String,String> itemMap = jedis.hgetAll("item");
+                itemMap.put(item.getItemId(), JSON.toJSONString(item));
+                jedis.hmset("item",itemMap);
+            }
         }catch (Exception e){
             e.printStackTrace();
             return ReturnPack.fail("服务器错误");
@@ -208,7 +275,17 @@ public class ManageCatalogController {
         if(DEBUG) System.out.println("上架下架产品");
         if(DEBUG) System.out.println(status+"   "+itemId);
         catalogService.updateStatus(itemId,status);
-        List<Item> itemList = catalogService.getItemListByProductId(catalogService.getItem(itemId).getProductId());
+        if(Constants.REDIS_MODE){
+            Jedis jedis = new Jedis("localhost", 6379);
+            jedis.select(1);
+            Map<String,String> itemMap = jedis.hgetAll("item");
+            Item item1 = catalogService.getItem(itemId);
+            item1.setStatus(status);
+            System.out.println(itemId+"的状态改变为:"+status);
+            itemMap.put(item1.getItemId(), JSON.toJSONString(item1));
+            jedis.hmset("item",itemMap);
+        }
+        List<Item> itemList = catalogService.getItemListByProductId(catalogService.getItem(itemId).getProduct().getProductId());
         JSONObject data = new JSONObject();
         data.put("itemList",itemList);
         return ReturnPack.success(data);

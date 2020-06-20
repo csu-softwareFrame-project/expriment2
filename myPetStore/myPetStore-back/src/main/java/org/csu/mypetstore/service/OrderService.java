@@ -1,5 +1,6 @@
 package org.csu.mypetstore.service;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.domain.Car;
 import org.csu.mypetstore.Constants;
@@ -12,6 +13,7 @@ import org.csu.mypetstore.util.JwtUtil;
 import org.csu.mypetstore.util.ReturnPack;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import redis.clients.jedis.Jedis;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -34,15 +36,28 @@ public class OrderService {
     private LineItemMapper lineItemMapper;
     @Autowired
     private CartService cartService;
+    @Autowired
+    CatalogService catalogService;
 
     //根据Order参数，将订单信息插入数据库并返回订单id
     public int insertOrder(Order order) {
         order.setOrderId(getNextId("ordernum"));  //根据队列情况自动生成订单号
         for (int i = 0; i < order.getLineItems().size(); i++) {  //对订单内所有的产品进行库存更新
-            LineItem lineItem = (LineItem) order.getLineItems().get(i);
+            LineItem lineItem = order.getLineItems().get(i);
             String itemId = lineItem.getItemId();
             int increment = lineItem.getQuantity();  //注意此处设置的数量是购买的数量而不是库存数量
             itemMapper.updateInventoryQuantity(increment,itemId);  //更新产品库存数量
+            if(Constants.REDIS_MODE){
+                if(Constants.REDIS_MODE){
+                    Jedis jedis = new Jedis("localhost", 6379);
+                    jedis.select(1);
+                    Item item = catalogService.getItem(itemId);
+                    item.setQuantity(item.getQuantity()-increment);
+                    Map<String,String> itemMap = jedis.hgetAll("item");
+                    itemMap.put(item.getItemId(), JSON.toJSONString(item));
+                    jedis.hmset("item",itemMap);
+                }
+            }
         }
 
         orderMapper.insertOrder(order);  //新建订单
@@ -183,7 +198,7 @@ public class OrderService {
 //            data.put("token",token);
         }
         String username =  httpServletRequest.getHeader("UserName");
-        //todo 加入判断，库存是否够，购物车中不够的商品数量改成库存上限
+
 
         int orderId = insertOrder(order);
         data.put("orderId",orderId);

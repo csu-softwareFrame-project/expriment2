@@ -99,6 +99,7 @@
       <label>attribute5:<input type="text" size="40" v-model="editForm.attribute5" placeholder="attribute5"/></label>
       <label>attribute6:<input type="text" size="40" v-model="editForm.attribute6" placeholder="attribute6"/></label>
       <label>listPrice:<input type="text" size="40" v-model="editForm.listPrice" placeholder="listPrice"/></label>
+      <label>quantity:<input type="text" size="40" v-model="editForm.quantity"/></label>
     </popupwin>
   </manageframe>
 </template>
@@ -121,6 +122,7 @@ export default {
             attribute6 : '',
             listPrice : '',
             oldItemId : '',
+            quantity : ''
         },
         pagename: 'item',
         productId: this.$route.query.productId,
@@ -202,6 +204,7 @@ export default {
                 this.editForm.attribute5 = this.itemList[i].attribute5;
                 this.editForm.attribute6 = this.itemList[i].attribute6;
                 this.editForm.listPrice = this.itemList[i].listPrice;
+                this.editForm.quantity = this.itemList[i].quantity;
                 break;
             }
         }

@@ -20,6 +20,7 @@ public class receiveItem implements Serializable {
     private String attribute4;
     private String attribute5;
     private String oldItemId;
+    private int quantity;
 
     public String getItemId() {
         return itemId;
@@ -117,6 +118,14 @@ public class receiveItem implements Serializable {
         this.oldItemId = oldItemId;
     }
 
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
     @Override
     public String toString() {
         return "receiveItem{" +
@@ -132,6 +141,7 @@ public class receiveItem implements Serializable {
                 ", attribute4='" + attribute4 + '\'' +
                 ", attribute5='" + attribute5 + '\'' +
                 ", oldItemId='" + oldItemId + '\'' +
+                ", quantity=" + quantity +
                 '}';
     }
 }

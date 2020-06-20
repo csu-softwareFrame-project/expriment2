@@ -12,7 +12,7 @@
           <td v-if="item != null" v-html="item.product.description"></td>
         </tr>
         <tr>
-          <td v-if="item != null"><b>{{item.itemId}}f</b></td>
+          <td v-if="item != null"><b>{{item.itemId}}</b></td>
         </tr>
         <tr>
           <td>

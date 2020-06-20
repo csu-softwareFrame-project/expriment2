@@ -198,7 +198,6 @@ public class CatalogService {
             Jedis jedis = new Jedis("localhost",6379);
             jedis.select(1);
             if(categoryId != ""){
-
 //                System.out.println(jedis.hgetAll("category").size());
                 Category category = JSON.parseObject(jedis.hget("category",categoryId),Category.class);
                 Map<String,String> productMap = jedis.hgetAll("product");

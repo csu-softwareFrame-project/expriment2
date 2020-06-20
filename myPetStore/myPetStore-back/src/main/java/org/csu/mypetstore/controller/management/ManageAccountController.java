@@ -3,6 +3,7 @@ package org.csu.mypetstore.controller.management;
 import com.alibaba.fastjson.JSONObject;
 import org.csu.mypetstore.domain.Account;
 import org.csu.mypetstore.service.AccountService;
+import org.csu.mypetstore.service.MailService;
 import org.csu.mypetstore.util.ReturnPack;
 import org.csu.mypetstore.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Random;
 
 @RestController
 public class ManageAccountController {
@@ -17,6 +19,8 @@ public class ManageAccountController {
     AccountService accountService;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    MailService mailService;
 
     //获取所有帐号信息
     @GetMapping("/management/accounts")
@@ -89,10 +93,16 @@ public class ManageAccountController {
     //重置密码
     @PutMapping("/management/accounts/passwords")
     public ReturnPack resetPassword(@RequestBody Account account){
-        System.out.println(account.getUsername());
+        System.out.println(account.getUsername()+"重置密码");
         //todo 随机生成密码，发送给用户邮箱
-        String filename= StringUtil.getRandomString(7+(int)(Math.random()*4));
-        String password = "";
+        String newpass = String.valueOf(new Random().nextInt(899999) + 100000);
+        String message = "您的重置密码为："+newpass;
+        try {
+            mailService.sendSimpleMail(account.getEmail(), "petstore:重置密码", message);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ReturnPack.fail("发送失败，推测是邮箱问题");
+        }
 //        String enc_password = passwordEncoder.encode(password);//加密码
 //        Account account1 = accountService.getAccount(account.getUsername()).setPassword(enc_password)
 //        accountService.updateAccount(account1);

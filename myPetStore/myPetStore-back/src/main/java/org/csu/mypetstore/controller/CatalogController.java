@@ -38,7 +38,7 @@ public class CatalogController {
         JSONObject data = new JSONObject();
         Product product = catalogService.getProduct(productId);
         List<Item> itemList = catalogService.getItemListByProductId(productId);
-        itemList.removeIf(item -> item.getStatus().equals("S"));//排除下架的货物
+//        itemList.removeIf(item -> item.getStatus().equals("S"));//排除下架的货物
         data.put("product", product);
         data.put("itemList", itemList);
         return ReturnPack.success(data);

@@ -23,7 +23,7 @@ import java.util.Map;
 
 /**
  * @Author:高益基
- * @Description:creat钩子函数，清空redisDB。
+ * @Description:creat钩子函数，填入redisDB。
  */
 @Configuration
 public class backInitializer {
@@ -48,7 +48,6 @@ public class backInitializer {
             Map<String,String> productMap = new HashMap<>();
             Map<String,String> itemMap = new HashMap<>();
             for(Category category:categoryList){
-
                 categoryMap.put(category.getCategoryId(), JSON.toJSONString(category));
                 List<Product> productList = productMapper.getProductListByCategory(category.getCategoryId());
                 for(Product product: productList){

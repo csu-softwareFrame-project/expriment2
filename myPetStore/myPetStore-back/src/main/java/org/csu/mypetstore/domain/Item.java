@@ -124,22 +124,22 @@ public class Item implements Serializable {
         this.attribute5 = attribute5;
     }
 
+    @Override
     public String toString() {
-        String info = "{";
-        info += "\"itemId\":"+"\""+getItemId()+"\",";
-        info += "\"productId\":"+"\""+getProductId()+"\",";
-        info += "\"listPrice\":"+"\""+getListPrice()+"\",";
-        info += "\"unitCost\":"+"\""+getUnitCost()+"\",";
-        info += "\"supplierId\":"+"\""+ getSupplierId()+"\",";
-        info = info + '\n' + getStatus();
-        info = info + '\n' + getAttribute1();
-        info = info + '\n' + getAttribute2();
-        info = info + '\n' + getAttribute3();
-        info = info + '\n' + getAttribute4();
-        info = info + '\n' + getAttribute5();
-        info = info + '\n' + getProduct().toString2();
-        info = info + '\n' + getQuantity();
-
-        return info;
+        return "Item{" +
+                "itemId='" + itemId + '\'' +
+                ", productId='" + productId + '\'' +
+                ", listPrice=" + listPrice +
+                ", unitCost=" + unitCost +
+                ", supplierId=" + supplierId +
+                ", status='" + status + '\'' +
+                ", attribute1='" + attribute1 + '\'' +
+                ", attribute2='" + attribute2 + '\'' +
+                ", attribute3='" + attribute3 + '\'' +
+                ", attribute4='" + attribute4 + '\'' +
+                ", attribute5='" + attribute5 + '\'' +
+                ", product=" + product +
+                ", quantity=" + quantity +
+                '}';
     }
 }
