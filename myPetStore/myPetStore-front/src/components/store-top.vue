@@ -15,7 +15,7 @@
           <li> <router-link to="/account/edit" v-if="account != null">Account</router-link></li>
           <li><router-link to="/order/viewOrderList" v-if="account != null">orders</router-link></li>
           <li><a href="javascript:void(0);" v-on:click="signOut('')" v-if="account != null">sign out</a></li>
-          <li><a href="#" @click="openBot" v-if="account === null">Bot</a></li>
+          <li><a href="#" @click="openBot">Bot</a></li>
           <li><a href="../../static/help.html">help</a></li>
 
           <li><router-link to="/viewCart"><img align="middle" name="img_cart" src="../assets/static/images/cart.gif" /></router-link></li>
