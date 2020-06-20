@@ -24,7 +24,7 @@
                     <td>
                         <a th:href="@{'/order/view_order?orderId='+${order.orderId}}" th:text="${order.orderId}">order.orderId</a>
                     </td>
-                    <td th:text="${#dates.format(order.orderDate,'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td th:text="${order.orderDate}"></td>
                     <!--<td>占位</td>-->
                     <td th:text="${#numbers.formatDecimal(order.totalPrice,0,2)}"></td>
                 </tr>
