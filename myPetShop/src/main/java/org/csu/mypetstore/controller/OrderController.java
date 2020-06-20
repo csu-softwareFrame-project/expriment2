@@ -52,7 +52,9 @@ public class OrderController {
     //生成订单，跳转到订单页面让用户确认
     @PostMapping("confirm_new_order")
     public String confirmNewOrder(HttpSession session, Payment payment,Order order){
-        session.setAttribute("order",orderService.generateOrder(session, payment, order));
+        Order order1 = orderService.generateOrder(session, payment, order);
+        session.setAttribute("order",order1);
+        System.out.println(order1.getOrderDate());
         return "order/ConfirmOrder";
     }
 

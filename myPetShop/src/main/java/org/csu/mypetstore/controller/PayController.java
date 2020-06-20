@@ -27,7 +27,7 @@ public class PayController {
 
     //未填写
     @RequestMapping("/order/final_confirm_order")
-    public void payController(HttpServletRequest request, HttpServletResponse response, HttpSession session, Payment payment, Order order, Model model) throws IOException
+    public void payController(HttpServletRequest request, HttpServletResponse response, HttpSession session, Model model) throws IOException
     {
         //初始化AlipayClient
         AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.gatewayUrl, AlipayConfig.APP_ID, AlipayConfig.APP_PRIVATE_KEY, "json", AlipayConfig.CHARSET, AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.sign_type);
@@ -37,9 +37,13 @@ public class PayController {
         alipayRequest.setReturnUrl(AlipayConfig.return_url);
         alipayRequest.setNotifyUrl(AlipayConfig.notify_url);
 
-        Order order1 = orderService.generateOrder(session, payment, order);
-        session.setAttribute("orderId",order1.getOrderId());
-        model.addAttribute("order",order);
+        //System.out.println(order.toString());
+        //Order order1 = orderService.generateOrder(session, payment, (Order)session.getAttribute("order"));
+        //System.out.println(order1.toString());
+//        session.setAttribute("orderId",order1.getOrderId());
+//        model.addAttribute("order",order);
+        Order order1 = (Order)session.getAttribute("order");
+        System.out.println(order1.getOrderDate());
 
         //商户订单号，商户网站订单系统中唯一订单号，必填
         String out_trade_no = String.valueOf(order1.getOrderId());

@@ -2,6 +2,7 @@ package org.csu.mypetstore.domain;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -257,8 +258,10 @@ public class Order implements Serializable {
 
     public void initOrder(Account account,List<CartItem> cartItemList,Payment payment) {
 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         username = account.getUsername();
-        orderDate = new Date().toString();
+        Date date = new Date();
+        orderDate = sdf.format(date);
 
         shipToFirstName = account.getFirstName();
         shipToLastName = account.getLastName();

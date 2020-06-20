@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -530,4 +531,12 @@ class DemoApplicationTests {
         System.out.println(accountList.get(0).getPhone());
     }
 
+    @Test
+    void testDate(){
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+        String str = sdf.format(date);
+        System.out.println(date);
+        System.out.println(str);
+    }
 }
